@@ -79,9 +79,9 @@ namespace FubuCsProjFile.Testing
 
             var original =
                 new FileSystem().ReadStringFromFile("FubuMVC.SlickGrid.sln").Trim().SplitOnNewLine()
-                .Select(x => x.Replace('\\', Path.DirectorySeparatorChar));
+                .Select(x => x.Replace('\\', '/'));
 
-            var newContent = new FileSystem().ReadStringFromFile("fake.sln").SplitOnNewLine();
+            var newContent = new FileSystem().ReadStringFromFile("fake.sln").SplitOnNewLine().Select(x => x.Replace('\\', '/'));
 
             newContent.Each(x => Debug.WriteLine(x));
 
