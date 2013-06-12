@@ -28,6 +28,22 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void creating_a_new_csprojfile_creates_a_guid()
+        {
+            var project = CsProjFile.CreateAtSolutionDirectory("Foo", "myproj");
+            project.ProjectGuid.ShouldNotEqual(Guid.Empty);
+            
+        }
+
+        [Test]
+        public void creating_a_new_csprojfile_class_library_is_default()
+        {
+            var project = CsProjFile.CreateAtSolutionDirectory("Foo", "myproj");
+            project.ProjectTypes().Single().ShouldEqual(Guid.Parse("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC"));
+
+        }
+
+        [Test]
         public void read_the_project_guid()
         {
             var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");

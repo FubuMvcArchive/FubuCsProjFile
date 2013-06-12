@@ -10,6 +10,7 @@ namespace FubuCsProjFile
 {
     public class CsProjFile
     {
+        private const string PROJECTGUID = "ProjectGuid";
         private readonly string _fileName;
         private readonly MSBuildProject _project;
 
@@ -27,7 +28,7 @@ namespace FubuCsProjFile
         {
             get
             {
-                var raw = _project.PropertyGroups.Select(x => x.GetPropertyValue("ProjectGuid"))
+                var raw = _project.PropertyGroups.Select(x => x.GetPropertyValue(PROJECTGUID))
                         .FirstOrDefault(x => x.IsNotEmpty());
 
                 return raw.IsEmpty() ? Guid.Empty : Guid.Parse(raw.TrimStart('{').TrimEnd('}'));
@@ -66,6 +67,9 @@ namespace FubuCsProjFile
         {
             var fileName = directory.AppendPath(assemblyName) + ".csproj";
             var project = MSBuildProject.Create(assemblyName);
+            var group = project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == PROJECTGUID)) ?? project.PropertyGroups.FirstOrDefault() ?? project.AddNewPropertyGroup(true);
+
+            group.SetPropertyValue(PROJECTGUID, Guid.NewGuid().ToString().ToUpper(), true);
 
             return new CsProjFile(fileName, project);
         }
