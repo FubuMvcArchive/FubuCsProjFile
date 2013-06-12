@@ -8,6 +8,12 @@ namespace FubuCsProjFile
 {
     public class ProjectReference
     {
+        public static ProjectReference CreateNewAt(string solutionDirectory, string projectName)
+        {
+            var csProjFile = CsProjFile.CreateAtSolutionDirectory(projectName, solutionDirectory);
+            return new ProjectReference(csProjFile, solutionDirectory);
+        }
+
 
         public static readonly string ProjectLineTemplate = "Project(\"{{{0}}}\") = \"{1}\", \"{2}\", \"{{{3}}}\"";
         private readonly Guid _projectType;
@@ -16,8 +22,19 @@ namespace FubuCsProjFile
         private readonly string _relativePath;
 
         private readonly IList<string> _directives = new List<string>();
+        private readonly Lazy<CsProjFile> _project;
 
-        public ProjectReference(string text)
+
+        private ProjectReference(CsProjFile csProjFile, string solutionDirectory)
+        {
+            _project = new Lazy<CsProjFile>(() => csProjFile);
+            _projectName = csProjFile.ProjectName;
+            _relativePath = csProjFile.FileName.PathRelativeTo(solutionDirectory);
+            _projectType = csProjFile.ProjectTypes().FirstOrDefault();
+            _projectGuid = csProjFile.ProjectGuid;
+        }
+
+        public ProjectReference(string text, string solutionDirectory)
         {
             var parts = text.ToDelimitedArray('=');
             _projectType = Guid.Parse(parts.First().TextBetweenSquiggles());
@@ -26,7 +43,23 @@ namespace FubuCsProjFile
             var secondParts = parts.Last().ToDelimitedArray();
             _projectName = secondParts.First().TextBetweenQuotes();
             _relativePath = secondParts.ElementAt(1).TextBetweenQuotes().Replace("\\", "/"); // Windows is forgiving
+
+
+            _project = new Lazy<CsProjFile>(() => {
+                var filename = solutionDirectory.AppendPath(_relativePath);
+
+                if (File.Exists(filename))
+                {
+                    return CsProjFile.LoadFrom(filename);
+                }
+                
+                var project = CsProjFile.CreateAtLocation(filename, _projectName);
+                project.ProjectGuid = _projectGuid;
+
+                return project;
+            });
         }
+
 
         public void Write(StringWriter writer)
         {
@@ -57,10 +90,17 @@ namespace FubuCsProjFile
             get { return _relativePath; }
         }
 
+        public CsProjFile Project
+        {
+            get { return _project.Value; }
+        }
+
         public void ReadLine(string text)
         {
             _directives.Add(text);
         }
+
+
     }
 
     public static class CsProjFileExtensions

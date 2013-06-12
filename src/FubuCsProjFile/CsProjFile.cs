@@ -13,6 +13,7 @@ namespace FubuCsProjFile
         private const string PROJECTGUID = "ProjectGuid";
         private readonly string _fileName;
         private readonly MSBuildProject _project;
+        public static readonly Guid ClassLibraryType = Guid.Parse("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC");
 
         public CsProjFile(string fileName) : this(fileName, MSBuildProject.LoadFrom(fileName))
         {
@@ -33,6 +34,13 @@ namespace FubuCsProjFile
 
                 return raw.IsEmpty() ? Guid.Empty : Guid.Parse(raw.TrimStart('{').TrimEnd('}'));
 
+            }
+            internal set
+            {
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == PROJECTGUID))
+                            ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
+
+                group.SetPropertyValue(PROJECTGUID, value.ToString().ToUpper(), true);
             }
         }
 
@@ -65,13 +73,25 @@ namespace FubuCsProjFile
 
         public static CsProjFile CreateAtSolutionDirectory(string assemblyName, string directory)
         {
-            var fileName = directory.AppendPath(assemblyName) + ".csproj";
+            var fileName = directory.AppendPath(assemblyName).AppendPath(assemblyName) + ".csproj";
             var project = MSBuildProject.Create(assemblyName);
             var group = project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == PROJECTGUID)) ?? project.PropertyGroups.FirstOrDefault() ?? project.AddNewPropertyGroup(true);
 
             group.SetPropertyValue(PROJECTGUID, Guid.NewGuid().ToString().ToUpper(), true);
 
             return new CsProjFile(fileName, project);
+        }
+
+        public static CsProjFile LoadFrom(string filename)
+        {
+            var project = MSBuildProject.LoadFrom(filename);
+            return new CsProjFile(filename, project);
+        }
+
+        public static CsProjFile CreateAtLocation(string filename, string assemblyName)
+        {
+            var project = MSBuildProject.Create(assemblyName);
+            return new CsProjFile(filename, project);
         }
 
         public string ProjectName
@@ -106,14 +126,10 @@ namespace FubuCsProjFile
             }
             else
             {
-                yield return Guid.Parse("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC"); // Class library
+                yield return ClassLibraryType; // Class library
             }
         } 
 
-        public static CsProjFile LoadFrom(string filename)
-        {
-            var project = MSBuildProject.LoadFrom(filename);
-            return new CsProjFile(filename, project);
-        }
+
     }
 }

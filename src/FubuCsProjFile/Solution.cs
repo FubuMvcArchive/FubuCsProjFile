@@ -137,7 +137,7 @@ namespace FubuCsProjFile
                 }
                 else if (text.StartsWith("Project"))
                 {
-                    _project = new ProjectReference(text);
+                    _project = new ProjectReference(text, _parent._filename.ParentDirectory());
                     _parent._projects.Add(_project);
                     _read = readProject;
                 }
@@ -183,6 +183,8 @@ namespace FubuCsProjFile
 
 
             new FileSystem().WriteStringToFile(filename, writer.ToString().TrimEnd());
+
+            _projects.Each(x => x.Project.Save());
         }
 
         private void calculateProjectConfigurationPlatforms()
@@ -207,6 +209,25 @@ namespace FubuCsProjFile
         public IEnumerable<ProjectReference> Projects
         {
             get { return _projects; }
+        }
+
+        public ProjectReference AddProject(string projectName)
+        {
+            var existing = FindProject(projectName);
+            if (existing != null)
+            {
+                return existing;
+            }
+
+            var reference = ProjectReference.CreateNewAt(_filename.ParentDirectory(), projectName);
+            _projects.Add(reference);
+
+            return reference;
+        }
+
+        public ProjectReference FindProject(string projectName)
+        {
+            return _projects.FirstOrDefault(x => x.ProjectName == projectName);
         }
     }
 }

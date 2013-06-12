@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.IO;
 using FubuCore;
 using NUnit.Framework;
 using FubuTestingSupport;
@@ -86,6 +85,23 @@ namespace FubuCsProjFile.Testing
             newContent.Each(x => Debug.WriteLine(x));
 
             newContent.ShouldHaveTheSameElementsAs(original);
+        }
+
+        [Test]
+        public void adding_a_project_is_idempotent()
+        {
+            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
+            var projectName = solution.Projects.Last().ProjectName;
+
+            var initialCount = solution.Projects.Count();
+
+            solution.AddProject(projectName);
+            solution.AddProject(projectName);
+            solution.AddProject(projectName);
+            solution.AddProject(projectName);
+
+            solution.Projects.Count().ShouldEqual(initialCount);
+
         }
     }
 }
