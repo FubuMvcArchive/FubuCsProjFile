@@ -6,6 +6,7 @@ using FubuTestingSupport;
 
 namespace FubuCsProjFile.Testing
 {
+
     [TestFixture]
     public class CsProjFileTester
     {
@@ -14,7 +15,14 @@ namespace FubuCsProjFile.Testing
         [SetUp]
         public void SetUp()
         {
+
+
             fileSystem = new FileSystem();
+            
+            fileSystem.Copy("FubuMVC.SlickGrid.Docs.csproj.fake", "FubuMVC.SlickGrid.Docs.csproj");
+            fileSystem.Copy("SlickGridHarness.csproj.fake", "SlickGridHarness.csproj");
+            
+            
             fileSystem.DeleteDirectory("myproj");
             fileSystem.CreateDirectory("myproj");
         }
