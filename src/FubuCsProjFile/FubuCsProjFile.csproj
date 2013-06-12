@@ -71,12 +71,16 @@
     <Compile Include="Solution.cs" />
     <Compile Include="SolutionFileService.cs" />
     <Compile Include="SolutionLoading.cs" />
+    <Compile Include="Templating\TemplatingClasses.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MSBuild\Project.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Solution.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templating\Class.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
