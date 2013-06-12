@@ -3,6 +3,7 @@ using FubuCore;
 using NUnit.Framework;
 using FubuTestingSupport;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FubuCsProjFile.Testing
 {
@@ -59,6 +60,30 @@ namespace FubuCsProjFile.Testing
 
             newContent.ShouldHaveTheSameElementsAs(original);
 
+        }
+
+        [Test]
+        public void read_a_solution_with_projects()
+        {
+            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
+            solution.Projects.Select(x => x.ProjectName)
+                .ShouldHaveTheSameElementsAs("Solution Items", "FubuMVC.SlickGrid", "FubuMVC.SlickGrid.Testing", "SlickGridHarness", "FubuMVC.SlickGrid.Serenity", "FubuMVC.SlickGrid.Docs");
+        }
+
+        [Test]
+        public void read_and_write_a_solution_with_projects()
+        {
+            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
+            solution.Save("fake.sln");
+
+            var original =
+                new FileSystem().ReadStringFromFile("FubuMVC.SlickGrid.sln").Trim().SplitOnNewLine();
+
+            var newContent = new FileSystem().ReadStringFromFile("fake.sln").SplitOnNewLine();
+
+            newContent.Each(x => Debug.WriteLine(x));
+
+            newContent.ShouldHaveTheSameElementsAs(original);
         }
     }
 }

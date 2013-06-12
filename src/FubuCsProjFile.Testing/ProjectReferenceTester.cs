@@ -16,6 +16,12 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void the_project_guid()
+        {
+            theProject.ProjectGuid.ShouldEqual(Guid.Parse("A67A0CE1-E4C2-45FC-9019-829D434B2CC4"));
+        }
+
+        [Test]
         public void the_reference_type()
         {
             theProject.ProjectType.ShouldEqual(Guid.Parse("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC"));

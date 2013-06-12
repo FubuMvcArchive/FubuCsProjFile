@@ -17,6 +17,7 @@ namespace FubuCsProjFile
         private const string ProjectConfigurationPlatforms = "ProjectConfigurationPlatforms";
 
         private readonly string _filename;
+        private readonly IList<ProjectReference> _projects = new List<ProjectReference>(); 
 
         public static Solution CreateNew(string directory, string name)
         {
@@ -84,12 +85,13 @@ namespace FubuCsProjFile
             private readonly Solution _parent;
             private Action<string> _read;
             private GlobalSection _section;
+            private ProjectReference _project;
 
             public SolutionReader(Solution parent)
             {
                 _parent = parent;
 
-                _read = readPreamble;
+                _read = normalRead;
             }
 
             private void lookForGlobalSection(string text)
@@ -115,11 +117,29 @@ namespace FubuCsProjFile
                 }
             }
 
-            private void readPreamble(string text)
+            private void readProject(string text)
+            {
+                if (text.StartsWith("EndProject"))
+                {
+                    _read = normalRead;
+                }
+                else
+                {
+                    _project.ReadLine(text);
+                }
+            }
+
+            private void normalRead(string text)
             {
                 if (text.StartsWith(Global))
                 {
                     _read = lookForGlobalSection;
+                }
+                else if (text.StartsWith("Project"))
+                {
+                    _project = new ProjectReference(text);
+                    _parent._projects.Add(_project);
+                    _read = readProject;
                 }
                 else
                 {
@@ -142,10 +162,18 @@ namespace FubuCsProjFile
 
         public void Save()
         {
+            Save(_filename);
+        }
+
+        public void Save(string filename)
+        {
+            calculateProjectConfigurationPlatforms();
+
             var writer = new StringWriter();
 
             _preamble.Each(x => writer.WriteLine(x));
-            // TODO -- PROJECTS!
+
+            _projects.Each(x => x.Write(writer));
 
             writer.WriteLine(Global);
 
@@ -153,8 +181,32 @@ namespace FubuCsProjFile
 
             writer.WriteLine(EndGlobal);
 
-            new FileSystem().WriteStringToFile(_filename, writer.ToString().TrimEnd());
 
+            new FileSystem().WriteStringToFile(filename, writer.ToString().TrimEnd());
+        }
+
+        private void calculateProjectConfigurationPlatforms()
+        {
+            var section = FindSection(ProjectConfigurationPlatforms);
+            if (section == null)
+            {
+                section = new GlobalSection("GlobalSection(ProjectConfigurationPlatforms) = postSolution");
+                _sections.Add(section);
+            }
+
+            section.Properties.Clear();
+            var configurations = Configurations().ToArray();
+
+            _projects.Where(x => x.ProjectName != "Solution Items").Each(proj => {
+                configurations.Each(config => config.WriteProjectConfiguration(proj, section));
+            });
+
+
+        }
+
+        public IEnumerable<ProjectReference> Projects
+        {
+            get { return _projects; }
         }
     }
 }

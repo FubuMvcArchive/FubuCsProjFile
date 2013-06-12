@@ -20,6 +20,12 @@ namespace FubuCsProjFile
         public string Key { get; set; }
         public string Value { get; set; }
 
+        public void WriteProjectConfiguration(ProjectReference project, GlobalSection section)
+        {
+            section.Read("\t\t{{{0}}}.{1}.ActiveCfg = {2}".ToFormat(project.ProjectGuid.ToString().ToUpper(), Key, Value));
+            section.Read("\t\t{{{0}}}.{1}.Build.0 = {2}".ToFormat(project.ProjectGuid.ToString().ToUpper(), Key, Value));
+        }
+
         protected bool Equals(BuildConfiguration other)
         {
             return string.Equals(Key, other.Key) && string.Equals(Value, other.Value);

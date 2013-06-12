@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using FubuCore;
 using System.Linq;
 
@@ -7,11 +9,13 @@ namespace FubuCsProjFile
     public class ProjectReference
     {
 
-        public static readonly string ProjectLineTemplate = "Project(\"{0}\") = \"{1}\", \"{2}\", \"{{{3}}}\"";
-        private Guid _projectType;
-        private Guid _projectGuid;
-        private string _projectName;
-        private string _relativePath;
+        public static readonly string ProjectLineTemplate = "Project(\"{{{0}}}\") = \"{1}\", \"{2}\", \"{{{3}}}\"";
+        private readonly Guid _projectType;
+        private readonly Guid _projectGuid;
+        private readonly string _projectName;
+        private readonly string _relativePath;
+
+        private readonly IList<string> _directives = new List<string>();
 
         public ProjectReference(string text)
         {
@@ -22,6 +26,20 @@ namespace FubuCsProjFile
             var secondParts = parts.Last().ToDelimitedArray();
             _projectName = secondParts.First().TextBetweenQuotes();
             _relativePath = secondParts.ElementAt(1).TextBetweenQuotes().Replace("\\", "/"); // Windows is forgiving
+        }
+
+        public void Write(StringWriter writer)
+        {
+            writer.WriteLine(ProjectLineTemplate, _projectType.ToString().ToUpper(), _projectName, _relativePath.Replace('/', Path.DirectorySeparatorChar), _projectGuid.ToString().ToUpper());
+
+            _directives.Each(x => writer.WriteLine(x));
+
+            writer.WriteLine("EndProject");
+        }
+
+        public Guid ProjectGuid
+        {
+            get { return _projectGuid; }
         }
 
         public Guid ProjectType
@@ -37,6 +55,11 @@ namespace FubuCsProjFile
         public string RelativePath
         {
             get { return _relativePath; }
+        }
+
+        public void ReadLine(string text)
+        {
+            _directives.Add(text);
         }
     }
 
