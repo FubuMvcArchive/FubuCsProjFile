@@ -65,6 +65,7 @@
     <Compile Include="MSBuild\MSBuildPropertyGroup.cs" />
     <Compile Include="MSBuild\MSBuildPropertyGroupMerged.cs" />
     <Compile Include="MSBuild\MSBuildPropertySet.cs" />
+    <Compile Include="ProjectReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sln.cs" />
     <Compile Include="Solution.cs" />
