@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using FubuCore;
 using NUnit.Framework;
 using FubuTestingSupport;
@@ -77,7 +78,8 @@ namespace FubuCsProjFile.Testing
             solution.Save("fake.sln");
 
             var original =
-                new FileSystem().ReadStringFromFile("FubuMVC.SlickGrid.sln").Trim().SplitOnNewLine();
+                new FileSystem().ReadStringFromFile("FubuMVC.SlickGrid.sln").Trim().SplitOnNewLine()
+                .Select(x => x.Replace('\\', Path.DirectorySeparatorChar));
 
             var newContent = new FileSystem().ReadStringFromFile("fake.sln").SplitOnNewLine();
 
