@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using FubuCore;
+using FubuCsProjFile.Templating;
 using FubuTestingSupport;
 using NUnit.Framework;
+using System.Linq;
 
 namespace FubuCsProjFile.Testing
 {
+
     [TestFixture]
     public class creating_a_new_solution_with_projects
     {
@@ -29,6 +33,9 @@ namespace FubuCsProjFile.Testing
             reference.ProjectName.ShouldEqual("TestProject");
             reference.RelativePath.ShouldEqual("TestProject".AppendPath("TestProject.csproj"));
 
+            CodeFileTemplate.Class("Foo").Attach(reference.Project);
+            CodeFileTemplate.Class("Bar").Attach(reference.Project);
+
             solution.Save();
 
             File.Exists("TestSolution".AppendPath("TestSolution.sln")).ShouldBeTrue();
@@ -42,7 +49,9 @@ namespace FubuCsProjFile.Testing
             var project2 = reference2.Project;
             project2.ShouldNotBeNull();
 
-            
+            project2.All<CodeFile>().OrderBy(x => x.Include)
+                .Select(x => x.Include)
+                .ShouldHaveTheSameElementsAs("Bar.cs", "Foo.cs");
         }
     }
 }
