@@ -73,6 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolutionTester.cs" />
     <Compile Include="Templating\CodeFileTemplateTester.cs" />
+    <Compile Include="Templating\GitIgnoreStepTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FubuCsProjFile\FubuCsProjFile.csproj">

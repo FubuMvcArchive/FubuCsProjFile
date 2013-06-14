@@ -7,12 +7,7 @@ using System.Linq;
 
 namespace FubuCsProjFile.Templating
 {
-    public interface IItemTemplate
-    {
-        void Attach(CsProjFile file);
-    }
-
-    public class CodeFileTemplate : IItemTemplate
+    public class CodeFileTemplate : IProjectAlteration
     {
         public const string ASSEMBLY_NAME = "%ASSEMBLYNAME%";
         public const string NAMESPACE = "%NAMESPACE%";
@@ -71,7 +66,7 @@ namespace FubuCsProjFile.Templating
                 .Join(".");
         }
 
-        public void Attach(CsProjFile file)
+        public void Alter(CsProjFile file)
         {
             var @namespace = GetNamespace(_relativePath, file.ProjectName);
 

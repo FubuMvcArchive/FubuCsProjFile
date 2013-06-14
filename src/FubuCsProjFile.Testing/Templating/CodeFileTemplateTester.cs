@@ -36,7 +36,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void add_simple_class_to_root_of_project()
         {
-            CodeFileTemplate.Class("Foo").Attach(theProject);
+            CodeFileTemplate.Class("Foo").Alter(theProject);
 
             var file = "Templated".AppendPath("TemplatedProject", "Foo.cs");
             File.Exists(file).ShouldBeTrue();
@@ -59,7 +59,7 @@ namespace TemplatedProject
         [Test]
         public void add_deeper_class_to_root_of_project()
         {
-            CodeFileTemplate.Class("Bar/Doer").Attach(theProject);
+            CodeFileTemplate.Class("Bar/Doer").Alter(theProject);
 
             var file = "Templated".AppendPath("TemplatedProject", "Bar", "Doer.cs");
             File.Exists(file).ShouldBeTrue();

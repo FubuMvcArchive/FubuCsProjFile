@@ -33,8 +33,8 @@ namespace FubuCsProjFile.Testing
             reference.ProjectName.ShouldEqual("TestProject");
             reference.RelativePath.ShouldEqual("TestProject".AppendPath("TestProject.csproj"));
 
-            CodeFileTemplate.Class("Foo").Attach(reference.Project);
-            CodeFileTemplate.Class("Bar").Attach(reference.Project);
+            CodeFileTemplate.Class("Foo").Alter(reference.Project);
+            CodeFileTemplate.Class("Bar").Alter(reference.Project);
 
             solution.Save();
 
