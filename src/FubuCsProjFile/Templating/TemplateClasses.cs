@@ -25,6 +25,11 @@ namespace FubuCsProjFile.Templating
         public string RootDirectory { get; set; }
         public Solution Solution { get; set; }
 
+        public IFileSystem FileSystem
+        {
+            get { return _fileSystem; }
+        }
+
         private readonly IList<ITemplateStep> _steps = new List<ITemplateStep>(); 
 
 
@@ -94,18 +99,6 @@ namespace FubuCsProjFile.Templating
         }
 
         public void Alter(CsProjFile file)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class CopyFileToSolution : ITemplateStep
-    {
-        public CopyFileToSolution(string relativePath, string source)
-        {
-        }
-
-        public void Alter(TemplateContext context)
         {
             throw new NotImplementedException();
         }

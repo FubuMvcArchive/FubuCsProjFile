@@ -71,6 +71,7 @@
     <Compile Include="Solution.cs" />
     <Compile Include="SolutionFileService.cs" />
     <Compile Include="SolutionLoading.cs" />
+    <Compile Include="Templating\CopyFileToSolution.cs" />
     <Compile Include="Templating\GitIgnoreStep.cs" />
     <Compile Include="Templating\IProjectAlteration.cs" />
     <Compile Include="Templating\CodeFileTemplate.cs" />
