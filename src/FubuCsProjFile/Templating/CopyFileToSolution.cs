@@ -15,7 +15,7 @@ namespace FubuCsProjFile.Templating
 
         public void Alter(TemplateContext context)
         {
-            var expectedFile = context.RootDirectory.AppendPath(_relativePath);
+            var expectedFile = context.Root.AppendPath(_relativePath);
             context.FileSystem.Copy(_source, expectedFile);
         }
     }

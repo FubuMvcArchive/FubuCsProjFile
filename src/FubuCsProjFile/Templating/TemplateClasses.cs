@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using FubuCore;
 
 namespace FubuCsProjFile.Templating
@@ -19,10 +20,18 @@ namespace FubuCsProjFile.Templating
 
         public TemplateContext(string rootDirectory)
         {
-            RootDirectory = rootDirectory;
+            Root = rootDirectory;
+            SourceName = "src";
         }
 
-        public string RootDirectory { get; set; }
+        public string Root { get; set; }
+        public string SourceName { get; set; }
+
+        public string SourceDirectory
+        {
+            get { return Root.AppendPath(SourceName); }
+        }
+
         public Solution Solution { get; set; }
 
         public IFileSystem FileSystem
@@ -50,7 +59,23 @@ namespace FubuCsProjFile.Templating
 
         public void AlterFile(string relativeName, Action<List<string>> alter)
         {
-            _fileSystem.AlterFlatFile(RootDirectory.AppendPath(relativeName), alter);
+            _fileSystem.AlterFlatFile(Root.AppendPath(relativeName), alter);
+        }
+    }
+
+    public class CreateSolution : ITemplateStep
+    {
+        private readonly string _solutionName;
+
+        public CreateSolution(string solutionName)
+        {
+            _solutionName = solutionName;
+        }
+
+        public void Alter(TemplateContext context)
+        {
+            var solution = Solution.CreateNew(context.SourceDirectory, _solutionName);
+            context.Solution = solution;
         }
     }
 
@@ -94,13 +119,18 @@ namespace FubuCsProjFile.Templating
 
     public class CopyFileToProject : IProjectAlteration
     {
+        private readonly string _relativePath;
+        private readonly string _source;
+
         public CopyFileToProject(string relativePath, string source)
         {
+            _relativePath = relativePath.Replace('\\', '/');
+            _source = source;
         }
 
         public void Alter(CsProjFile file)
         {
-            throw new NotImplementedException();
+            file.CopyFileTo(_source, _relativePath);
         }
     }
 

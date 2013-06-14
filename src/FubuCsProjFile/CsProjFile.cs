@@ -128,8 +128,13 @@ namespace FubuCsProjFile
             {
                 yield return ClassLibraryType; // Class library
             }
-        } 
+        }
 
 
+        public void CopyFileTo(string source, string relativePath)
+        {
+            var target = _fileName.ParentDirectory().AppendPath(relativePath);
+            new FileSystem().Copy(source, target);
+        }
     }
 }
