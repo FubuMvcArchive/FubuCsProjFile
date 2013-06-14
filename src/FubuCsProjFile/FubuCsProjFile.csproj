@@ -71,11 +71,16 @@
     <Compile Include="Solution.cs" />
     <Compile Include="SolutionFileService.cs" />
     <Compile Include="SolutionLoading.cs" />
+    <Compile Include="Templating\CopyFileToProject.cs" />
     <Compile Include="Templating\CopyFileToSolution.cs" />
+    <Compile Include="Templating\CreateSolution.cs" />
     <Compile Include="Templating\GitIgnoreStep.cs" />
     <Compile Include="Templating\IProjectAlteration.cs" />
     <Compile Include="Templating\CodeFileTemplate.cs" />
+    <Compile Include="Templating\ITemplateStep.cs" />
+    <Compile Include="Templating\ProjectPlan.cs" />
     <Compile Include="Templating\TemplateClasses.cs" />
+    <Compile Include="Templating\TemplateContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MSBuild\Project.txt" />
