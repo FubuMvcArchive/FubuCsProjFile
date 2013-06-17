@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using FubuCore;
 using NUnit.Framework;
 using System.Linq;
@@ -159,6 +160,63 @@ namespace FubuCsProjFile.Testing
                 .ShouldHaveTheSameElementsAs("aaa.txt", "bar.txt", "foo.txt", "ten.txt");
 
 
+        }
+
+
+        [Test]
+        public void can_read_shallow_system_assemblies()
+        {
+            var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
+
+            var assemblies = project.All<AssemblyReference>().Select(x => x.Include).ToArray();
+            assemblies.ShouldContain("System");
+            assemblies.ShouldContain("System.Core");
+            assemblies.ShouldContain("System.Data");
+            assemblies.ShouldContain("Rhino.Mocks");
+        }
+
+        [Test]
+        public void can_read_reference_with_hint_path()
+        {
+            var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
+
+            var reference = project.Find<AssemblyReference>("Rhino.Mocks");
+
+            reference.HintPath.ShouldEqual(@"..\packages\RhinoMocks\lib\net\Rhino.Mocks.dll");
+        }
+
+        [Test]
+        public void can_write_system_assemblies()
+        {
+            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            project.Add<AssemblyReference>("System.Configuration");
+            project.Add<AssemblyReference>("System.Security");
+
+            project.Save();
+
+            var project2 = CsProjFile.LoadFrom(project.FileName);
+            project2.Find<AssemblyReference>("System.Configuration").ShouldNotBeNull();
+            project2.Find<AssemblyReference>("System.Security").ShouldNotBeNull();
+
+
+        }
+
+        [Test]
+        public void can_write_assembly_reference_with_hint_path()
+        {
+            var hintPath = @"..\packages\RhinoMocks\lib\net\Rhino.Mocks.dll";
+            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            project.Add(new AssemblyReference("Rhino.Mocks", hintPath));
+
+            project.Save();
+
+
+            var project2 = CsProjFile.LoadFrom(project.FileName);
+
+            
+
+            project2.Find<AssemblyReference>("Rhino.Mocks")
+                    .HintPath.ShouldEqual(hintPath);
         }
     }
 }

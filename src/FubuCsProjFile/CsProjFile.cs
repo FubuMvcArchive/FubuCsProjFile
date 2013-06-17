@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
@@ -46,7 +47,7 @@ namespace FubuCsProjFile
 
         public void Add<T>(T item) where T : ProjectItem
         {
-            var group = _project.FindGroup(item.Matches) ?? _project.FindGroup(x => x.Name == item.Name);
+            var group = _project.FindGroup(item.Matches) ?? _project.FindGroup(x => x.Name == item.Name) ?? _project.AddNewItemGroup();
             item.Configure(group);
         }
 
@@ -135,6 +136,11 @@ namespace FubuCsProjFile
         {
             var target = _fileName.ParentDirectory().AppendPath(relativePath);
             new FileSystem().Copy(source, target);
+        }
+
+        public T Find<T>(string include) where T : ProjectItem, new()
+        {
+            return All<T>().FirstOrDefault(x => x.Include == include);
         }
     }
 }

@@ -69,6 +69,7 @@ namespace FubuCsProjFile.Templating
          * gems.txt gets added to Gemfile
          * files we don't recognize just get copied
          * references.txt <-- adds system assembly references
+         * csproj.xml -- csproj
     
          * ****AssemblyInfo.cs is combined
          */

@@ -81,8 +81,7 @@ namespace FubuCsProjFile.MSBuild
 
         public MSBuildItemGroup FindGroup(Func<MSBuildItem, bool> itemTest)
         {
-            return ItemGroups.FirstOrDefault(x => x.Items.Any(itemTest))
-                   ?? AddNewItemGroup();
+            return ItemGroups.FirstOrDefault(x => x.Items.Any(itemTest));
         }
 
         public List<string> Imports
@@ -183,12 +182,11 @@ namespace FubuCsProjFile.MSBuild
             // XmlDocument will write the UTF8 header.
 
             ItemGroups.Each(group => {
-                var items = group.Items.ToArray();
+                var elements = group.Items.Select(x => x.Element).OrderBy(x => x.GetAttribute("Include")).ToArray();
                 group.Element.RemoveAll();
 
-                var orderedItems = items.OrderBy(x => x.Name).ThenBy(x => x.Include);
-                orderedItems
-                     .Each(item => group.AddNewItem(item.Name, item.Include));
+                elements.Each(x => group.Element.AppendChild(x));
+
             });
 
 
