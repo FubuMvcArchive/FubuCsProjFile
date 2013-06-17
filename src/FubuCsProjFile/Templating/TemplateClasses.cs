@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace FubuCsProjFile.Templating
 {
@@ -15,22 +13,6 @@ namespace FubuCsProjFile.Templating
             throw new NotImplementedException();
         }
     }
-
-    public class AssemblyInfoAlteration : IProjectAlteration
-    {
-        private readonly IEnumerable<string> _additions;
-
-        public AssemblyInfoAlteration(IEnumerable<string> additions)
-        {
-            _additions = additions;
-        }
-
-        public void Alter(CsProjFile file)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
 
 
     public class TemplateBuilder

@@ -142,5 +142,10 @@ namespace FubuCsProjFile
         {
             return All<T>().FirstOrDefault(x => x.Include == include);
         }
+
+        public string PathTo(CodeFile codeFile)
+        {
+            return _fileName.ParentDirectory().AppendPath(codeFile.Include);
+        }
     }
 }

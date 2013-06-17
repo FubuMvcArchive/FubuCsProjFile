@@ -71,6 +71,7 @@
     <Compile Include="Solution.cs" />
     <Compile Include="SolutionFileService.cs" />
     <Compile Include="SolutionLoading.cs" />
+    <Compile Include="Templating\AssemblyInfoAlteration.cs" />
     <Compile Include="Templating\CopyFileToProject.cs" />
     <Compile Include="Templating\CopyFileToSolution.cs" />
     <Compile Include="Templating\CreateSolution.cs" />
