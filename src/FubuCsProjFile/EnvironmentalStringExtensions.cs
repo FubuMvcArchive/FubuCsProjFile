@@ -1,4 +1,5 @@
 using System;
+using FubuCore;
 
 namespace FubuCsProjFile
 {
@@ -8,6 +9,11 @@ namespace FubuCsProjFile
         public static string[] SplitOnNewLine(this string value)
         {
             return value.Split(Splitters, StringSplitOptions.None);
+        }
+
+        public static string CanonicalPath(this string path)
+        {
+            return path.ToFullPath().ToLower().Replace("\\", "/");
         }
     }
 }

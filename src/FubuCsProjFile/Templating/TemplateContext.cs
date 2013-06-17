@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using FubuCore;
+using System.Linq;
 
 namespace FubuCsProjFile.Templating
 {
     public class TemplateContext
     {
         private readonly IFileSystem _fileSystem = new FileSystem();
+        private readonly IList<string> _handled = new List<string>(); 
 
         public static TemplateContext CreateClean(string directory)
         {
@@ -21,6 +24,11 @@ namespace FubuCsProjFile.Templating
         {
             Root = rootDirectory;
             SourceName = "src";
+        }
+
+        public void MarkHandled(string file)
+        {
+            _handled.Add(file.CanonicalPath());
         }
 
         public string Root { get; set; }
@@ -64,6 +72,21 @@ namespace FubuCsProjFile.Templating
         public void AlterFile(string relativeName, Action<List<string>> alter)
         {
             _fileSystem.AlterFlatFile(Root.AppendPath(relativeName), alter);
+        }
+
+        public bool FileIsUnhandled(string file)
+        {
+            if (Path.GetFileName(file).ToLowerInvariant() == "description.txt") return false;
+
+            var path = file.CanonicalPath();
+            return !_handled.Contains(path);
+        }
+
+        public void CopyUnhandledFilesToRoot(string directory)
+        {
+            _fileSystem.FindFiles(directory, FileSet.Everything())
+                       .Where(FileIsUnhandled)
+                       .Each(file => Add(new CopyFileToSolution(file.PathRelativeTo(Root), file)));
         }
     }
 }

@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using FubuTestingSupport;
 using System.Linq;
+using FubuCore;
 
 namespace FubuCsProjFile.Testing.Templating
 {
@@ -16,12 +17,13 @@ namespace FubuCsProjFile.Testing.Templating
 rake,~>10.0
 fuburake,~>0.5
 ");
-
             var plan = mother.BuildSolutionPlan();
             plan.Steps.ShouldHaveTheSameElementsAs(
                 new GemReference("rake", "~>10.0"),
                 new GemReference("fuburake", "~>0.5")
                 );
+
+            plan.FileIsUnhandled(plan.Root.AppendPath("gems.txt")).ShouldBeFalse();
         }
 
         [Test]
@@ -30,7 +32,30 @@ fuburake,~>0.5
             var mother = new DataMother("empty");
             mother.ToPath("description.txt").WriteEmpty();
 
-            mother.BuildSolutionPlan().Steps.Any().ShouldBeFalse();
+            var plan = mother.BuildSolutionPlan();
+            plan.FileIsUnhandled("description.txt").ShouldBeFalse();
+
+            plan.Steps.Any().ShouldBeFalse();
+        }
+
+        [Test]
+        public void other_files_are_copied()
+        {
+            var mother = new DataMother("copied");
+            mother.ToPath("foo.txt").WriteEmpty();
+            mother.ToPath("bar.txt").WriteEmpty();
+            mother.ToPath("deep","nested","topic.txt").WriteEmpty();
+
+            var plan = mother.BuildSolutionPlan();
+            plan.Steps.ShouldHaveTheSameElementsAs(
+                new CopyFileToSolution("bar.txt", "copied".AppendPath("bar.txt")),
+                new CopyFileToSolution("foo.txt", "copied".AppendPath("foo.txt")),
+                new CopyFileToSolution("deep/nested/topic.txt", "copied".AppendPath("deep","nested","topic.txt"))
+                
+                
+                
+                
+                );
         }
     }
 }

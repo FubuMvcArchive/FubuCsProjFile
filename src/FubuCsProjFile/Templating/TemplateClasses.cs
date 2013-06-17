@@ -1,4 +1,7 @@
 ﻿using System;
+using FubuCore;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace FubuCsProjFile.Templating
 {
@@ -32,7 +35,9 @@ namespace FubuCsProjFile.Templating
 
         public void ConfigureTree(string directory, TemplateContext context)
         {
-            GemReference.Configure(directory, context);
+            GemReference.ConfigurePlan(directory, context);
+
+            context.CopyUnhandledFilesToRoot(directory);
         }
 
         public void ConfigureProject(string directory, ProjectPlan projectPlan, TemplateContext context)
