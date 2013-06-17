@@ -32,7 +32,7 @@ namespace FubuCsProjFile.Templating
 
         public void ConfigureTree(string directory, TemplateContext context)
         {
-            throw new NotImplementedException();
+            GemReference.Configure(directory, context);
         }
 
         public void ConfigureProject(string directory, ProjectPlan projectPlan, TemplateContext context)

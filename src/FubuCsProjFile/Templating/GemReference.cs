@@ -7,6 +7,7 @@ namespace FubuCsProjFile.Templating
     public class GemReference : ITemplateStep
     {
         public static readonly string DefaultFeed = "source 'http://rubygems.org'";
+        public static readonly string File = "gems.txt";
 
         public GemReference()
         {
@@ -44,6 +45,43 @@ namespace FubuCsProjFile.Templating
                 var line = "gem {0}, \"{1}\"".ToFormat(key, Version);
                 list.Add(line);
             }
+        }
+
+        protected bool Equals(GemReference other)
+        {
+            return string.Equals(GemName, other.GemName) && string.Equals(Version, other.Version);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((GemReference) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((GemName != null ? GemName.GetHashCode() : 0)*397) ^ (Version != null ? Version.GetHashCode() : 0);
+            }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("GemName: {0}, Version: {1}", GemName, Version);
+        }
+
+        public static void Configure(string directory, TemplateContext context)
+        {
+            context.AlterFile(File, list => {
+                list.Each(line => {
+                    var parts = line.ToDelimitedArray();
+                    context.Add(new GemReference(parts.First(), parts.Last()));
+
+                });
+            });
         }
     }
 }

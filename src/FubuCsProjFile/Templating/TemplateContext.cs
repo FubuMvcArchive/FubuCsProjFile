@@ -46,6 +46,11 @@ namespace FubuCsProjFile.Templating
             _steps.Add(step);
         }
 
+        public IEnumerable<ITemplateStep> Steps
+        {
+            get { return _steps; }
+        }
+
         public void Execute()
         {
             _steps.Each(x => x.Alter(this));

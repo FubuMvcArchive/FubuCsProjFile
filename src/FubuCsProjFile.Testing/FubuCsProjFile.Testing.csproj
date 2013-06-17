@@ -67,6 +67,7 @@
     <Compile Include="BuildConfigurationTester.cs" />
     <Compile Include="creating_a_new_solution_with_projects.cs" />
     <Compile Include="CsProjFileTester.cs" />
+    <Compile Include="DataMother.cs" />
     <Compile Include="GlobalSectionTester.cs" />
     <Compile Include="MSBuildProjectTester.cs" />
     <Compile Include="ProjectReferenceTester.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Templating\GemReferenceTester.cs" />
     <Compile Include="Templating\GitIgnoreStepTester.cs" />
     <Compile Include="Templating\ProjectPlanTester.cs" />
+    <Compile Include="Templating\TemplateBuilderTester.cs" />
     <Compile Include="Templating\TemplateContextTester.cs" />
   </ItemGroup>
   <ItemGroup>
