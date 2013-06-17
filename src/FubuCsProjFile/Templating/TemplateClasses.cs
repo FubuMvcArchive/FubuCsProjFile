@@ -36,6 +36,7 @@ namespace FubuCsProjFile.Templating
         public void ConfigureTree(string directory, TemplateContext context)
         {
             GemReference.ConfigurePlan(directory, context);
+            GitIgnoreStep.ConfigurePlan(directory, context);
 
             context.CopyUnhandledFilesToRoot(directory);
         }

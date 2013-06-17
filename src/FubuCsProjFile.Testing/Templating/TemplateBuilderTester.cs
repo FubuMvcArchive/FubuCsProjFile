@@ -57,5 +57,24 @@ fuburake,~>0.5
                 
                 );
         }
+
+        [Test]
+        public void gitignore_directive()
+        {
+            var mother = new DataMother("ignoring");
+            mother.ToPath("ignore.txt").WriteContent(@"pak*.zip
+bin
+obj
+");
+
+            var plan = mother.BuildSolutionPlan();
+            plan.FileIsUnhandled("ignoring".AppendPath("ignore.txt"))
+                .ShouldBeFalse();
+
+            plan.Steps.Single().ShouldBeOfType<GitIgnoreStep>()
+                .Entries.OrderBy(x => x)
+                .ShouldHaveTheSameElementsAs("bin", "obj", "pak*.zip");
+
+        }
     }
 }
