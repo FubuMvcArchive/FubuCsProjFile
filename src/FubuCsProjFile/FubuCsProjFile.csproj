@@ -79,6 +79,7 @@
     <Compile Include="Templating\CodeFileTemplate.cs" />
     <Compile Include="Templating\ITemplateStep.cs" />
     <Compile Include="Templating\ProjectPlan.cs" />
+    <Compile Include="Templating\SystemReference.cs" />
     <Compile Include="Templating\TemplateClasses.cs" />
     <Compile Include="Templating\TemplateContext.cs" />
   </ItemGroup>

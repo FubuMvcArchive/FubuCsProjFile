@@ -16,21 +16,6 @@ namespace FubuCsProjFile.Templating
         }
     }
 
-    public class AssemblyReference : IProjectAlteration
-    {
-        private readonly string _assemblyName;
-
-        public AssemblyReference(string assemblyName)
-        {
-            _assemblyName = assemblyName;
-        }
-
-        public void Alter(CsProjFile file)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class GemReference : ITemplateStep
     {
         public string GemName { get; set; }
