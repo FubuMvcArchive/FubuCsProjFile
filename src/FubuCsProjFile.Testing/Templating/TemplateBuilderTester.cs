@@ -1,6 +1,7 @@
 ﻿using FubuCsProjFile.Templating;
 using NUnit.Framework;
 using FubuTestingSupport;
+using System.Linq;
 
 namespace FubuCsProjFile.Testing.Templating
 {
@@ -21,6 +22,15 @@ fuburake,~>0.5
                 new GemReference("rake", "~>10.0"),
                 new GemReference("fuburake", "~>0.5")
                 );
+        }
+
+        [Test]
+        public void description_txt_is_ignored()
+        {
+            var mother = new DataMother("empty");
+            mother.ToPath("description.txt").WriteEmpty();
+
+            mother.BuildSolutionPlan().Steps.Any().ShouldBeFalse();
         }
     }
 }
