@@ -77,6 +77,7 @@
     <Compile Include="Templating\CopyFileToProjectTester.cs" />
     <Compile Include="Templating\CopyFileToSolutionTester.cs" />
     <Compile Include="Templating\CreateSolutionTester.cs" />
+    <Compile Include="Templating\GemReferenceTester.cs" />
     <Compile Include="Templating\GitIgnoreStepTester.cs" />
     <Compile Include="Templating\ProjectPlanTester.cs" />
     <Compile Include="Templating\TemplateContextTester.cs" />

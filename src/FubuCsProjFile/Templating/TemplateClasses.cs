@@ -16,17 +16,6 @@ namespace FubuCsProjFile.Templating
         }
     }
 
-    public class GemReference : ITemplateStep
-    {
-        public string GemName { get; set; }
-        public string Version { get; set; }
-
-        public void Alter(TemplateContext context)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class AssemblyInfoAlteration : IProjectAlteration
     {
         private readonly IEnumerable<string> _additions;

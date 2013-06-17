@@ -74,6 +74,7 @@
     <Compile Include="Templating\CopyFileToProject.cs" />
     <Compile Include="Templating\CopyFileToSolution.cs" />
     <Compile Include="Templating\CreateSolution.cs" />
+    <Compile Include="Templating\GemReference.cs" />
     <Compile Include="Templating\GitIgnoreStep.cs" />
     <Compile Include="Templating\IProjectAlteration.cs" />
     <Compile Include="Templating\CodeFileTemplate.cs" />
