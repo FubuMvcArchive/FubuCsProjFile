@@ -5,6 +5,38 @@ using System.Collections.Generic;
 
 namespace FubuCsProjFile.Templating
 {
+    public class TemplateBuilder
+    {
+
+
+        /*
+         * .cs files are CodeFileTemplate
+         * description.txt is ignored
+         * ignore.txt gets written to .gitignore in the solution
+         * nuget.txt gets added to ripple and/or nuget dependencies
+         * gems.txt gets added to Gemfile
+         * files we don't recognize just get copied
+         * references.txt <-- adds system assembly references
+         * csproj.xml -- csproj
+    
+         * ****AssemblyInfo.cs is combined
+         */
+
+        public void ConfigureTree(string directory, TemplatePlan plan)
+        {
+            new GenericPlanner().CreatePlan(directory, plan);
+
+            // Need to do something similar for projects
+            plan.CopyUnhandledFilesToRoot(directory);
+        }
+
+        public void ConfigureProject(string directory, ProjectPlan projectPlan, TemplatePlan plan)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
     public class NugetReference : ITemplateStep
     {
         public string ProjectName { get; set; }
