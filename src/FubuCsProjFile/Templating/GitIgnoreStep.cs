@@ -25,18 +25,11 @@ namespace FubuCsProjFile.Templating
             get { return _entries; }
         }
 
-        public static void ConfigurePlan(string directory, TemplatePlan plan)
+        public static void ConfigurePlan(TextFile textFile, TemplatePlan plan)
         {
-            var filename = directory.AppendPath(File);
-            plan.MarkHandled(filename);
-
-            new FileSystem().AlterFlatFile(filename, list => {
-                if (list.Any())
-                {
-                    var step = new GitIgnoreStep(list.Where(x => x.IsNotEmpty()).ToArray());
-                    plan.Add(step);
-                }
-            });
+            var ignores = textFile.ReadLines().Where(x => x.IsNotEmpty()).ToArray();
+            var step = new GitIgnoreStep(ignores);
+            plan.Add(step);
         }
     }
 }

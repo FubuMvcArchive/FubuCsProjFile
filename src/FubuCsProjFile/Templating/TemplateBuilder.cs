@@ -7,16 +7,6 @@ namespace FubuCsProjFile.Templating
 {
     public class TemplateBuilder
     {
-        private readonly IList<ITemplatePlanner> _all = new List<ITemplatePlanner>();
-
-        protected TemplatePlannerExpression All
-        {
-            get
-            {
-                return new TemplatePlannerExpression(_all);
-            }
-        }
-
 
 
         /*
@@ -34,9 +24,9 @@ namespace FubuCsProjFile.Templating
 
         public void ConfigureTree(string directory, TemplatePlan plan)
         {
-            GemReference.ConfigurePlan(directory, plan);
-            GitIgnoreStep.ConfigurePlan(directory, plan);
+            new GenericPlanner().CreatePlan(directory, plan);
 
+            // Need to do something similar for projects
             plan.CopyUnhandledFilesToRoot(directory);
         }
 
@@ -46,19 +36,33 @@ namespace FubuCsProjFile.Templating
         }
     }
 
+    public class GenericPlanner : TemplatePlanner
+    {
+        public GenericPlanner()
+        {
+            ShallowMatch(GemReference.File).Do = GemReference.ConfigurePlan;
+            ShallowMatch(GitIgnoreStep.File).Do = GitIgnoreStep.ConfigurePlan;
+        }
+    }
+
     public interface ITemplatePlannerAction
     {
         Action<TextFile, TemplatePlan> Do { set; }
     }
 
-    public class TemplatePlannerExpression : ITemplatePlannerAction
+    public abstract class TemplatePlanner : ITemplatePlannerAction
     {
-        private readonly IList<ITemplatePlanner> _planners;
+        private readonly IList<ITemplatePlanner> _planners = new List<ITemplatePlanner>();
         private FileSet _matching;
 
-        public TemplatePlannerExpression(IList<ITemplatePlanner> planners)
+        public void CreatePlan(string directory, TemplatePlan plan)
         {
-            _planners = planners;
+            _planners.Each(x => x.DetermineSteps(directory, plan));
+        }
+
+        public void Add<T>() where T : ITemplatePlanner, new()
+        {
+            _planners.Add(new T());
         }
 
         public ITemplatePlannerAction Matching(FileSet matching)
@@ -87,7 +91,7 @@ namespace FubuCsProjFile.Templating
         }
     }
 
-
+    
 
     public interface ITemplatePlanner
     {
@@ -97,7 +101,7 @@ namespace FubuCsProjFile.Templating
     public class FilesTemplatePlanner : ITemplatePlanner
     {
         private readonly Action<TextFile, TemplatePlan> _action;
-        private FileSet _matching;
+        private readonly FileSet _matching;
 
         public FilesTemplatePlanner(FileSet matching, Action<TextFile, TemplatePlan> action)
         {

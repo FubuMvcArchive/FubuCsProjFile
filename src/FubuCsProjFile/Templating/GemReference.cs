@@ -73,18 +73,12 @@ namespace FubuCsProjFile.Templating
             return string.Format("GemName: {0}, Version: {1}", GemName, Version);
         }
 
-        public static void ConfigurePlan(string directory, TemplatePlan plan)
+        public static void ConfigurePlan(TextFile textFile, TemplatePlan plan)
         {
-            var system = new FileSystem();
-            var filename = directory.AppendPath(File);
-            system.ReadTextFile(filename, line =>
-            {
+            textFile.ReadLines().Each(line => {
                 var parts = line.ToDelimitedArray();
                 plan.Add(new GemReference(parts.First(), parts.Last()));
-
-                plan.MarkHandled(filename);
             });
-
         }
     }
 }
