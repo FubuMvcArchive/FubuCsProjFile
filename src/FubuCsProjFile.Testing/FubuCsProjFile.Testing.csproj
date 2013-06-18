@@ -84,6 +84,7 @@
     <Compile Include="Templating\ProjectPlanTester.cs" />
     <Compile Include="Templating\TemplateBuilderTester.cs" />
     <Compile Include="Templating\TemplateContextTester.cs" />
+    <Compile Include="Templating\TextFileTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FubuCsProjFile\FubuCsProjFile.csproj">

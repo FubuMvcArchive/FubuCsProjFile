@@ -84,6 +84,7 @@
     <Compile Include="Templating\SystemReference.cs" />
     <Compile Include="Templating\TemplateClasses.cs" />
     <Compile Include="Templating\TemplateContext.cs" />
+    <Compile Include="Templating\TextFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MSBuild\Project.txt" />
