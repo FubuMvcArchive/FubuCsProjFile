@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using FubuCore;
 using NUnit.Framework;
 using FubuTestingSupport;
@@ -102,6 +104,33 @@ namespace FubuCsProjFile.Testing
 
             solution.Projects.Count().ShouldEqual(initialCount);
 
+        }
+
+        [Test]
+        public void add_a_project_from_template()
+        {
+            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
+            var reference = solution.AddProjectFromTemplate("MyNewProject", "project.txt");
+
+            reference.Project.Find<AssemblyReference>("System.Data")
+                     .ShouldNotBeNull();
+
+            solution.Save("foo.sln");
+
+            // saves to the right spot
+            File.Exists("MyNewProject".AppendPath("MyNewProject.csproj"))
+                .ShouldBeTrue();
+        }
+
+        [Test]
+        public void trying_to_add_a_project_from_template_that_already_exists_should_throw()
+        {
+            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
+            var projectName = solution.Projects.First().ProjectName;
+
+            Exception<ArgumentOutOfRangeException>.ShouldBeThrownBy(() => {
+                solution.AddProjectFromTemplate(projectName, "project.txt");
+            });
         }
     }
 }

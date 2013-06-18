@@ -1,6 +1,7 @@
 ﻿using FubuCore;
 using FubuCsProjFile.MSBuild;
 using NUnit.Framework;
+using FubuTestingSupport;
 
 namespace FubuCsProjFile.Testing
 {
@@ -23,6 +24,18 @@ namespace FubuCsProjFile.Testing
             project.Save(fileName);
 
             new MSBuildProject().Load(fileName);
+        }
+
+        [Test]
+        public void create_from_file()
+        {
+            var project = MSBuildProject.CreateFromFile("MyBar", "project.txt");
+            project.Save("MyBar.csproj");
+
+            var file = CsProjFile.LoadFrom("MyBar.csproj");
+            file.ProjectName.ShouldEqual("MyBar");
+            file.Find<AssemblyReference>("System.Data")
+                .ShouldNotBeNull(); // this is in the csproj template in the testing project, but not the embedded one
         }
     }
 }

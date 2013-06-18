@@ -46,17 +46,28 @@ namespace FubuCsProjFile.Templating
             get { return _fileSystem; }
         }
 
-        private readonly IList<ITemplateStep> _steps = new List<ITemplateStep>(); 
+        private readonly IList<ITemplateStep> _steps = new List<ITemplateStep>();
+        private ProjectPlan _currentProject;
 
 
         public void Add(ITemplateStep step)
         {
+            if (step is ProjectPlan)
+            {
+                _currentProject = step.As<ProjectPlan>();
+            }
+
             _steps.Add(step);
         }
 
         public IEnumerable<ITemplateStep> Steps
         {
             get { return _steps; }
+        }
+
+        public ProjectPlan CurrentProject
+        {
+            get { return _currentProject; }
         }
 
         public void Execute()

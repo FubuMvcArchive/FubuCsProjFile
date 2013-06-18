@@ -19,6 +19,8 @@ namespace FubuCsProjFile.Templating
             _alterations.Each(x => x.Alter(reference.Project));
         }
 
+        public string ProjectTemplateFile { get; set; }
+
         public void Add(IProjectAlteration alteration)
         {
             _alterations.Add(alteration);

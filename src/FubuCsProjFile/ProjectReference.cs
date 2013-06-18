@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using FubuCore;
 using System.Linq;
+using FubuCsProjFile.MSBuild;
 
 namespace FubuCsProjFile
 {
@@ -24,8 +25,7 @@ namespace FubuCsProjFile
         private readonly IList<string> _directives = new List<string>();
         private readonly Lazy<CsProjFile> _project;
 
-
-        private ProjectReference(CsProjFile csProjFile, string solutionDirectory)
+        public ProjectReference(CsProjFile csProjFile, string solutionDirectory)
         {
             _project = new Lazy<CsProjFile>(() => csProjFile);
             _projectName = csProjFile.ProjectName;
@@ -59,6 +59,8 @@ namespace FubuCsProjFile
                 return project;
             });
         }
+
+
 
 
         public void Write(StringWriter writer)

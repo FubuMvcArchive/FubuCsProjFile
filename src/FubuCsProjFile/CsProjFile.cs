@@ -20,7 +20,7 @@ namespace FubuCsProjFile
         {
         }
 
-        private CsProjFile(string fileName, MSBuildProject project)
+        public CsProjFile(string fileName, MSBuildProject project)
         {
             _fileName = fileName;
             _project = project;

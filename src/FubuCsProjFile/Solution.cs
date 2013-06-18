@@ -5,6 +5,7 @@ using System.Reflection;
 using FubuCore;
 using System.Linq;
 using FubuCore.Util;
+using FubuCsProjFile.MSBuild;
 
 namespace FubuCsProjFile
 {
@@ -219,10 +220,33 @@ namespace FubuCsProjFile
                 return existing;
             }
 
-            var reference = ProjectReference.CreateNewAt(_filename.ParentDirectory(), projectName);
+            var reference = ProjectReference.CreateNewAt(ParentDirectory, projectName);
             _projects.Add(reference);
 
             return reference;
+        }
+
+        public ProjectReference AddProjectFromTemplate(string projectName, string templateFile)
+        {
+            var existing = FindProject(projectName);
+            if (existing != null)
+            {
+                throw new ArgumentOutOfRangeException("projectName", "Project with this name ({0}) already exists in the solution".ToFormat(projectName));
+            }
+
+
+            var project = MSBuildProject.CreateFromFile(projectName, templateFile);
+            var csProjFile = new CsProjFile(ParentDirectory.AppendPath(projectName, projectName + ".csproj"), project);
+
+            var reference = new ProjectReference(csProjFile, ParentDirectory);
+            _projects.Add(reference);
+
+            return reference;
+        }
+
+        public string ParentDirectory
+        {
+            get { return _filename.ParentDirectory(); }
         }
 
         public ProjectReference FindProject(string projectName)

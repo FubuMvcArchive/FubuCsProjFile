@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml;
 using FubuCore;
 using System.Linq;
+using FubuCsProjFile.Templating;
 
 namespace FubuCsProjFile.MSBuild
 {
@@ -15,10 +16,15 @@ namespace FubuCsProjFile.MSBuild
         {
             var text = Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof(MSBuildProject),"Project.txt").ReadAllText();
 
+            return create(assemblyName, text);
+        }
+
+        private static MSBuildProject create(string assemblyName, string text)
+        {
             text = text
                 .Replace("FUBUPROJECTNAME", assemblyName)
                 .Replace("GUID", Guid.NewGuid().ToString());
-            
+
 
             var project = new MSBuildProject();
             project.doc = new XmlDocument
@@ -29,6 +35,12 @@ namespace FubuCsProjFile.MSBuild
             project.doc.LoadXml(text);
 
             return project;
+        }
+
+        public static MSBuildProject CreateFromFile(string assemblyName, string file)
+        {
+            var text = TextFile.FileSystem.ReadStringFromFile(file);
+            return create(assemblyName, text);
         }
 
         public const string Schema = "http://schemas.microsoft.com/developer/msbuild/2003";
