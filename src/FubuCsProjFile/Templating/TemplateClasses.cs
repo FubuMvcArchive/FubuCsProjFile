@@ -5,29 +5,41 @@ using System.Collections.Generic;
 
 namespace FubuCsProjFile.Templating
 {
+
+    // This is going to give you access to what templates exist, what category they are,
+    // and how to access them
+    public interface ITemplateLibrary
+    {
+        IEnumerable<Template> All();
+        Template Find(string name);
+    }
+
+    public class Template
+    {
+        public TemplateType Type { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
+        public string Description { get; set; }
+    }
+
+    public enum TemplateType
+    {
+        Solution,
+        //SolutionAlteration, ?  what would we use this for?  nuspec(?)  Easier to do that via a project maybe.
+        Project,
+        ProjectAlteration,
+        UnitTest
+    }
+
+
     public class TemplateBuilder
     {
-
-
-        /*
-         * .cs files are CodeFileTemplate
-         * description.txt is ignored
-         * ignore.txt gets written to .gitignore in the solution
-         * nuget.txt gets added to ripple and/or nuget dependencies
-         * gems.txt gets added to Gemfile
-         * files we don't recognize just get copied
-         * references.txt <-- adds system assembly references
-         * csproj.xml -- csproj
-    
-         * ****AssemblyInfo.cs is combined
-         */
-
         public void ConfigureTree(string directory, TemplatePlan plan)
         {
             new GenericPlanner().CreatePlan(directory, plan);
 
             // Need to do something similar for projects
-            plan.CopyUnhandledFilesToRoot(directory);
+            plan.CopyUnhandledFiles(directory);
         }
 
         public void ConfigureProject(string directory, ProjectPlan projectPlan, TemplatePlan plan)
@@ -35,7 +47,6 @@ namespace FubuCsProjFile.Templating
             throw new NotImplementedException();
         }
     }
-
 
     public class NugetReference : ITemplateStep
     {

@@ -93,7 +93,7 @@ namespace FubuCsProjFile.Templating
             return !_handled.Contains(path);
         }
 
-        public void CopyUnhandledFilesToRoot(string directory)
+        public void CopyUnhandledFiles(string directory)
         {
             _fileSystem.FindFiles(directory, FileSet.Everything())
                        .Where(FileIsUnhandled)

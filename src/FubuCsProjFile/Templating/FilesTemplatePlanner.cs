@@ -19,7 +19,7 @@ namespace FubuCsProjFile.Templating
         public void DetermineSteps(string directory, TemplatePlan plan)
         {
             TextFile.FileSystem.FindFiles(directory, _matching)
-                    .Select(x => new TextFile(x, StringExtensions.PathRelativeTo(x, directory)))
+                    .Select(x => new TextFile(x, x.PathRelativeTo(directory)))
                     .Each(file => {
                         _action(file, plan);
                         plan.MarkHandled(file.Path);
