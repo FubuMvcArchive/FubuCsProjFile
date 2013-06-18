@@ -12,7 +12,7 @@ namespace FubuCsProjFile.Testing.Templating
         {
             TextFile.FileSystem.WriteStringToFile("foo.txt", "a bunch of text");
 
-            var file = new TextFile("foo.txt");
+            var file = new TextFile("foo.txt", "anything");
             file.ReadAll().ShouldEqual("a bunch of text");
         }
 
@@ -28,7 +28,7 @@ e
 f
 ".Trim());
 
-            var file = new TextFile("bar.txt");
+            var file = new TextFile("bar.txt", "anything");
             file.ReadLines().ShouldHaveTheSameElementsAs("a", "b", "c", "d", "e", "f");
         }
     }

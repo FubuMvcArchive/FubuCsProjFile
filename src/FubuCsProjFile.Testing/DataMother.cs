@@ -6,13 +6,13 @@ namespace FubuCsProjFile.Testing
     public class DataMother
     {
         private readonly string _directory;
-        private TemplateContext _context;
+        private TemplatePlan _plan;
 
         public DataMother(string directory)
         {
             _directory = directory;
 
-            _context = TemplateContext.CreateClean(_directory);
+            _plan = TemplatePlan.CreateClean(_directory);
         }
 
         public FileContents ToPath(params string[] pathParts)
@@ -21,9 +21,9 @@ namespace FubuCsProjFile.Testing
             return new FileContents(path);
         }
 
-        public TemplateContext Context
+        public TemplatePlan Plan
         {
-            get { return _context; }
+            get { return _plan; }
         }
 
         public class FileContents
@@ -46,11 +46,11 @@ namespace FubuCsProjFile.Testing
             }
         }
 
-        public TemplateContext BuildSolutionPlan()
+        public TemplatePlan BuildSolutionPlan()
         {
-            new TemplateBuilder().ConfigureTree(_directory, _context);
+            new TemplateBuilder().ConfigureTree(_directory, _plan);
 
-            return _context;
+            return _plan;
         }
     }
 

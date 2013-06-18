@@ -8,10 +8,17 @@ namespace FubuCsProjFile.Templating
         public static readonly IFileSystem FileSystem = new FileSystem();
 
         private readonly string _path;
+        private readonly string _relativePath;
 
-        public TextFile(string path)
+        public TextFile(string path, string relativePath)
         {
             _path = path;
+            _relativePath = relativePath.Replace('\\', '/');
+        }
+
+        public string RelativePath
+        {
+            get { return _relativePath; }
         }
 
         public string Path

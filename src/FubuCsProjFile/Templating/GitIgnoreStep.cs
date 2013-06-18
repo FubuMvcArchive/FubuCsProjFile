@@ -15,9 +15,9 @@ namespace FubuCsProjFile.Templating
             _entries = entries;
         }
 
-        public void Alter(TemplateContext context)
+        public void Alter(TemplatePlan plan)
         {
-            context.AlterFile(".gitignore", list => _entries.Each(list.Fill));
+            plan.AlterFile(".gitignore", list => _entries.Each(list.Fill));
         }
 
         public string[] Entries
@@ -25,16 +25,16 @@ namespace FubuCsProjFile.Templating
             get { return _entries; }
         }
 
-        public static void ConfigurePlan(string directory, TemplateContext context)
+        public static void ConfigurePlan(string directory, TemplatePlan plan)
         {
             var filename = directory.AppendPath(File);
-            context.MarkHandled(filename);
+            plan.MarkHandled(filename);
 
             new FileSystem().AlterFlatFile(filename, list => {
                 if (list.Any())
                 {
                     var step = new GitIgnoreStep(list.Where(x => x.IsNotEmpty()).ToArray());
-                    context.Add(step);
+                    plan.Add(step);
                 }
             });
         }

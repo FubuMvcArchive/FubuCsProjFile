@@ -11,7 +11,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void write_gem_file_when_none_exists()
         {
-            var context = TemplateContext.CreateClean("gems");
+            var context = TemplatePlan.CreateClean("gems");
             var gem = new GemReference("rake", ">=10.0.3");
 
             gem.Alter(context);
@@ -30,7 +30,7 @@ namespace FubuCsProjFile.Testing.Templating
             var gemFile = "gems".AppendPath("Gemfile");
 
 
-            var context = TemplateContext.CreateClean("gems");
+            var context = TemplatePlan.CreateClean("gems");
 
             new FileSystem().WriteStringToFile(gemFile, @"source 'http://rubygems.org'
 
@@ -58,7 +58,7 @@ gem ~rake~, ~>=10.0.3~
 gem ~rake~, ~>=10.0.3~
 ".Replace("~", "\""));
 
-            var context = TemplateContext.CreateClean("gems");
+            var context = TemplatePlan.CreateClean("gems");
             var gem = new GemReference("fuburake", "~>0.5");
 
             gem.Alter(context);

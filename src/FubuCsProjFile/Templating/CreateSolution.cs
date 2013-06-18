@@ -9,10 +9,10 @@ namespace FubuCsProjFile.Templating
             _solutionName = solutionName;
         }
 
-        public void Alter(TemplateContext context)
+        public void Alter(TemplatePlan plan)
         {
-            var solution = Solution.CreateNew(context.SourceDirectory, _solutionName);
-            context.Solution = solution;
+            var solution = Solution.CreateNew(plan.SourceDirectory, _solutionName);
+            plan.Solution = solution;
         }
     }
 }

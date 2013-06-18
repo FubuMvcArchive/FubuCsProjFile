@@ -11,41 +11,67 @@ namespace FubuCsProjFile.Templating
         public string NugetName { get; set; }
         public string Version { get; set; }
 
-        public void Alter(TemplateContext context)
+        public void Alter(TemplatePlan plan)
         {
             throw new NotImplementedException();
         }
     }
 
-
-    public class TemplateBuilder
+    public class ProjectDirectory : IProjectAlteration
     {
-        /*
-         * .cs files are CodeFileTemplate
-         * description.txt is ignored
-         * ignore.txt gets written to .gitignore in the solution
-         * nuget.txt gets added to ripple and/or nuget dependencies
-         * gems.txt gets added to Gemfile
-         * files we don't recognize just get copied
-         * references.txt <-- adds system assembly references
-         * csproj.xml -- csproj
-    
-         * ****AssemblyInfo.cs is combined
-         */
+        private readonly string _relativePath;
 
-        public void ConfigureTree(string directory, TemplateContext context)
+        public ProjectDirectory(string relativePath)
         {
-            GemReference.ConfigurePlan(directory, context);
-            GitIgnoreStep.ConfigurePlan(directory, context);
-
-            context.CopyUnhandledFilesToRoot(directory);
+            _relativePath = relativePath;
         }
 
-        public void ConfigureProject(string directory, ProjectPlan projectPlan, TemplateContext context)
+        public void Alter(CsProjFile file)
         {
             throw new NotImplementedException();
         }
     }
 
-    
+    public class SolutionDirectory : ITemplateStep
+    {
+        private readonly string _relativePath;
+
+        public SolutionDirectory(string relativePath)
+        {
+            _relativePath = relativePath;
+        }
+
+        public string RelativePath
+        {
+            get { return _relativePath; }
+        }
+
+        public void Alter(TemplatePlan plan)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected bool Equals(SolutionDirectory other)
+        {
+            return string.Equals(_relativePath, other._relativePath);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SolutionDirectory) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (_relativePath != null ? _relativePath.GetHashCode() : 0);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Create solution directory: {0}", _relativePath);
+        }
+    }
 }

@@ -9,18 +9,18 @@ namespace FubuCsProjFile.Testing.Templating
     [TestFixture]
     public class ProjectPlanTester
     {
-        private TemplateContext theContext;
+        private TemplatePlan thePlan;
 
         [SetUp]
         public void SetUp()
         {
-            theContext = TemplateContext.CreateClean("create-project");
-            theContext.Add(new CreateSolution("MySolution"));
-            theContext.Add(new ProjectPlan("MyProject"));
+            thePlan = TemplatePlan.CreateClean("create-project");
+            thePlan.Add(new CreateSolution("MySolution"));
+            thePlan.Add(new ProjectPlan("MyProject"));
 
-            theContext.Execute();
+            thePlan.Execute();
 
-            var file = theContext.SourceDirectory.AppendPath("MyProject", "MyProject.csproj");
+            var file = thePlan.SourceDirectory.AppendPath("MyProject", "MyProject.csproj");
             File.Exists(file).ShouldBeTrue();
 
             var project = CsProjFile.LoadFrom(file);

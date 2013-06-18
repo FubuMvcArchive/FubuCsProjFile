@@ -22,9 +22,9 @@ namespace FubuCsProjFile.Templating
         public string GemName { get; set; }
         public string Version { get; set; }
 
-        public void Alter(TemplateContext context)
+        public void Alter(TemplatePlan plan)
         {
-            context.AlterFile("Gemfile", Alter);
+            plan.AlterFile("Gemfile", Alter);
         }
 
         private void Alter(List<string> list)
@@ -73,16 +73,16 @@ namespace FubuCsProjFile.Templating
             return string.Format("GemName: {0}, Version: {1}", GemName, Version);
         }
 
-        public static void ConfigurePlan(string directory, TemplateContext context)
+        public static void ConfigurePlan(string directory, TemplatePlan plan)
         {
             var system = new FileSystem();
             var filename = directory.AppendPath(File);
             system.ReadTextFile(filename, line =>
             {
                 var parts = line.ToDelimitedArray();
-                context.Add(new GemReference(parts.First(), parts.Last()));
+                plan.Add(new GemReference(parts.First(), parts.Last()));
 
-                context.MarkHandled(filename);
+                plan.MarkHandled(filename);
             });
 
         }

@@ -12,7 +12,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void create_a_new_solution()
         {
-            var context = TemplateContext.CreateClean("create-solution");
+            var context = TemplatePlan.CreateClean("create-solution");
             var step = new CreateSolution("MySolution");
 
             context.Add(step);

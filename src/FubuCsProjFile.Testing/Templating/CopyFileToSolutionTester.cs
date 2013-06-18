@@ -12,7 +12,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void copy_a_file()
         {
-            var context = TemplateContext.CreateClean("copying");
+            var context = TemplatePlan.CreateClean("copying");
 
             var file = "foo.txt";
             new FileSystem().WriteStringToFile(file, "foo");

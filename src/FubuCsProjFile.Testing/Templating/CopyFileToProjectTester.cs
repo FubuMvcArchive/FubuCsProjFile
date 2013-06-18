@@ -9,41 +9,41 @@ namespace FubuCsProjFile.Testing.Templating
     [TestFixture]
     public class CopyFileToProjectTester
     {
-        private TemplateContext theContext;
+        private TemplatePlan thePlan;
 
         [Test]
         public void copy_a_file_to_the_right_spot()
         {
-            theContext = TemplateContext.CreateClean("copy-file-to-project");
+            thePlan = TemplatePlan.CreateClean("copy-file-to-project");
 
-            theContext.Add(new CreateSolution("MySolution"));
+            thePlan.Add(new CreateSolution("MySolution"));
             var projectPlan = new ProjectPlan("MyProject");
-            theContext.Add(projectPlan);
+            thePlan.Add(projectPlan);
 
-            theContext.FileSystem.WriteStringToFile("foo.txt", "some text");
+            thePlan.FileSystem.WriteStringToFile("foo.txt", "some text");
             projectPlan.Add(new CopyFileToProject("foo.txt", "foo.txt"));
 
-            theContext.Execute();
+            thePlan.Execute();
 
-            var file = FileSystem.Combine(theContext.SourceDirectory, "MyProject", "foo.txt");
+            var file = FileSystem.Combine(thePlan.SourceDirectory, "MyProject", "foo.txt");
             File.Exists(file).ShouldBeTrue();
         }
 
         [Test]
         public void copy_a_deep_path_to_the_right_spot()
         {
-            theContext = TemplateContext.CreateClean("copy-file-to-project");
+            thePlan = TemplatePlan.CreateClean("copy-file-to-project");
 
-            theContext.Add(new CreateSolution("MySolution"));
+            thePlan.Add(new CreateSolution("MySolution"));
             var projectPlan = new ProjectPlan("MyProject");
-            theContext.Add(projectPlan);
+            thePlan.Add(projectPlan);
 
-            theContext.FileSystem.WriteStringToFile("foo.txt", "some text");
+            thePlan.FileSystem.WriteStringToFile("foo.txt", "some text");
             projectPlan.Add(new CopyFileToProject("bar/folder/foo.txt", "foo.txt"));
 
-            theContext.Execute();
+            thePlan.Execute();
 
-            var file = FileSystem.Combine(theContext.SourceDirectory, "MyProject", "bar", "folder", "foo.txt");
+            var file = FileSystem.Combine(thePlan.SourceDirectory, "MyProject", "bar", "folder", "foo.txt");
             File.Exists(file).ShouldBeTrue();
         }
 

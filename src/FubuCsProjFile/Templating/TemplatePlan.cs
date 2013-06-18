@@ -6,21 +6,21 @@ using System.Linq;
 
 namespace FubuCsProjFile.Templating
 {
-    public class TemplateContext
+    public class TemplatePlan
     {
         private readonly IFileSystem _fileSystem = new FileSystem();
         private readonly IList<string> _handled = new List<string>(); 
 
-        public static TemplateContext CreateClean(string directory)
+        public static TemplatePlan CreateClean(string directory)
         {
             var system = new FileSystem();
             system.CreateDirectory(directory);
             system.CleanDirectory(directory);
 
-            return new TemplateContext(directory);
+            return new TemplatePlan(directory);
         }
 
-        public TemplateContext(string rootDirectory)
+        public TemplatePlan(string rootDirectory)
         {
             Root = rootDirectory;
             SourceName = "src";

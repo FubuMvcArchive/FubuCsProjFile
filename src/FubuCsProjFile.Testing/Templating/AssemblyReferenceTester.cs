@@ -11,7 +11,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void can_write_assembly_reference_to_a_project()
         {
-            var theContext = TemplateContext.CreateClean("assembly-ref");
+            var theContext = TemplatePlan.CreateClean("assembly-ref");
 
             theContext.Add(new CreateSolution("MySolution"));
             var projectPlan = new ProjectPlan("MyProject");

@@ -14,10 +14,10 @@ namespace FubuCsProjFile.Templating
             _source = source;
         }
 
-        public void Alter(TemplateContext context)
+        public void Alter(TemplatePlan plan)
         {
-            var expectedFile = context.Root.AppendPath(_relativePath);
-            context.FileSystem.Copy(_source, expectedFile);
+            var expectedFile = plan.Root.AppendPath(_relativePath);
+            plan.FileSystem.Copy(_source, expectedFile);
         }
 
         protected bool Equals(CopyFileToSolution other)

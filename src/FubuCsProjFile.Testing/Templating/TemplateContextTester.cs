@@ -10,14 +10,14 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void default_source_directory_is_src()
         {
-            new TemplateContext("something").SourceName
+            new TemplatePlan("something").SourceName
                                             .ShouldEqual("src");
         }
 
         [Test]
         public void remembers_the_last_project_plan()
         {
-            var context = new TemplateContext("something");
+            var context = new TemplatePlan("something");
             var plan1 = new ProjectPlan("NewProj1");
             var plan2 = new ProjectPlan("NewProj2");
         

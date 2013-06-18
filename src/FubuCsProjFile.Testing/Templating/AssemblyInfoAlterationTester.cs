@@ -14,7 +14,7 @@ namespace FubuCsProjFile.Testing.Templating
         [TestFixtureSetUp]
         public void SetUp()
         {
-            var context = TemplateContext.CreateClean("assembly-info");
+            var context = TemplatePlan.CreateClean("assembly-info");
             context.Add(new CreateSolution("AssemblyInfoSolution"));
 
             var project = new ProjectPlan("MyProject");
@@ -64,7 +64,7 @@ namespace FubuCsProjFile.Testing.Templating
         [TestFixtureSetUp]
         public void SetUp()
         {
-            var context = TemplateContext.CreateClean("assembly-info");
+            var context = TemplatePlan.CreateClean("assembly-info");
             context.Add(new CreateSolution("AssemblyInfoSolution"));
 
             var project = new ProjectPlan("MyProject");

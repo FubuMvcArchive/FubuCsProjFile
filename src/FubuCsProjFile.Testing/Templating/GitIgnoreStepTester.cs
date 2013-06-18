@@ -13,13 +13,13 @@ namespace FubuCsProjFile.Testing.Templating
     public class GitIgnoreStepTester
     {
         private readonly IFileSystem fileSystem = new FileSystem();
-        private TemplateContext theContext;
+        private TemplatePlan thePlan;
         private Lazy<string[]> _contents;
 
         [SetUp]
         public void SetUp()
         {
-            theContext = TemplateContext.CreateClean("gitignore");
+            thePlan = TemplatePlan.CreateClean("gitignore");
         
             _contents = new Lazy<string[]>(() =>
             {
@@ -48,7 +48,7 @@ namespace FubuCsProjFile.Testing.Templating
         {
             var step = new GitIgnoreStep("Gemfile.lock", "CommonAssemblyInfo.cs", "bin", "obj");
 
-            step.Alter(theContext);
+            step.Alter(thePlan);
 
             ignoreFileHasOnce("Gemfile.lock");
             ignoreFileHasOnce("CommonAssemblyInfo.cs");
@@ -59,11 +59,11 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void starting_from_an_existing_file()
         {
-            theContext.AlterFile(".gitignore", list => list.Add("bin"));
+            thePlan.AlterFile(".gitignore", list => list.Add("bin"));
 
             var step = new GitIgnoreStep("Gemfile.lock", "CommonAssemblyInfo.cs", "bin", "obj");
 
-            step.Alter(theContext);
+            step.Alter(thePlan);
 
             ignoreFileHasOnce("Gemfile.lock");
             ignoreFileHasOnce("CommonAssemblyInfo.cs");
