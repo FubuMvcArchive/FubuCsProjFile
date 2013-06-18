@@ -52,6 +52,13 @@ namespace FubuCsProjFile.Testing
 
             return _plan;
         }
+
+        public TemplatePlan RunPlanner<T>() where T : TemplatePlanner, new()
+        {
+            new T().CreatePlan(_directory, _plan);
+
+            return _plan;
+        }
     }
 
     
