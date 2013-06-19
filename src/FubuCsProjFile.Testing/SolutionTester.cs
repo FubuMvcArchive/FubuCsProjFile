@@ -110,7 +110,7 @@ namespace FubuCsProjFile.Testing
         public void add_a_project_from_template()
         {
             var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
-            var reference = solution.AddProjectFromTemplate("MyNewProject", "project.txt");
+            var reference = solution.AddProjectFromTemplate("MyNewProject", Path.Combine("..", "..", "project.txt"));
 
             reference.Project.Find<AssemblyReference>("System.Data")
                      .ShouldNotBeNull();
@@ -129,7 +129,7 @@ namespace FubuCsProjFile.Testing
             var projectName = solution.Projects.First().ProjectName;
 
             Exception<ArgumentOutOfRangeException>.ShouldBeThrownBy(() => {
-                solution.AddProjectFromTemplate(projectName, "project.txt");
+                solution.AddProjectFromTemplate(projectName, Path.Combine("..", "..", "project.txt"));
             });
         }
     }

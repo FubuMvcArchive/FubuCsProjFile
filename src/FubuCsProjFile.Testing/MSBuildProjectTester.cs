@@ -1,4 +1,5 @@
-﻿using FubuCore;
+﻿using System.IO;
+using FubuCore;
 using FubuCsProjFile.MSBuild;
 using NUnit.Framework;
 using FubuTestingSupport;
@@ -29,7 +30,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void create_from_file()
         {
-            var project = MSBuildProject.CreateFromFile("MyBar", "project.txt");
+            var project = MSBuildProject.CreateFromFile("MyBar", Path.Combine("..", "..", "project.txt"));
             project.Save("MyBar.csproj");
 
             var file = CsProjFile.LoadFrom("MyBar.csproj");
