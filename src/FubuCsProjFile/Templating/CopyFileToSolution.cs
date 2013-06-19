@@ -2,7 +2,6 @@ using FubuCore;
 
 namespace FubuCsProjFile.Templating
 {
-    // TODO -- have this do a template?
     public class CopyFileToSolution : ITemplateStep
     {
         private readonly string _relativePath;

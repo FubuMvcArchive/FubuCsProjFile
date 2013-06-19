@@ -11,8 +11,6 @@ namespace FubuCsProjFile.Templating
 
         public void Alter(TemplatePlan plan)
         {
-            // TODO -- needs to check to see if the Solution already exists.  If so, just load it.
-
             var solution = Solution.CreateNew(plan.SourceDirectory, _solutionName);
             plan.Solution = solution;
         }

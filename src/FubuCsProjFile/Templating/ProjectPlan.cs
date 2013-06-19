@@ -14,7 +14,6 @@ namespace FubuCsProjFile.Templating
 
         public void Alter(TemplatePlan plan)
         {
-            // TODO -- encapsulate this inside of TemplatePlan
             var reference = plan.Solution.FindProject(_projectName) ?? plan.Solution.AddProject(_projectName);
             _alterations.Each(x => x.Alter(reference.Project));
         }

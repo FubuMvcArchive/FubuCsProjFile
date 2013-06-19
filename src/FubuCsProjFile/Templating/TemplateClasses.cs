@@ -21,7 +21,6 @@ namespace FubuCsProjFile.Templating
 
         public static void ConfigureSolutionTemplate(Template template, TemplatePlan plan)
         {
-            // TODO -- verify that it's a solution template
             SolutionPlanner.CreatePlan(template.Path, plan);
             GenericPlanner.CreatePlan(template.Path, plan);
 
@@ -103,15 +102,12 @@ namespace FubuCsProjFile.Templating
 
     public class ProjectRequest
     {
-        // If it doesn't exist, make a new one.
         public string Name { get; set; }
         public IEnumerable<string> Templates { get; set; } 
     }
 
     public class TestProjectRequest
     {
-        // If it doesn't exist, make a new one
-        // automatically add the assembly references
         public string OriginalProject { get; set; }
 
         public IEnumerable<string> Templates { get; set; } 
@@ -262,6 +258,8 @@ namespace FubuCsProjFile.Templating
             return string.Format("Create solution directory: {0}", _relativePath);
         }
     }
+
+  
 
     public class SolutionPlanner : TemplatePlanner
     {
