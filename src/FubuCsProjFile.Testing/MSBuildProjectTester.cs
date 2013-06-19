@@ -30,7 +30,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void create_from_file()
         {
-            var project = MSBuildProject.CreateFromFile("MyBar", Path.Combine("..", "..", "project.txt"));
+            var project = MSBuildProject.CreateFromFile("MyBar", Path.Combine("..", "..", "Project.txt"));
             project.Save("MyBar.csproj");
 
             var file = CsProjFile.LoadFrom("MyBar.csproj");
