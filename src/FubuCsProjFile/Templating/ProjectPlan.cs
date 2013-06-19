@@ -19,6 +19,7 @@ namespace FubuCsProjFile.Templating
             _alterations.Each(x => x.Alter(reference.Project));
         }
 
+        // TODO -- do something with this in Alter.  Might need to blow up if the project already exists
         public string ProjectTemplateFile { get; set; }
 
         public void Add(IProjectAlteration alteration)

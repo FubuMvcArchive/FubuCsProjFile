@@ -5,6 +5,117 @@ using System.Collections.Generic;
 
 namespace FubuCsProjFile.Templating
 {
+    
+
+    public class TemplatePlanBuilder
+    {
+        private readonly ITemplateLibrary _library;
+        public static readonly SolutionPlanner SolutionPlanner = new SolutionPlanner();
+        public static readonly GenericPlanner GenericPlanner = new GenericPlanner();
+        public static readonly ProjectPlanner Project = new ProjectPlanner();
+
+        public TemplatePlanBuilder(ITemplateLibrary library)
+        {
+            _library = library;
+        }
+
+        public static void ConfigureSolutionTemplate(Template template, TemplatePlan plan)
+        {
+            // TODO -- verify that it's a solution template
+            SolutionPlanner.CreatePlan(template.Path, plan);
+            GenericPlanner.CreatePlan(template.Path, plan);
+
+            plan.CopyUnhandledFiles(template.Path);
+        }
+
+        public static void ConfigureProjectTemplate(Template template, TemplatePlan plan)
+        {
+            new ProjectPlanner().CreatePlan(template.Path, plan);
+            new GenericPlanner().CreatePlan(template.Path, plan);
+
+            // TODO -- copy other files and directories
+        }
+
+
+        // TODO -- do a bulk validation of TemplateRequest against the library 
+        public TemplatePlan BuildPlan(TemplateRequest request)
+        {
+            var plan = new TemplatePlan(request.RootDirectory);
+            
+            if (request.SolutionName.IsNotEmpty())
+            {
+                plan.Add(new CreateSolution(request.SolutionName));
+            }
+
+            _library.ApplyAll(request.Templates, plan, ConfigureSolutionTemplate);
+
+            request.Projects.Each(proj => {
+                var projectPlan = new ProjectPlan(proj.Name);
+                plan.Add(projectPlan);
+
+                _library.ApplyAll(proj.Templates, plan, ConfigureProjectTemplate);
+            });
+
+            request.TestingProjects.Each(proj => {
+                var testingProject = proj.OriginalProject + ".Testing";
+                var projectPlan = new ProjectPlan(testingProject);
+                plan.Add(projectPlan);
+                plan.Add(new CopyProjectReferences(proj.OriginalProject, testingProject));
+
+                _library.ApplyAll(proj.Templates, plan, ConfigureProjectTemplate);
+            });
+
+
+
+            return plan;
+        }
+    }
+
+    public class CopyProjectReferences : ITemplateStep
+    {
+        public CopyProjectReferences(string originalProject, string testProject)
+        {
+        }
+
+        // TODO -- has to copy all the system assemblies and nuget references of the parent project
+        // TODO -- adds the project reference to the parent
+        public void Alter(TemplatePlan plan)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TemplateRequest
+    {
+        public string RootDirectory { get; set; }
+        public IEnumerable<string> Templates { get; set; } // at the solution level
+        public string SolutionName { get; set; }
+
+        public IEnumerable<ProjectRequest> Projects { get; set; }
+        public IEnumerable<TestProjectRequest> TestingProjects { get; set; } 
+    }
+
+    public class SolutionRequest
+    {
+        public string Name { get; set; }
+        public IEnumerable<string> Templates { get; set; } // This needs to get a default value
+    }
+
+    public class ProjectRequest
+    {
+        // If it doesn't exist, make a new one.
+        public string Name { get; set; }
+        public IEnumerable<string> Templates { get; set; } 
+    }
+
+    public class TestProjectRequest
+    {
+        // If it doesn't exist, make a new one
+        // automatically add the assembly references
+        public string OriginalProject { get; set; }
+
+        public IEnumerable<string> Templates { get; set; } 
+    }
 
     // This is going to give you access to what templates exist, what category they are,
     // and how to access them
@@ -12,6 +123,44 @@ namespace FubuCsProjFile.Templating
     {
         IEnumerable<Template> All();
         Template Find(string name);
+        void ApplyAll(IEnumerable<string> templateNames, TemplatePlan plan, Action<Template, TemplatePlan> action);
+    }
+
+    public class TemplateLibrary : ITemplateLibrary
+    {
+        /*
+         *   \solution
+         *       \template1
+         *   \project
+         *       \template2
+         *   \testing
+         *       \template3
+         * 
+         * 
+         */
+
+
+        private readonly string _templatesRoot;
+
+        public TemplateLibrary(string templatesRoot)
+        {
+            _templatesRoot = templatesRoot;
+        }
+
+        public IEnumerable<Template> All()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Template Find(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ApplyAll(IEnumerable<string> templateNames, TemplatePlan plan, Action<Template, TemplatePlan> action)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class Template
@@ -25,24 +174,20 @@ namespace FubuCsProjFile.Templating
     public enum TemplateType
     {
         Solution,
-        //SolutionAlteration, ?  what would we use this for?  nuspec(?)  Easier to do that via a project maybe.
-        Project,
-        ProjectAlteration,
-        UnitTest
+        Project, 
+        TestProject
     }
 
 
-    public class TemplateBuilder
-    {
-        public void ConfigureTree(string directory, TemplatePlan plan)
-        {
-            new GenericPlanner().CreatePlan(directory, plan);
 
-            // Need to do something similar for projects
-            plan.CopyUnhandledFiles(directory);
+
+    public class RakeFileTransform : ITemplateStep
+    {
+        public RakeFileTransform(string templateFile)
+        {
         }
 
-        public void ConfigureProject(string directory, ProjectPlan projectPlan, TemplatePlan plan)
+        public void Alter(TemplatePlan plan)
         {
             throw new NotImplementedException();
         }
@@ -117,4 +262,37 @@ namespace FubuCsProjFile.Templating
             return string.Format("Create solution directory: {0}", _relativePath);
         }
     }
+
+    public class SolutionPlanner : TemplatePlanner
+    {
+        public SolutionPlanner()
+        {
+            /*
+             * TODO
+             * copy files and directories to solution
+             * create solution
+             * 
+             * 
+             */
+        }
+    }
+
+
+    public class ProjectPlanner : TemplatePlanner
+    {
+        public ProjectPlanner()
+        {
+            /*
+             * TODO: 
+             * // only looks for a csproj.xml file
+             * cs proj files
+             * copy files to project directory
+             * nuget references
+             * assembly references
+             * assembly info transformer
+             * directories
+             */
+        }
+    }
+
 }

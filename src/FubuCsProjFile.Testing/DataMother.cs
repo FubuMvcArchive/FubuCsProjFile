@@ -48,7 +48,7 @@ namespace FubuCsProjFile.Testing
 
         public TemplatePlan BuildSolutionPlan()
         {
-            new TemplateBuilder().ConfigureTree(_directory, _plan);
+            TemplatePlanBuilder.ConfigureSolutionTemplate(new Template{Path = _directory}, _plan);
 
             return _plan;
         }
