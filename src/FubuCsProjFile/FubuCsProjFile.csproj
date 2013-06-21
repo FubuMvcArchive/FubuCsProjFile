@@ -86,9 +86,12 @@
     <Compile Include="Templating\ProjectPlan.cs" />
     <Compile Include="Templating\SystemReference.cs" />
     <Compile Include="Templating\GenericPlanner.cs" />
+    <Compile Include="Templating\TemplateBuilder.cs" />
     <Compile Include="Templating\TemplateClasses.cs" />
+    <Compile Include="Templating\TemplateLibrary.cs" />
     <Compile Include="Templating\TemplatePlan.cs" />
     <Compile Include="Templating\TemplatePlanner.cs" />
+    <Compile Include="Templating\TemplateType.cs" />
     <Compile Include="Templating\TextFile.cs" />
   </ItemGroup>
   <ItemGroup>

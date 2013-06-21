@@ -85,6 +85,7 @@
     <Compile Include="Templating\ProjectPlanTester.cs" />
     <Compile Include="Templating\TemplateBuilderTester.cs" />
     <Compile Include="Templating\TemplateContextTester.cs" />
+    <Compile Include="Templating\TemplateLibraryTester.cs" />
     <Compile Include="Templating\TextFileTester.cs" />
   </ItemGroup>
   <ItemGroup>

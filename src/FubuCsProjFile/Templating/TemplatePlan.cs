@@ -87,7 +87,7 @@ namespace FubuCsProjFile.Templating
 
         public bool FileIsUnhandled(string file)
         {
-            if (Path.GetFileName(file).ToLowerInvariant() == "description.txt") return false;
+            if (Path.GetFileName(file).ToLowerInvariant() == TemplateLibrary.DescriptionFile) return false;
 
             var path = file.CanonicalPath();
             return !_handled.Contains(path);

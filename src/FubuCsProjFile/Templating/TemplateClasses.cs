@@ -113,68 +113,12 @@ namespace FubuCsProjFile.Templating
         public IEnumerable<string> Templates { get; set; } 
     }
 
-    // This is going to give you access to what templates exist, what category they are,
-    // and how to access them
     public interface ITemplateLibrary
     {
         IEnumerable<Template> All();
-        Template Find(string name);
+        Template Find(TemplateType type, string name);
         void ApplyAll(IEnumerable<string> templateNames, TemplatePlan plan, Action<Template, TemplatePlan> action);
     }
-
-    public class TemplateLibrary : ITemplateLibrary
-    {
-        /*
-         *   \solution
-         *       \template1
-         *   \project
-         *       \template2
-         *   \testing
-         *       \template3
-         * 
-         * 
-         */
-
-
-        private readonly string _templatesRoot;
-
-        public TemplateLibrary(string templatesRoot)
-        {
-            _templatesRoot = templatesRoot;
-        }
-
-        public IEnumerable<Template> All()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Template Find(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ApplyAll(IEnumerable<string> templateNames, TemplatePlan plan, Action<Template, TemplatePlan> action)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class Template
-    {
-        public TemplateType Type { get; set; }
-        public string Name { get; set; }
-        public string Path { get; set; }
-        public string Description { get; set; }
-    }
-
-    public enum TemplateType
-    {
-        Solution,
-        Project, 
-        TestProject
-    }
-
-
 
 
     public class RakeFileTransform : ITemplateStep
