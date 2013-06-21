@@ -84,10 +84,12 @@
     <Compile Include="Templating\GitIgnoreStepTester.cs" />
     <Compile Include="Templating\ProjectDirectoryTester.cs" />
     <Compile Include="Templating\ProjectPlanTester.cs" />
+    <Compile Include="Templating\ReadSolutionTester.cs" />
     <Compile Include="Templating\SolutionDirectoryTester.cs" />
     <Compile Include="Templating\TemplateBuilderTester.cs" />
     <Compile Include="Templating\TemplateContextTester.cs" />
     <Compile Include="Templating\TemplateLibraryTester.cs" />
+    <Compile Include="Templating\TemplatePlanBuilderTester.cs" />
     <Compile Include="Templating\TextFileTester.cs" />
   </ItemGroup>
   <ItemGroup>

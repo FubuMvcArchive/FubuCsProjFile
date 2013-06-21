@@ -249,6 +249,11 @@ namespace FubuCsProjFile
             get { return _filename.ParentDirectory(); }
         }
 
+        public string Name
+        {
+            get { return Path.GetFileNameWithoutExtension(_filename); }
+        }
+
         public ProjectReference FindProject(string projectName)
         {
             return _projects.FirstOrDefault(x => x.ProjectName == projectName);

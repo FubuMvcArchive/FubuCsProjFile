@@ -9,6 +9,11 @@ namespace FubuCsProjFile.Templating
             _solutionName = solutionName;
         }
 
+        public string SolutionName
+        {
+            get { return _solutionName; }
+        }
+
         public void Alter(TemplatePlan plan)
         {
             var solution = Solution.CreateNew(plan.SourceDirectory, _solutionName);

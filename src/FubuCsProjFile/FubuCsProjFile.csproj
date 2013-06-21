@@ -85,6 +85,7 @@
     <Compile Include="Templating\ITemplateStep.cs" />
     <Compile Include="Templating\ProjectDirectory.cs" />
     <Compile Include="Templating\ProjectPlan.cs" />
+    <Compile Include="Templating\ReadSolution.cs" />
     <Compile Include="Templating\SolutionDirectory.cs" />
     <Compile Include="Templating\SystemReference.cs" />
     <Compile Include="Templating\GenericPlanner.cs" />

@@ -32,6 +32,8 @@ namespace FubuCsProjFile.Templating
         }
 
         public string Root { get; set; }
+
+        // TODO -- this will have to be settable from the TemplateRequest!  Or read some how.
         public string SourceName { get; set; }
 
         public string SourceDirectory

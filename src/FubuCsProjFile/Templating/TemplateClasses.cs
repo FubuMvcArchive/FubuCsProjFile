@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using FubuCore;
 using System.Linq;
 using System.Collections.Generic;
@@ -47,30 +48,49 @@ namespace FubuCsProjFile.Templating
             
             if (request.SolutionName.IsNotEmpty())
             {
-                plan.Add(new CreateSolution(request.SolutionName));
+                determineSolutionFileHandling(request, plan);
             }
 
-            _library.ApplyAll(request.Templates, plan, ConfigureSolutionTemplate);
-
-            request.Projects.Each(proj => {
-                var projectPlan = new ProjectPlan(proj.Name);
-                plan.Add(projectPlan);
-
-                _library.ApplyAll(proj.Templates, plan, ConfigureProjectTemplate);
-            });
-
-            request.TestingProjects.Each(proj => {
-                var testingProject = proj.OriginalProject + ".Testing";
-                var projectPlan = new ProjectPlan(testingProject);
-                plan.Add(projectPlan);
-                plan.Add(new CopyProjectReferences(proj.OriginalProject, testingProject));
-
-                _library.ApplyAll(proj.Templates, plan, ConfigureProjectTemplate);
-            });
+//            _library.ApplyAll(request.Templates, plan, ConfigureSolutionTemplate);
+//
+//            request.Projects.Each(proj => {
+//                var projectPlan = new ProjectPlan(proj.Name);
+//                plan.Add(projectPlan);
+//
+//                _library.ApplyAll(proj.Templates, plan, ConfigureProjectTemplate);
+//            });
+//
+//            request.TestingProjects.Each(proj => {
+//                var testingProject = proj.OriginalProject + ".Testing";
+//                var projectPlan = new ProjectPlan(testingProject);
+//                plan.Add(projectPlan);
+//                plan.Add(new CopyProjectReferences(proj.OriginalProject, testingProject));
+//
+//                _library.ApplyAll(proj.Templates, plan, ConfigureProjectTemplate);
+//            });
 
 
 
             return plan;
+        }
+
+        private static void determineSolutionFileHandling(TemplateRequest request, TemplatePlan plan)
+        {
+            var sourceDirectory = plan.SourceDirectory;
+            var expectedFile = sourceDirectory.AppendPath(request.SolutionName);
+            if (Path.GetExtension(expectedFile) != ".sln")
+            {
+                expectedFile += ".sln";
+            }
+
+            if (File.Exists(expectedFile))
+            {
+                plan.Add(new ReadSolution(expectedFile));
+            }
+            else
+            {
+                plan.Add(new CreateSolution(request.SolutionName));
+            }
         }
     }
 
