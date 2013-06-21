@@ -31,6 +31,8 @@ namespace FubuCsProjFile.Templating
 
         public static void ConfigureProjectTemplate(Template template, TemplatePlan plan)
         {
+            ProjectDirectory.PlanForDirectory(template.Path).Each(plan.CurrentProject.Add);
+
             new ProjectPlanner().CreatePlan(template.Path, plan);
             new GenericPlanner().CreatePlan(template.Path, plan);
 
@@ -142,21 +144,6 @@ namespace FubuCsProjFile.Templating
         public string Version { get; set; }
 
         public void Alter(TemplatePlan plan)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class ProjectDirectory : IProjectAlteration
-    {
-        private readonly string _relativePath;
-
-        public ProjectDirectory(string relativePath)
-        {
-            _relativePath = relativePath;
-        }
-
-        public void Alter(CsProjFile file)
         {
             throw new NotImplementedException();
         }

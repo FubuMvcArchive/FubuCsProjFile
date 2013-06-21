@@ -105,6 +105,11 @@ namespace FubuCsProjFile
             get { return _fileName; }
         }
 
+        public string ProjectDirectory
+        {
+            get { return _fileName.ParentDirectory(); }
+        }
+
         public void Save()
         {
             _project.Save(_fileName);
