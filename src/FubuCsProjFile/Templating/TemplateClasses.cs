@@ -12,7 +12,6 @@ namespace FubuCsProjFile.Templating
     {
         private readonly ITemplateLibrary _library;
         public static readonly SolutionPlanner SolutionPlanner = new SolutionPlanner();
-        public static readonly GenericPlanner GenericPlanner = new GenericPlanner();
         public static readonly ProjectPlanner Project = new ProjectPlanner();
 
         public TemplatePlanBuilder(ITemplateLibrary library)
@@ -22,22 +21,12 @@ namespace FubuCsProjFile.Templating
 
         public static void ConfigureSolutionTemplate(Template template, TemplatePlan plan)
         {
-            SolutionDirectory.PlanForDirectory(template.Path).Each(plan.Add);
-
             SolutionPlanner.CreatePlan(template.Path, plan);
-            GenericPlanner.CreatePlan(template.Path, plan);
-
-            plan.CopyUnhandledFiles(template.Path);
         }
 
         public static void ConfigureProjectTemplate(Template template, TemplatePlan plan)
         {
-            ProjectDirectory.PlanForDirectory(template.Path).Each(plan.CurrentProject.Add);
-
             new ProjectPlanner().CreatePlan(template.Path, plan);
-            new GenericPlanner().CreatePlan(template.Path, plan);
-
-            // TODO -- copy other files and directories
         }
 
 
@@ -157,18 +146,6 @@ namespace FubuCsProjFile.Templating
         }
     }
 
-    public class NugetReference : ITemplateStep
-    {
-        public string ProjectName { get; set; }
-        public string NugetName { get; set; }
-        public string Version { get; set; }
-
-        public void Alter(TemplatePlan plan)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
 
     public class SolutionPlanner : TemplatePlanner
     {
@@ -181,6 +158,11 @@ namespace FubuCsProjFile.Templating
              * 
              * 
              */
+        }
+
+        protected override void configurePlan(string directory, TemplatePlan plan)
+        {
+            SolutionDirectory.PlanForDirectory(directory).Each(plan.Add);
         }
     }
 
@@ -199,6 +181,12 @@ namespace FubuCsProjFile.Templating
              * assembly info transformer
              * directories
              */
+        }
+
+        protected override void configurePlan(string directory, TemplatePlan plan)
+        {
+            ProjectDirectory.PlanForDirectory(directory).Each(plan.CurrentProject.Add);
+
         }
     }
 

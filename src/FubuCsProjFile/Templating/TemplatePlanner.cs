@@ -9,10 +9,24 @@ namespace FubuCsProjFile.Templating
         private readonly IList<ITemplatePlanner> _planners = new List<ITemplatePlanner>();
         private FileSet _matching;
 
+        protected TemplatePlanner()
+        {
+            ShallowMatch(GemReference.File).Do = GemReference.ConfigurePlan;
+            ShallowMatch(GitIgnoreStep.File).Do = GitIgnoreStep.ConfigurePlan;
+
+            // TODO -- add the rake transform
+        }
+
         public void CreatePlan(string directory, TemplatePlan plan)
         {
+            configurePlan(directory, plan);
+
             _planners.Each(x => x.DetermineSteps(directory, plan));
+
+            plan.CopyUnhandledFiles(directory);
         }
+
+        protected abstract void configurePlan(string directory, TemplatePlan plan);
 
         public void Add<T>() where T : ITemplatePlanner, new()
         {

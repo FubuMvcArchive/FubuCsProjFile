@@ -20,7 +20,7 @@ namespace FubuCsProjFile.Testing.Templating
             var plan = mother.BuildSolutionPlan();
             plan.FileIsUnhandled("description.txt").ShouldBeFalse();
 
-            plan.Steps.Any().ShouldBeFalse();
+            plan.Steps.OfType<CopyFileToSolution>().Any().ShouldBeFalse();
         }
 
         [Test]

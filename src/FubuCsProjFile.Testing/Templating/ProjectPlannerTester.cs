@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace FubuCsProjFile.Testing.Templating
 {
     [TestFixture]
-    public class GenericPlannerTester
+    public class ProjectPlannerTester
     {
         [Test]
         public void can_pick_up_gem_transform()
@@ -19,15 +19,15 @@ fuburake,~>0.5
 ");
 
 
-            var plan = mother.RunPlanner<GenericPlanner>();
-            plan.Steps.ShouldHaveTheSameElementsAs(
+            var plan = mother.RunPlanner<ProjectPlanner>();
+            plan.Steps.OfType<GemReference>().ShouldHaveTheSameElementsAs(
                 new GemReference("rake", "~>10.0"),
                 new GemReference("fuburake", "~>0.5")
                 );
 
             plan.FileIsUnhandled(plan.Root.AppendPath("gems.txt")).ShouldBeFalse();
         }
-
+        
         [Test]
         public void gitignore_directive()
         {
@@ -37,11 +37,11 @@ bin
 obj
 ");
 
-            var plan = mother.RunPlanner<GenericPlanner>();
+            var plan = mother.RunPlanner<ProjectPlanner>();
             plan.FileIsUnhandled("ignoring".AppendPath("ignore.txt"))
                 .ShouldBeFalse();
 
-            plan.Steps.Single().ShouldBeOfType<GitIgnoreStep>()
+            plan.Steps.OfType<GitIgnoreStep>().Single()
                 .Entries.OrderBy(x => x)
                 .ShouldHaveTheSameElementsAs("bin", "obj", "pak*.zip");
 

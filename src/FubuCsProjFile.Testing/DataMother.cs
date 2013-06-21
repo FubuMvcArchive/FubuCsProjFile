@@ -13,6 +13,7 @@ namespace FubuCsProjFile.Testing
             _directory = directory;
 
             _plan = TemplatePlan.CreateClean(_directory);
+            _plan.Add(new ProjectPlan("SomeProject"));
         }
 
         public FileContents ToPath(params string[] pathParts)
