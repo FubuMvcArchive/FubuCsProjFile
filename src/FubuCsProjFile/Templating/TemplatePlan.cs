@@ -8,6 +8,8 @@ namespace FubuCsProjFile.Templating
 {
     public class TemplatePlan
     {
+        public static readonly string RippleImportFile = "ripple-install.txt";
+
         private readonly IFileSystem _fileSystem = new FileSystem();
         private readonly IList<string> _handled = new List<string>(); 
 
@@ -100,6 +102,21 @@ namespace FubuCsProjFile.Templating
             _fileSystem.FindFiles(directory, FileSet.Everything())
                        .Where(FileIsUnhandled)
                        .Each(file => Add(new CopyFileToSolution(file.PathRelativeTo(Root), file)));
+        }
+
+        public void WriteNugetImports()
+        {
+            var projectsWithNugets = Steps
+                .OfType<ProjectPlan>()
+                .Where(x => x.NugetDeclarations.Any())
+                .Select(x => x.ToNugetImportStatement()).ToArray();
+
+            if (projectsWithNugets.Any())
+            {
+                TemplateLibrary.FileSystem.AlterFlatFile(Root.AppendPath(RippleImportFile), list => {
+                    list.AddRange(projectsWithNugets);
+                });
+            }
         }
     }
 }

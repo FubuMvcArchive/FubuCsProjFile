@@ -46,5 +46,21 @@ obj
                 .ShouldHaveTheSameElementsAs("bin", "obj", "pak*.zip");
 
         }
+
+        [Test]
+        public void reads_nuget_declarations()
+        {
+            var mother = new DataMother("nugets");
+            mother.ToPath(ProjectPlanner.NugetFile).WriteContent(@"
+FubuCore
+FubuMVC.Core
+FubuMVC.StructureMap
+");
+
+            var plan = mother.RunPlanner<ProjectPlanner>();
+
+            plan.CurrentProject.NugetDeclarations.OrderBy(x => x)
+                .ShouldHaveTheSameElementsAs("FubuCore", "FubuMVC.Core", "FubuMVC.StructureMap");
+        }
     }
 }

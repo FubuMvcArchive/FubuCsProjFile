@@ -169,14 +169,21 @@ namespace FubuCsProjFile.Templating
 
     public class ProjectPlanner : TemplatePlanner
     {
+        public static readonly string NugetFile = "nuget.txt";
+
         public ProjectPlanner()
         {
+            Matching(FileSet.Shallow(NugetFile)).Do = (file, plan) => {
+                file.ReadLines()
+                    .Where(x => x.IsNotEmpty())
+                    .Each(line => plan.CurrentProject.NugetDeclarations.Add(line.Trim()));
+            };
+
             /*
              * TODO: 
              * // only looks for a csproj.xml file
              * cs proj files
              * copy files to project directory
-             * nuget references
              * assembly references
              * assembly info transformer
              * directories
