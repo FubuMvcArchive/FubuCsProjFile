@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FubuCore;
 
 namespace FubuCsProjFile.Templating
 {
@@ -14,7 +15,14 @@ namespace FubuCsProjFile.Templating
 
         public void Alter(TemplatePlan plan)
         {
-            var reference = plan.Solution.FindProject(_projectName) ?? plan.Solution.AddProject(_projectName);
+            var reference = plan.Solution.FindProject(_projectName);
+            if (reference == null)
+            {
+                reference = ProjectTemplateFile.IsEmpty()
+                                ? plan.Solution.AddProject(_projectName)
+                                : plan.Solution.AddProjectFromTemplate(_projectName, ProjectTemplateFile);
+            }
+
             _alterations.Each(x => x.Alter(reference.Project));
         }
 

@@ -212,7 +212,7 @@ namespace FubuCsProjFile
             get { return _projects; }
         }
 
-        public ProjectReference AddProject(string projectName)
+        public ProjectReference AddProject( string projectName)
         {
             var existing = FindProject(projectName);
             if (existing != null)
