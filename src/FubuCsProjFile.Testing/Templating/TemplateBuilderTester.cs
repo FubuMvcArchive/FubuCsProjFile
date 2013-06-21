@@ -32,7 +32,7 @@ namespace FubuCsProjFile.Testing.Templating
             mother.ToPath("deep","nested","topic.txt").WriteEmpty();
 
             var plan = mother.BuildSolutionPlan();
-            plan.Steps.ShouldHaveTheSameElementsAs(
+            plan.Steps.OfType<CopyFileToSolution>().ShouldHaveTheSameElementsAs(
                 new CopyFileToSolution("bar.txt", "copied".AppendPath("bar.txt")),
                 new CopyFileToSolution("foo.txt", "copied".AppendPath("foo.txt")),
                 new CopyFileToSolution("deep/nested/topic.txt", "copied".AppendPath("deep","nested","topic.txt"))
