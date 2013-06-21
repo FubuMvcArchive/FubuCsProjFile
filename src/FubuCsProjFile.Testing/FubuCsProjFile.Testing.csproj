@@ -83,6 +83,7 @@
     <Compile Include="Templating\GenericPlannerTester.cs" />
     <Compile Include="Templating\GitIgnoreStepTester.cs" />
     <Compile Include="Templating\ProjectPlanTester.cs" />
+    <Compile Include="Templating\SolutionDirectoryTester.cs" />
     <Compile Include="Templating\TemplateBuilderTester.cs" />
     <Compile Include="Templating\TemplateContextTester.cs" />
     <Compile Include="Templating\TemplateLibraryTester.cs" />
