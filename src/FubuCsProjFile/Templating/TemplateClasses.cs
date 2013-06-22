@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using FubuCore;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace FubuCsProjFile.Templating
@@ -124,44 +123,4 @@ namespace FubuCsProjFile.Templating
 
         public IEnumerable<string> Templates { get; set; } 
     }
-
-
-    public class ProjectPlanner : TemplatePlanner
-    {
-        public static readonly string NugetFile = "nuget.txt";
-
-        public ProjectPlanner()
-        {
-            Matching(FileSet.Shallow(ProjectPlan.TemplateFile)).Do = (file, plan) => {
-                plan.CurrentProject.ProjectTemplateFile = file.Path; };
-
-            Matching(FileSet.Shallow(NugetFile)).Do = (file, plan) => {
-                file.ReadLines()
-                    .Where(x => x.IsNotEmpty())
-                    .Each(line => plan.CurrentProject.NugetDeclarations.Add(line.Trim()));
-            };
-
-            Matching(FileSet.Shallow(AssemblyInfoAlteration.SourceFile)).Do = (file, plan) => {
-                var additions = file.ReadLines().Where(x => x.IsNotEmpty()).ToArray();
-                plan.CurrentProject.Add(new AssemblyInfoAlteration(additions));
-            };
-
-            /*
-             * TODO: 
-             * // only looks for a csproj.xml file
-             * cs proj files
-             * copy files to project directory
-             * assembly references
-             * assembly info transformer
-             * directories
-             */
-        }
-
-        protected override void configurePlan(string directory, TemplatePlan plan)
-        {
-            ProjectDirectory.PlanForDirectory(directory).Each(plan.CurrentProject.Add);
-
-        }
-    }
-
 }

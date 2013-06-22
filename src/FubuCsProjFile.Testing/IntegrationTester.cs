@@ -248,5 +248,24 @@ namespace FubuCsProjFile.Testing
 
             readFile(".gitignore").ShouldContain("Gemfile.lock");
         }
+
+        [Test]
+        public void assembly_reference_in_project()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+
+                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+
+                x.AddProjectRequest(projectRequest);
+            });
+
+            assertFileExists("src", "MyProject", "MyProject.csproj");
+
+            var csProjFile = CsProjFile.LoadFrom("integrated".AppendPath("src", "MyProject", "MyProject.csproj"));
+            csProjFile.Find<AssemblyReference>("System.Configuration").ShouldNotBeNull(); // this reference is NOT in the default 
+            csProjFile.Find<AssemblyReference>("System.Security").ShouldNotBeNull(); // this reference is NOT in the default 
+        }
     }
 }

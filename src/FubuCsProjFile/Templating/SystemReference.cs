@@ -1,8 +1,11 @@
-﻿namespace FubuCsProjFile.Templating
+﻿using System;
+
+namespace FubuCsProjFile.Templating
 {
     public class SystemReference : IProjectAlteration
     {
         private readonly string _assemblyName;
+        public const string SourceFile = "references.txt";
 
         public SystemReference(string assemblyName)
         {
@@ -21,7 +24,7 @@
 
         protected bool Equals(SystemReference other)
         {
-            return string.Equals(_assemblyName, other._assemblyName);
+            return String.Equals(_assemblyName, other._assemblyName);
         }
 
         public override bool Equals(object obj)
@@ -39,7 +42,7 @@
 
         public override string ToString()
         {
-            return string.Format("System Assembly Reference to {0}", _assemblyName);
+            return String.Format("System Assembly Reference to {0}", _assemblyName);
         }
     }
 }
