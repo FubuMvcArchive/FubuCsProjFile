@@ -9,11 +9,13 @@ namespace FubuCsProjFile.Templating
     {
         public const string NAMESPACE = "%NAMESPACE%";
         public const string ASSEMBLY_NAME = "%ASSEMBLY_NAME%";
+        public const string PROJECT_PATH = "%PROJECT_PATH%";
 
 
         private readonly string _projectName;
         private readonly IList<IProjectAlteration> _alterations = new List<IProjectAlteration>(); 
-        private readonly IList<string> _nugetDeclarations = new List<string>(); 
+        private readonly IList<string> _nugetDeclarations = new List<string>();
+        private string _relativePath;
 
         public ProjectPlan(string projectName)
         {
@@ -30,6 +32,8 @@ namespace FubuCsProjFile.Templating
                                 ? plan.Solution.AddProject(_projectName)
                                 : plan.Solution.AddProjectFromTemplate(_projectName, ProjectTemplateFile);
             }
+
+            _relativePath = reference.Project.FileName.PathRelativeTo(plan.Root).Replace("\\", "/");
 
             _alterations.Each(x => x.Alter(reference.Project, this));
         }
@@ -72,8 +76,8 @@ namespace FubuCsProjFile.Templating
 
         internal void ApplySubstitutions(string relativePath, StringBuilder builder)
         {
-            // TODO -- gonna want to apply the project path substitution as well
             builder.Replace(ASSEMBLY_NAME, ProjectName);
+            builder.Replace(PROJECT_PATH, _relativePath);
 
             if (relativePath.IsNotEmpty())
             {

@@ -13,6 +13,19 @@ namespace FubuCsProjFile.Testing.Templating
         private TemplatePlan thePlan;
 
         [Test]
+        public void project_path_is_substituted()
+        {
+            thePlan = TemplatePlan.CreateClean("create-project");
+            thePlan.Add(new CreateSolution("MySolution"));
+            thePlan.Add(new ProjectPlan("MyProject"));
+
+            thePlan.Execute();
+
+            thePlan.CurrentProject.ApplySubstitutions("*%PROJECT_PATH%*")
+                   .ShouldEqual("*src/MyProject/MyProject.csproj*");
+        }
+
+        [Test]
         public void alter_by_creating_new_project_from_default_template()
         {
             thePlan = TemplatePlan.CreateClean("create-project");
