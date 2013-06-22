@@ -7,14 +7,6 @@ using System.Linq;
 
 namespace FubuCsProjFile.Templating
 {
-    public class Template
-    {
-        public TemplateType Type { get; set; }
-        public string Name { get; set; }
-        public string Path { get; set; }
-        public string Description { get; set; }
-    }
-
     public class TemplateLibrary : ITemplateLibrary
     {
         public static readonly string Solution = "solution";
@@ -92,10 +84,11 @@ namespace FubuCsProjFile.Templating
             return readTemplates(type).FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
         }
 
-        public void ApplyAll(IEnumerable<string> templateNames, TemplatePlan plan, Action<Template, TemplatePlan> action)
+        public IEnumerable<Template> Find(TemplateType type, IEnumerable<string> names)
         {
-            throw new NotImplementedException();
+            return names.Select(x => Find(type, x));
         }
+
 
     }
 }

@@ -6,7 +6,7 @@ namespace FubuCsProjFile.Testing
     public class DataMother
     {
         private readonly string _directory;
-        private TemplatePlan _plan;
+        private readonly TemplatePlan _plan;
 
         public DataMother(string directory)
         {
@@ -49,7 +49,7 @@ namespace FubuCsProjFile.Testing
 
         public TemplatePlan BuildSolutionPlan()
         {
-            TemplatePlanBuilder.ConfigureSolutionTemplate(new Template{Path = _directory}, _plan);
+            new SolutionPlanner().CreatePlan(_directory, _plan);
 
             return _plan;
         }

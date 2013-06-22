@@ -127,7 +127,7 @@ namespace FubuCsProjFile.Templating
         {
             _fileSystem.FindFiles(directory, FileSet.Everything())
                        .Where(FileIsUnhandled)
-                       .Each(file => Add(new CopyFileToSolution(file.PathRelativeTo(Root), file)));
+                       .Each(file => Add(new CopyFileToSolution(file.PathRelativeTo(directory), file)));
         }
 
         public void WriteNugetImports()

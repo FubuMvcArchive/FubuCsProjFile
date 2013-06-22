@@ -19,10 +19,6 @@ namespace FubuCsProjFile.Templating
             _library = library;
         }
 
-        public static void ConfigureSolutionTemplate(Template template, TemplatePlan plan)
-        {
-            SolutionPlanner.CreatePlan(template.Path, plan);
-        }
 
         public static void ConfigureProjectTemplate(Template template, TemplatePlan plan)
         {
@@ -40,8 +36,11 @@ namespace FubuCsProjFile.Templating
                 determineSolutionFileHandling(request, plan);
             }
 
-//            _library.ApplyAll(request.Templates, plan, ConfigureSolutionTemplate);
-//
+            _library.Find(TemplateType.Solution, request.Templates).Each(template => {
+                SolutionPlanner.CreatePlan(template.Path, plan);
+            });
+
+
 //            request.Projects.Each(proj => {
 //                var projectPlan = new ProjectPlan(proj.Name);
 //                plan.Add(projectPlan);
@@ -95,16 +94,6 @@ namespace FubuCsProjFile.Templating
         {
             throw new NotImplementedException();
         }
-    }
-
-    public class TemplateRequest
-    {
-        public string RootDirectory { get; set; }
-        public IEnumerable<string> Templates { get; set; } // at the solution level
-        public string SolutionName { get; set; }
-
-        public IEnumerable<ProjectRequest> Projects { get; set; }
-        public IEnumerable<TestProjectRequest> TestingProjects { get; set; } 
     }
 
     public class SolutionRequest

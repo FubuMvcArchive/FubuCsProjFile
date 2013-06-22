@@ -7,6 +7,7 @@ namespace FubuCsProjFile.Templating
     {
         IEnumerable<Template> All();
         Template Find(TemplateType type, string name);
-        void ApplyAll(IEnumerable<string> templateNames, TemplatePlan plan, Action<Template, TemplatePlan> action);
+
+        IEnumerable<Template> Find(TemplateType type, IEnumerable<string> names);
     }
 }

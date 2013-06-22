@@ -69,6 +69,7 @@
     <Compile Include="CsProjFileTester.cs" />
     <Compile Include="DataMother.cs" />
     <Compile Include="GlobalSectionTester.cs" />
+    <Compile Include="IntegrationTester.cs" />
     <Compile Include="MSBuildProjectTester.cs" />
     <Compile Include="ProjectReferenceTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

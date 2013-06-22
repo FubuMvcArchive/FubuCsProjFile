@@ -90,11 +90,13 @@
     <Compile Include="Templating\ReadSolution.cs" />
     <Compile Include="Templating\SolutionDirectory.cs" />
     <Compile Include="Templating\SystemReference.cs" />
+    <Compile Include="Templating\Template.cs" />
     <Compile Include="Templating\TemplateBuilder.cs" />
     <Compile Include="Templating\TemplateClasses.cs" />
     <Compile Include="Templating\TemplateLibrary.cs" />
     <Compile Include="Templating\TemplatePlan.cs" />
     <Compile Include="Templating\TemplatePlanner.cs" />
+    <Compile Include="Templating\TemplateRequest.cs" />
     <Compile Include="Templating\TemplateType.cs" />
     <Compile Include="Templating\TextFile.cs" />
   </ItemGroup>
