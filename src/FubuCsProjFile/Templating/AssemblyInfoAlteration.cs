@@ -15,7 +15,7 @@ namespace FubuCsProjFile.Templating
             _additions = additions;
         }
 
-        public void Alter(CsProjFile file)
+        public void Alter(CsProjFile file, ProjectPlan plan)
         {
             var codeFile = file.Find<CodeFile>(AssemblyInfoPath) ?? file.Add<CodeFile>(AssemblyInfoPath);
 
@@ -26,13 +26,13 @@ namespace FubuCsProjFile.Templating
                 Directory.CreateDirectory(parentDirectory);
             }
 
-            new FileSystem().AlterFlatFile(path, contents => Alter(contents, file));
+            new FileSystem().AlterFlatFile(path, contents => Alter(contents, plan));
         }
 
-        public void Alter(List<string> contents, CsProjFile file)
+        public void Alter(List<string> contents, ProjectPlan plan)
         {
             _additions
-                .Select(x => x.Replace(CodeFileTemplate.ASSEMBLY_NAME, file.ProjectName))
+                .Select(x => plan.ApplySubstitutions(x))
                 .Where(x => !contents.Contains(x))
                 .Each(contents.Add);
         }

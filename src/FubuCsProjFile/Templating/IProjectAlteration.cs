@@ -2,6 +2,6 @@
 {
     public interface IProjectAlteration
     {
-        void Alter(CsProjFile file);
+        void Alter(CsProjFile file, ProjectPlan plan);
     }
 }

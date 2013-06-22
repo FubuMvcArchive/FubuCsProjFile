@@ -9,8 +9,6 @@ namespace FubuCsProjFile.Templating
 {
     public class CodeFileTemplate : IProjectAlteration
     {
-        public const string ASSEMBLY_NAME = "%ASSEMBLYNAME%";
-        public const string NAMESPACE = "%NAMESPACE%";
         public const string CLASS = "%CLASS%";
 
         private readonly string _relativePath;
@@ -55,20 +53,10 @@ namespace FubuCsProjFile.Templating
             get { return _rawText; }
         }
 
-        public static string GetNamespace(string relativePath, string projectName)
-        {
-            return relativePath
-                .Split('/')
-                .Reverse()
-                .Skip(1)
-                .Union(new string[]{projectName})
-                .Reverse()
-                .Join(".");
-        }
 
-        public void Alter(CsProjFile file)
+
+        public void Alter(CsProjFile file, ProjectPlan plan)
         {
-            var @namespace = GetNamespace(_relativePath, file.ProjectName);
 
             var filename = file.FileName.ParentDirectory().AppendPath(_relativePath);
             if (!filename.EndsWith(".cs"))
@@ -76,9 +64,7 @@ namespace FubuCsProjFile.Templating
                 filename = filename + ".cs";
             }
 
-            var text = _rawText
-                .Replace(ASSEMBLY_NAME, file.ProjectName)
-                .Replace(NAMESPACE, @namespace);
+            var text = plan.ApplySubstitutions(_rawText, _relativePath);
 
             new FileSystem().WriteStringToFile(filename, text);
 

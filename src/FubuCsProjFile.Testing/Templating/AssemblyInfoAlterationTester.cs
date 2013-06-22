@@ -21,7 +21,7 @@ namespace FubuCsProjFile.Testing.Templating
 
             context.Add(project);
 
-            var alteration = new AssemblyInfoAlteration("using System.Reflection;", "[assembly: AssemblyTitle(\"%ASSEMBLYNAME%\")]", "using FubuMVC.Core;", "[assembly: FubuModule]");
+            var alteration = new AssemblyInfoAlteration("using System.Reflection;", "[assembly: AssemblyTitle(\"%ASSEMBLY_NAME%\")]", "using FubuMVC.Core;", "[assembly: FubuModule]");
             project.Add(alteration);
 
             context.Execute();

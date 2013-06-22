@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace FubuCsProjFile
 {
     public class CsProjFile
     {
+
         private const string PROJECTGUID = "ProjectGuid";
         private readonly string _fileName;
         private readonly MSBuildProject _project;
@@ -31,7 +33,7 @@ namespace FubuCsProjFile
             get
             {
                 var raw = _project.PropertyGroups.Select(x => x.GetPropertyValue(PROJECTGUID))
-                        .FirstOrDefault(x => x.IsNotEmpty());
+                                  .FirstOrDefault(x => x.IsNotEmpty());
 
                 return raw.IsEmpty() ? Guid.Empty : Guid.Parse(raw.TrimStart('{').TrimEnd('}'));
 
@@ -47,7 +49,8 @@ namespace FubuCsProjFile
 
         public void Add<T>(T item) where T : ProjectItem
         {
-            var group = _project.FindGroup(item.Matches) ?? _project.FindGroup(x => x.Name == item.Name) ?? _project.AddNewItemGroup();
+            var group = _project.FindGroup(item.Matches) ??
+                        _project.FindGroup(x => x.Name == item.Name) ?? _project.AddNewItemGroup();
             item.Configure(group);
         }
 
@@ -62,7 +65,7 @@ namespace FubuCsProjFile
 
                                return projectItem;
                            });
-        } 
+        }
 
         public T Add<T>(string include) where T : ProjectItem, new()
         {
@@ -76,9 +79,10 @@ namespace FubuCsProjFile
         {
             var fileName = directory.AppendPath(assemblyName).AppendPath(assemblyName) + ".csproj";
             var project = MSBuildProject.Create(assemblyName);
-            var group = project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == PROJECTGUID)) ?? project.PropertyGroups.FirstOrDefault() ?? project.AddNewPropertyGroup(true);
+            var group = project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == PROJECTGUID)) ??
+                        project.PropertyGroups.FirstOrDefault() ?? project.AddNewPropertyGroup(true);
 
-            group.SetPropertyValue(PROJECTGUID, Guid.NewGuid().ToString().ToUpper(), true);
+            @group.SetPropertyValue(PROJECTGUID, Guid.NewGuid().ToString().ToUpper(), true);
 
             return new CsProjFile(fileName, project);
         }
@@ -124,7 +128,7 @@ namespace FubuCsProjFile
             {
                 foreach (var raw in raws)
                 {
-                    foreach ( var guid in raw.Split(';'))
+                    foreach (var guid in raw.Split(';'))
                     {
                         yield return Guid.Parse(guid.TrimStart('{').TrimEnd('}'));
                     }
@@ -152,5 +156,9 @@ namespace FubuCsProjFile
         {
             return _fileName.ParentDirectory().AppendPath(codeFile.Include);
         }
+
+
     }
 }
+
+

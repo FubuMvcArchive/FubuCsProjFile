@@ -11,6 +11,7 @@ namespace FubuCsProjFile.Testing.Templating
     public class CodeFileTemplateTester
     {
         private CsProjFile theProject;
+        private ProjectPlan thePlan;
 
         [TestFixtureSetUp]
         public void SetUp()
@@ -19,24 +20,15 @@ namespace FubuCsProjFile.Testing.Templating
             new FileSystem().CreateDirectory("Templated");
 
             theProject = CsProjFile.CreateAtSolutionDirectory("TemplatedProject", "Templated");
-
+            thePlan = new ProjectPlan(theProject.ProjectName);
         }
 
-        [Test]
-        public void get_namespace_shallow()
-        {
-            CodeFileTemplate.GetNamespace("Foo", "Lib1").ShouldEqual("Lib1");
-            CodeFileTemplate.GetNamespace("Foo.cs", "Lib1").ShouldEqual("Lib1");
-            CodeFileTemplate.GetNamespace("Sub/Foo.cs", "Lib1").ShouldEqual("Lib1.Sub");
-            CodeFileTemplate.GetNamespace("Sub/Foo", "Lib1").ShouldEqual("Lib1.Sub");
-            CodeFileTemplate.GetNamespace("Sub/Other/Foo", "Lib1").ShouldEqual("Lib1.Sub.Other");
-            CodeFileTemplate.GetNamespace("Sub/Other/Foo.cs", "Lib1").ShouldEqual("Lib1.Sub.Other");
-        }
+
 
         [Test]
         public void add_simple_class_to_root_of_project()
         {
-            CodeFileTemplate.Class("Foo").Alter(theProject);
+            CodeFileTemplate.Class("Foo").Alter(theProject, thePlan);
 
             var file = "Templated".AppendPath("TemplatedProject", "Foo.cs");
             File.Exists(file).ShouldBeTrue();
@@ -59,7 +51,7 @@ namespace TemplatedProject
         [Test]
         public void add_deeper_class_to_root_of_project()
         {
-            CodeFileTemplate.Class("Bar/Doer").Alter(theProject);
+            CodeFileTemplate.Class("Bar/Doer").Alter(theProject, thePlan);
 
             var file = "Templated".AppendPath("TemplatedProject", "Bar", "Doer.cs");
             File.Exists(file).ShouldBeTrue();

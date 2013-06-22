@@ -136,6 +136,10 @@ namespace FubuCsProjFile.Templating
 
     public class RakeFileTransform : ITemplateStep
     {
+        // Substitute on project name/assembly name
+        // Substitute on solution name
+        // substitute on project relative path
+
         public RakeFileTransform(string templateFile)
         {
         }
@@ -149,17 +153,6 @@ namespace FubuCsProjFile.Templating
 
     public class SolutionPlanner : TemplatePlanner
     {
-        public SolutionPlanner()
-        {
-            /*
-             * TODO
-             * copy files and directories to solution
-             * create solution
-             * 
-             * 
-             */
-        }
-
         protected override void configurePlan(string directory, TemplatePlan plan)
         {
             SolutionDirectory.PlanForDirectory(directory).Each(plan.Add);

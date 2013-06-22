@@ -20,7 +20,7 @@ namespace FubuCsProjFile.Templating
             get { return _relativePath; }
         }
 
-        public void Alter(CsProjFile file)
+        public void Alter(CsProjFile file, ProjectPlan plan)
         {
             TemplateLibrary.FileSystem.CreateDirectory(file.ProjectDirectory.AppendPath(_relativePath));
         }

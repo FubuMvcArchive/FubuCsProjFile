@@ -1,10 +1,16 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using FubuCore;
 
 namespace FubuCsProjFile.Templating
 {
     public class ProjectPlan : ITemplateStep
     {
+        public const string NAMESPACE = "%NAMESPACE%";
+        public const string ASSEMBLY_NAME = "%ASSEMBLY_NAME%";
+
+
         private readonly string _projectName;
         private readonly IList<IProjectAlteration> _alterations = new List<IProjectAlteration>(); 
         private readonly IList<string> _nugetDeclarations = new List<string>(); 
@@ -14,6 +20,7 @@ namespace FubuCsProjFile.Templating
             _projectName = projectName;
         }
 
+        // TODO -- keep the relative path from the plan root
         public void Alter(TemplatePlan plan)
         {
             var reference = plan.Solution.FindProject(_projectName);
@@ -24,7 +31,7 @@ namespace FubuCsProjFile.Templating
                                 : plan.Solution.AddProjectFromTemplate(_projectName, ProjectTemplateFile);
             }
 
-            _alterations.Each(x => x.Alter(reference.Project));
+            _alterations.Each(x => x.Alter(reference.Project, this));
         }
 
         public IList<string> NugetDeclarations
@@ -53,6 +60,37 @@ namespace FubuCsProjFile.Templating
         public string ToNugetImportStatement()
         {
             return "{0}: {1}".ToFormat(ProjectName, _nugetDeclarations.Join(", "));
+        }
+
+        public string ApplySubstitutions(string rawText, string relativePath = null)
+        {
+            var builder = new StringBuilder(rawText);
+            ApplySubstitutions(relativePath, builder);
+
+            return builder.ToString();
+        }
+
+        internal void ApplySubstitutions(string relativePath, StringBuilder builder)
+        {
+            // TODO -- gonna want to apply the project path substitution as well
+            builder.Replace(ASSEMBLY_NAME, ProjectName);
+
+            if (relativePath.IsNotEmpty())
+            {
+                var @namespace = GetNamespace(relativePath, ProjectName);
+                builder.Replace(NAMESPACE, @namespace);
+            }
+        }
+
+        public static string GetNamespace(string relativePath, string projectName)
+        {
+            return relativePath
+                .Split('/')
+                .Reverse()
+                .Skip(1)
+                .Union(new string[] { projectName })
+                .Reverse()
+                .Join(".");
         }
     }
 }

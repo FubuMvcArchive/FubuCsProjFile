@@ -11,7 +11,7 @@ namespace FubuCsProjFile.Templating
             _source = source;
         }
 
-        public void Alter(CsProjFile file)
+        public void Alter(CsProjFile file, ProjectPlan plan)
         {
             file.CopyFileTo(_source, _relativePath);
         }

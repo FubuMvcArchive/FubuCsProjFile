@@ -29,5 +29,26 @@ namespace FubuCsProjFile.Testing.Templating
                 "MyProject2: RavenDb/2.0.0.0"
                 );
         }
+
+        [Test]
+        public void substitutes_the_solution_name()
+        {
+            var plan = new TemplatePlan("root");
+            plan.Solution = Solution.CreateNew("root", "MySolution");
+
+            plan.ApplySubstitutions("*%SOLUTION_NAME%*")
+                .ShouldEqual("*MySolution*");
+
+        }
+
+        [Test]
+        public void substitutes_the_solution_path()
+        {
+            var plan = new TemplatePlan("root");
+            plan.Solution = Solution.CreateNew("root".AppendPath("src"), "MySolution");
+
+            plan.ApplySubstitutions("*%SOLUTION_PATH%*")
+                .ShouldEqual("*src/MySolution.sln*");
+        }
     }
 }

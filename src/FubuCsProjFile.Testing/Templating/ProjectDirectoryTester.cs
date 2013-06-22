@@ -28,7 +28,7 @@ namespace FubuCsProjFile.Testing.Templating
         {
             var dir = new ProjectDirectory("content");
 
-            dir.Alter(csProjFile);
+            dir.Alter(csProjFile, null);
 
             TemplateLibrary.FileSystem.DirectoryExists("temp-solution", "MyProj", "content")
                 .ShouldBeTrue();
@@ -41,7 +41,7 @@ namespace FubuCsProjFile.Testing.Templating
 
             TemplateLibrary.FileSystem.CreateDirectory("temp-solution", "MyProj", "content");
 
-            dir.Alter(csProjFile);
+            dir.Alter(csProjFile, null);
 
             TemplateLibrary.FileSystem.DirectoryExists("temp-solution", "MyProj", "content")
                 .ShouldBeTrue();
@@ -52,7 +52,7 @@ namespace FubuCsProjFile.Testing.Templating
         {
             var dir = new ProjectDirectory("content/scripts");
 
-            dir.Alter(csProjFile);
+            dir.Alter(csProjFile, null);
 
             TemplateLibrary.FileSystem.DirectoryExists("temp-solution", "MyProj", "content", "scripts")
                 .ShouldBeTrue();

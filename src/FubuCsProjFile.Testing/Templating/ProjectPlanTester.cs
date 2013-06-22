@@ -48,5 +48,16 @@ namespace FubuCsProjFile.Testing.Templating
                 .ShouldBeTrue(); // the 'special' testing template has this reference, but the default template does not
 
         }
+
+        [Test]
+        public void get_namespace_shallow()
+        {
+            ProjectPlan.GetNamespace("Foo", "Lib1").ShouldEqual("Lib1");
+            ProjectPlan.GetNamespace("Foo.cs", "Lib1").ShouldEqual("Lib1");
+            ProjectPlan.GetNamespace("Sub/Foo.cs", "Lib1").ShouldEqual("Lib1.Sub");
+            ProjectPlan.GetNamespace("Sub/Foo", "Lib1").ShouldEqual("Lib1.Sub");
+            ProjectPlan.GetNamespace("Sub/Other/Foo", "Lib1").ShouldEqual("Lib1.Sub.Other");
+            ProjectPlan.GetNamespace("Sub/Other/Foo.cs", "Lib1").ShouldEqual("Lib1.Sub.Other");
+        }
     }
 }

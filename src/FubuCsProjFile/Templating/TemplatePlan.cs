@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using FubuCore;
 using System.Linq;
 
@@ -8,6 +9,11 @@ namespace FubuCsProjFile.Templating
 {
     public class TemplatePlan
     {
+
+        public const string SOLUTION_NAME = "%SOLUTION_NAME%";
+        public const string SOLUTION_PATH = "%SOLUTION_PATH%";
+
+
         public static readonly string RippleImportFile = "ripple-install.txt";
 
         private readonly IFileSystem _fileSystem = new FileSystem();
@@ -27,6 +33,26 @@ namespace FubuCsProjFile.Templating
             Root = rootDirectory;
             SourceName = "src";
         }
+
+        public string ApplySubstitutions(string rawText)
+        {
+            var builder = new StringBuilder(rawText);
+
+            if (CurrentProject != null)
+            {
+                CurrentProject.ApplySubstitutions(null, builder);
+            }
+
+            if (Solution != null)
+            {
+                builder.Replace(SOLUTION_NAME, Solution.Name);
+                builder.Replace(SOLUTION_PATH, Solution.Filename.PathRelativeTo(Root).Replace("\\", "/"));
+            }
+
+            return builder.ToString();
+        }
+
+
 
         public void MarkHandled(string file)
         {

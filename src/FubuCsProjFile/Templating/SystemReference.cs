@@ -9,7 +9,7 @@
             _assemblyName = assemblyName;
         }
 
-        public void Alter(CsProjFile file)
+        public void Alter(CsProjFile file, ProjectPlan plan)
         {
             file.Add<AssemblyReference>(_assemblyName);
         }
