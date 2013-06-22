@@ -29,6 +29,8 @@ namespace FubuCsProjFile.Testing
                 RootDirectory = "integrated",
                 SolutionName = "MySolution"
             };
+
+            new FileSystem().DeleteDirectory("integrated");
         }
 
         private void executePlan(Action<TemplateRequest> configure = null)
@@ -125,6 +127,21 @@ namespace FubuCsProjFile.Testing
             });
 
             assertFileExists("src", "MyProject", "MyProject.csproj");
+        }
+
+        [Test]
+        public void create_a_project_from_a_csproj_file_template()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Templates = new string[] { "CustomProjFile" } });
+            });
+
+            assertFileExists("src", "MyProject", "MyProject.csproj");
+
+            var csProjFile = CsProjFile.LoadFrom("integrated".AppendPath("src", "MyProject", "MyProject.csproj"));
+            csProjFile.Find<AssemblyReference>("System.Data").ShouldNotBeNull(); // this reference is NOT in the default 
         }
     }
 }

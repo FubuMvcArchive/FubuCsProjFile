@@ -10,7 +10,7 @@ namespace FubuCsProjFile.Templating
         public const string NAMESPACE = "%NAMESPACE%";
         public const string ASSEMBLY_NAME = "%ASSEMBLY_NAME%";
         public const string PROJECT_PATH = "%PROJECT_PATH%";
-
+        public static readonly string TemplateFile = "csproj.xml";
 
         private readonly string _projectName;
         private readonly IList<IProjectAlteration> _alterations = new List<IProjectAlteration>(); 
@@ -43,7 +43,6 @@ namespace FubuCsProjFile.Templating
             get { return _nugetDeclarations; }
         }
 
-        // TODO -- do something with this in Alter.  Might need to blow up if the project already exists
         public string ProjectTemplateFile { get; set; }
 
         public void Add(IProjectAlteration alteration)

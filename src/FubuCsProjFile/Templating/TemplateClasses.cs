@@ -133,6 +133,9 @@ namespace FubuCsProjFile.Templating
 
         public ProjectPlanner()
         {
+            Matching(FileSet.Shallow(ProjectPlan.TemplateFile)).Do = (file, plan) => {
+                if (plan.CurrentProject != null) plan.CurrentProject.ProjectTemplateFile = file.Path; };
+
             Matching(FileSet.Shallow(NugetFile)).Do = (file, plan) => {
                 file.ReadLines()
                     .Where(x => x.IsNotEmpty())
