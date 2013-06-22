@@ -86,6 +86,7 @@
     <Compile Include="Templating\ITemplateStep.cs" />
     <Compile Include="Templating\ProjectDirectory.cs" />
     <Compile Include="Templating\ProjectPlan.cs" />
+    <Compile Include="Templating\ProjectRequest.cs" />
     <Compile Include="Templating\RakeFileTransform.cs" />
     <Compile Include="Templating\ReadSolution.cs" />
     <Compile Include="Templating\SolutionDirectory.cs" />

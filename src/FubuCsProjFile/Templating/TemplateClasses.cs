@@ -59,7 +59,12 @@ namespace FubuCsProjFile.Templating
                 plan.Add(projectPlan);
 
                 var planner = new ProjectPlanner();
-                _library.Find(TemplateType.Project, proj.Templates)
+                if (proj.Template.IsNotEmpty())
+                {
+                    planner.CreatePlan(_library.Find(TemplateType.Project, proj.Template).Path, plan);
+                }
+
+                _library.Find(TemplateType.Alteration, proj.Alterations)
                         .Each(template => { planner.CreatePlan(template.Path, plan); });
             });
         }
@@ -111,12 +116,6 @@ namespace FubuCsProjFile.Templating
     {
         public string Name { get; set; }
         public IEnumerable<string> Templates { get; set; } // This needs to get a default value
-    }
-
-    public class ProjectRequest
-    {
-        public string Name { get; set; }
-        public IEnumerable<string> Templates { get; set; } 
     }
 
     public class TestProjectRequest

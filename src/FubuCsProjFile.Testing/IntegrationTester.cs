@@ -123,7 +123,7 @@ namespace FubuCsProjFile.Testing
         {
             executePlan(x => {
                 x.AddTemplate("Simple");
-                x.AddProjectRequest(new ProjectRequest{Name = "MyProject", Templates = new string[]{"Simple"}});
+                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
             });
 
             assertFileExists("src", "MyProject", "MyProject.csproj");
@@ -135,7 +135,7 @@ namespace FubuCsProjFile.Testing
             executePlan(x =>
             {
                 x.AddTemplate("Simple");
-                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Templates = new string[] { "CustomProjFile" } });
+                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template="CustomProjFile"  });
             });
 
             assertFileExists("src", "MyProject", "MyProject.csproj");
