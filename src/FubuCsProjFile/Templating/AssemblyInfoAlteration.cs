@@ -7,6 +7,7 @@ namespace FubuCsProjFile.Templating
 {
     public class AssemblyInfoAlteration : IProjectAlteration
     {
+        public const string SourceFile = "assembly-info.txt";
         public const string AssemblyInfoPath = "Properties/AssemblyInfo.cs";
         private readonly IEnumerable<string> _additions;
 

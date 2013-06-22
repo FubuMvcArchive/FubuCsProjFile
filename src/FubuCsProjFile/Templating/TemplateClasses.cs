@@ -133,12 +133,17 @@ namespace FubuCsProjFile.Templating
         public ProjectPlanner()
         {
             Matching(FileSet.Shallow(ProjectPlan.TemplateFile)).Do = (file, plan) => {
-                if (plan.CurrentProject != null) plan.CurrentProject.ProjectTemplateFile = file.Path; };
+                plan.CurrentProject.ProjectTemplateFile = file.Path; };
 
             Matching(FileSet.Shallow(NugetFile)).Do = (file, plan) => {
                 file.ReadLines()
                     .Where(x => x.IsNotEmpty())
                     .Each(line => plan.CurrentProject.NugetDeclarations.Add(line.Trim()));
+            };
+
+            Matching(FileSet.Shallow(AssemblyInfoAlteration.SourceFile)).Do = (file, plan) => {
+                var additions = file.ReadLines().Where(x => x.IsNotEmpty()).ToArray();
+                plan.CurrentProject.Add(new AssemblyInfoAlteration(additions));
             };
 
             /*

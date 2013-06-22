@@ -214,5 +214,23 @@ namespace FubuCsProjFile.Testing
             var contents = readFile("rakefile");
             contents.ShouldContain("# the project is MyProject at src/MyProject/MyProject.csproj");
         }
+
+        [Test]
+        public void pick_up_AssemblyInfo_transform_from_project_alteration()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+
+                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                projectRequest.AddAlteration("FubuBottle");
+
+                x.AddProjectRequest(projectRequest);
+            });
+
+            var contents = readFile("src", "MyProject", "Properties", "AssemblyInfo.cs");
+            contents.ShouldContain("using FubuMVC.Core;");
+            contents.ShouldContain("[assembly: FubuModule]");
+        }
     }
 }
