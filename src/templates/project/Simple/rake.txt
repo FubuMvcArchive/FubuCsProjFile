@@ -1,0 +1,1 @@
+# the project is %ASSEMBLY_NAME% at %PROJECT_PATH%

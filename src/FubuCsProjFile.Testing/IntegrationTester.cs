@@ -201,5 +201,18 @@ namespace FubuCsProjFile.Testing
 
             assertFileExists("src", "MyProject", "content", "images", "fake.bmp");
         }
+
+        [Test]
+        public void rake_transform_from_within_project()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
+            });
+
+            var contents = readFile("rakefile");
+            contents.ShouldContain("# the project is MyProject at src/MyProject/MyProject.csproj");
+        }
     }
 }
