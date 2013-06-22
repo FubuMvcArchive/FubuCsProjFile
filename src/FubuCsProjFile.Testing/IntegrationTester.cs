@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using FubuCsProjFile.Templating;
 using NUnit.Framework;
@@ -81,6 +82,17 @@ namespace FubuCsProjFile.Testing
             assertFileExists("something.txt");
             assertFileExists("else.txt");
             assertFileExists("packaging", "nuget", "nuspec.txt");
+        }
+
+        [Test]
+        public void rake_files()
+        {
+            executePlan(x => x.AddTemplate("Simple"));
+            thePlan.Steps.OfType<RakeFileTransform>().Any().ShouldBeTrue();
+
+            var contents = readFile("rakefile");
+
+            contents.ShouldContain("# the solution is MySolution at src/MySolution.sln");
         }
     }
 }

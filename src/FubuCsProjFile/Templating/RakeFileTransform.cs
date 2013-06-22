@@ -11,15 +11,6 @@ namespace FubuCsProjFile.Templating
         public static readonly string TargetFile = "rakefile";
         public static readonly string SourceFile = "rake.txt";
 
-        // Substitute on project name/assembly name
-        // Substitute on solution name
-        // substitute on project relative path
-
-        public static RakeFileTransform LoadFrom(string file)
-        {
-            throw new NotImplementedException();
-        }
-
         public RakeFileTransform(string text)
         {
             _text = text;

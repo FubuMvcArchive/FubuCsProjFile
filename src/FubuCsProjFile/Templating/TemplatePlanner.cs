@@ -14,7 +14,9 @@ namespace FubuCsProjFile.Templating
             ShallowMatch(GemReference.File).Do = GemReference.ConfigurePlan;
             ShallowMatch(GitIgnoreStep.File).Do = GitIgnoreStep.ConfigurePlan;
 
-            // TODO -- add the rake transform
+            ShallowMatch(RakeFileTransform.SourceFile).Do = (file, plan) => {
+                plan.Add(new RakeFileTransform(file.ReadAll()));
+            };
         }
 
         public void CreatePlan(string directory, TemplatePlan plan)

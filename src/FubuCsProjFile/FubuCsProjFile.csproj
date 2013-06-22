@@ -89,6 +89,7 @@
     <Compile Include="Templating\RakeFileTransform.cs" />
     <Compile Include="Templating\ReadSolution.cs" />
     <Compile Include="Templating\SolutionDirectory.cs" />
+    <Compile Include="Templating\SolutionPlanner.cs" />
     <Compile Include="Templating\SystemReference.cs" />
     <Compile Include="Templating\Template.cs" />
     <Compile Include="Templating\TemplateBuilder.cs" />

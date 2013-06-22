@@ -116,15 +116,6 @@ namespace FubuCsProjFile.Templating
     }
 
 
-    public class SolutionPlanner : TemplatePlanner
-    {
-        protected override void configurePlan(string directory, TemplatePlan plan)
-        {
-            SolutionDirectory.PlanForDirectory(directory).Each(plan.Add);
-        }
-    }
-
-
     public class ProjectPlanner : TemplatePlanner
     {
         public static readonly string NugetFile = "nuget.txt";
