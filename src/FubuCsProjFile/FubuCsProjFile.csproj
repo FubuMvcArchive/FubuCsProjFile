@@ -99,6 +99,7 @@
     <Compile Include="Templating\TemplateClasses.cs" />
     <Compile Include="Templating\TemplateLibrary.cs" />
     <Compile Include="Templating\TemplatePlan.cs" />
+    <Compile Include="Templating\TemplatePlanBuilder.cs" />
     <Compile Include="Templating\TemplatePlanner.cs" />
     <Compile Include="Templating\TemplateRequest.cs" />
     <Compile Include="Templating\TemplateType.cs" />
