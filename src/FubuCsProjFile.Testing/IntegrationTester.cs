@@ -115,5 +115,16 @@ namespace FubuCsProjFile.Testing
             readFile(".gitignore").ShouldContain("bin");
             readFile(".gitignore").ShouldContain("obj");
         }
+
+        [Test]
+        public void create_a_default_project()
+        {
+            executePlan(x => {
+                x.AddTemplate("Simple");
+                x.AddProjectRequest(new ProjectRequest{Name = "MyProject", Templates = new string[]{"Simple"}});
+            });
+
+            assertFileExists("src", "MyProject", "MyProject.csproj");
+        }
     }
 }

@@ -11,8 +11,6 @@ namespace FubuCsProjFile.Templating
     public class TemplatePlanBuilder
     {
         private readonly ITemplateLibrary _library;
-        public static readonly SolutionPlanner SolutionPlanner = new SolutionPlanner();
-        public static readonly ProjectPlanner Project = new ProjectPlanner();
 
         public TemplatePlanBuilder(ITemplateLibrary library)
         {
@@ -36,17 +34,9 @@ namespace FubuCsProjFile.Templating
                 determineSolutionFileHandling(request, plan);
             }
 
-            _library.Find(TemplateType.Solution, request.Templates).Each(template => {
-                SolutionPlanner.CreatePlan(template.Path, plan);
-            });
+            applySolutionTemplates(request, plan);
+            applyProjectTemplates(request, plan);
 
-
-//            request.Projects.Each(proj => {
-//                var projectPlan = new ProjectPlan(proj.Name);
-//                plan.Add(projectPlan);
-//
-//                _library.ApplyAll(proj.Templates, plan, ConfigureProjectTemplate);
-//            });
 //
 //            request.TestingProjects.Each(proj => {
 //                var testingProject = proj.OriginalProject + ".Testing";
@@ -60,6 +50,27 @@ namespace FubuCsProjFile.Templating
 
 
             return plan;
+        }
+
+        private void applyProjectTemplates(TemplateRequest request, TemplatePlan plan)
+        {
+            request.Projects.Each(proj => {
+                var projectPlan = new ProjectPlan(proj.Name);
+                plan.Add(projectPlan);
+
+                var planner = new ProjectPlanner();
+                _library.Find(TemplateType.Project, proj.Templates)
+                        .Each(template => { planner.CreatePlan(template.Path, plan); });
+            });
+        }
+
+        private void applySolutionTemplates(TemplateRequest request, TemplatePlan plan)
+        {
+            var planner = new SolutionPlanner();
+            _library.Find(TemplateType.Solution, request.Templates).Each(template =>
+            {
+                planner.CreatePlan(template.Path, plan);
+            });
         }
 
         private static void determineSolutionFileHandling(TemplateRequest request, TemplatePlan plan)
