@@ -108,6 +108,8 @@ namespace FubuCsProjFile.Templating
             {
                 Solution.Save();
             }
+
+            WriteNugetImports();
         }
 
         public void AlterFile(string relativeName, Action<List<string>> alter)

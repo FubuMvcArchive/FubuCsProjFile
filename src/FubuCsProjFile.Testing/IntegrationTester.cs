@@ -267,5 +267,22 @@ namespace FubuCsProjFile.Testing
             csProjFile.Find<AssemblyReference>("System.Configuration").ShouldNotBeNull(); // this reference is NOT in the default 
             csProjFile.Find<AssemblyReference>("System.Security").ShouldNotBeNull(); // this reference is NOT in the default 
         }
+
+        [Test]
+        public void writes_out_ripple_import_file()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+
+                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+
+                x.AddProjectRequest(projectRequest);
+            });
+
+            var contents = readFile(TemplatePlan.RippleImportFile);
+
+            contents.ShouldContain("MyProject: FubuMVC.Core, RavenDb.Server/2.0.0.0");
+        }
     }
 }
