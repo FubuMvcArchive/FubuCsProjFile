@@ -18,7 +18,7 @@ namespace FubuCsProjFile
         private const string ProjectConfigurationPlatforms = "ProjectConfigurationPlatforms";
 
         private readonly string _filename;
-        private readonly IList<ProjectReference> _projects = new List<ProjectReference>(); 
+        private readonly IList<SolutionProject> _projects = new List<SolutionProject>(); 
 
         public static Solution CreateNew(string directory, string name)
         {
@@ -86,7 +86,7 @@ namespace FubuCsProjFile
             private readonly Solution _parent;
             private Action<string> _read;
             private GlobalSection _section;
-            private ProjectReference _project;
+            private SolutionProject _solutionProject;
 
             public SolutionReader(Solution parent)
             {
@@ -126,7 +126,7 @@ namespace FubuCsProjFile
                 }
                 else
                 {
-                    _project.ReadLine(text);
+                    _solutionProject.ReadLine(text);
                 }
             }
 
@@ -138,8 +138,8 @@ namespace FubuCsProjFile
                 }
                 else if (text.StartsWith("Project"))
                 {
-                    _project = new ProjectReference(text, _parent._filename.ParentDirectory());
-                    _parent._projects.Add(_project);
+                    _solutionProject = new SolutionProject(text, _parent._filename.ParentDirectory());
+                    _parent._projects.Add(_solutionProject);
                     _read = readProject;
                 }
                 else
@@ -207,12 +207,12 @@ namespace FubuCsProjFile
 
         }
 
-        public IEnumerable<ProjectReference> Projects
+        public IEnumerable<SolutionProject> Projects
         {
             get { return _projects; }
         }
 
-        public ProjectReference AddProject( string projectName)
+        public SolutionProject AddProject( string projectName)
         {
             var existing = FindProject(projectName);
             if (existing != null)
@@ -220,13 +220,13 @@ namespace FubuCsProjFile
                 return existing;
             }
 
-            var reference = ProjectReference.CreateNewAt(ParentDirectory, projectName);
+            var reference = SolutionProject.CreateNewAt(ParentDirectory, projectName);
             _projects.Add(reference);
 
             return reference;
         }
 
-        public ProjectReference AddProjectFromTemplate(string projectName, string templateFile)
+        public SolutionProject AddProjectFromTemplate(string projectName, string templateFile)
         {
             var existing = FindProject(projectName);
             if (existing != null)
@@ -238,7 +238,7 @@ namespace FubuCsProjFile
             var project = MSBuildProject.CreateFromFile(projectName, templateFile);
             var csProjFile = new CsProjFile(ParentDirectory.AppendPath(projectName, projectName + ".csproj"), project);
 
-            var reference = new ProjectReference(csProjFile, ParentDirectory);
+            var reference = new SolutionProject(csProjFile, ParentDirectory);
             _projects.Add(reference);
 
             return reference;
@@ -254,7 +254,7 @@ namespace FubuCsProjFile
             get { return Path.GetFileNameWithoutExtension(_filename); }
         }
 
-        public ProjectReference FindProject(string projectName)
+        public SolutionProject FindProject(string projectName)
         {
             return _projects.FirstOrDefault(x => x.ProjectName == projectName);
         }

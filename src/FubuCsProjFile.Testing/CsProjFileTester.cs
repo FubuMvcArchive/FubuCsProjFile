@@ -218,5 +218,33 @@ namespace FubuCsProjFile.Testing
             project2.Find<AssemblyReference>("Rhino.Mocks")
                     .HintPath.ShouldEqual(hintPath);
         }
+
+        [Test]
+        public void can_write_and_read_project_references()
+        {
+            var include = @"..\OtherProject\OtherProject.csproj";
+
+
+            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var reference1 = new ProjectReference(include)
+            {
+                ProjectName = "OtherProject",
+                ProjectGuid = Guid.NewGuid()
+            };
+
+            project.Add(reference1);
+
+            project.Save();
+
+            var project2 = CsProjFile.LoadFrom(project.FileName);
+
+            var reference2 = project2.Find<ProjectReference>(reference1.Include);
+
+            var all = project2.All<ProjectReference>();
+
+            reference2.ShouldNotBeNull();
+            reference2.ProjectName.ShouldEqual(reference1.ProjectName);
+            reference2.ProjectGuid.ShouldEqual(reference1.ProjectGuid);
+        }
     }
 }

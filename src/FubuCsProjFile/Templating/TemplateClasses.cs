@@ -103,8 +103,8 @@ namespace FubuCsProjFile.Templating
         {
         }
 
-        // TODO -- has to copy all the system assemblies and nuget references of the parent project
-        // TODO -- adds the project reference to the parent
+        // TODO -- has to copy all the system assemblies and nuget references of the parent solutionProject
+        // TODO -- adds the solutionProject reference to the parent
         public void Alter(TemplatePlan plan)
         {
             throw new NotImplementedException();

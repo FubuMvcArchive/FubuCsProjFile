@@ -5,6 +5,8 @@ using FubuTestingSupport;
 
 namespace FubuCsProjFile.Testing.Templating
 {
+
+
     [TestFixture]
     public class AssemblyReferenceTester
     {

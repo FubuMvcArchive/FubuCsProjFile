@@ -15,7 +15,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void project_path_is_substituted()
         {
-            thePlan = TemplatePlan.CreateClean("create-project");
+            thePlan = TemplatePlan.CreateClean("create-solutionProject");
             thePlan.Add(new CreateSolution("MySolution"));
             thePlan.Add(new ProjectPlan("MyProject"));
 
@@ -28,7 +28,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void alter_by_creating_new_project_from_default_template()
         {
-            thePlan = TemplatePlan.CreateClean("create-project");
+            thePlan = TemplatePlan.CreateClean("create-solutionProject");
             thePlan.Add(new CreateSolution("MySolution"));
             thePlan.Add(new ProjectPlan("MyProject"));
 
@@ -44,7 +44,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void alter_by_creating_a_new_project_with_a_project_template_file()
         {
-            thePlan = TemplatePlan.CreateClean("create-project");
+            thePlan = TemplatePlan.CreateClean("create-solutionProject");
             thePlan.Add(new CreateSolution("MySolution"));
             thePlan.Add(new ProjectPlan("MyProject")
             {

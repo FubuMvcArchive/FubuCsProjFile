@@ -67,13 +67,13 @@ namespace FubuCsProjFile.Testing.Templating
         {
             var library = TemplateLibrary.BuildClean("mixed");
             library.StartTemplate(TemplateType.Alteration, "first").WriteDescription("the alteration");
-            library.StartTemplate(TemplateType.Project, "first").WriteDescription("the project");
+            library.StartTemplate(TemplateType.Project, "first").WriteDescription("the solutionProject");
             library.StartTemplate(TemplateType.Solution, "first").WriteDescription("the solution");
             library.StartTemplate(TemplateType.Alteration, "alter2");
             library.StartTemplate(TemplateType.Alteration, "alter3");
 
             library.Find(TemplateType.Alteration, "first").Description.ShouldEqual("the alteration");
-            library.Find(TemplateType.Project, "first").Description.ShouldEqual("the project");
+            library.Find(TemplateType.Project, "first").Description.ShouldEqual("the solutionProject");
             library.Find(TemplateType.Solution, "first").Description.ShouldEqual("the solution");
         }
 
