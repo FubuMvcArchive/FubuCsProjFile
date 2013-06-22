@@ -106,5 +106,14 @@ namespace FubuCsProjFile.Testing
             contents.ShouldContain("gem \"rake\", \"~>10.0\"");
             contents.ShouldContain("gem \"fuburake\", \"~>0.5\"");
         }
+
+        [Test]
+        public void gitignore_directive_in_solution()
+        {
+            executePlan(x => x.AddTemplate("Simple"));
+
+            readFile(".gitignore").ShouldContain("bin");
+            readFile(".gitignore").ShouldContain("obj");
+        }
     }
 }
