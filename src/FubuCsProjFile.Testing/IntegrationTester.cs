@@ -284,5 +284,21 @@ namespace FubuCsProjFile.Testing
 
             contents.ShouldContain("MyProject: FubuMVC.Core, RavenDb.Server/2.0.0.0");
         }
+
+        [Test]
+        public void reads_in_code_files()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+
+                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+
+                x.AddProjectRequest(projectRequest);
+            });
+
+            var csProjFile = CsProjFile.LoadFrom("integrated".AppendPath("src", "MyProject", "MyProject.csproj"));
+            csProjFile.Find<CodeFile>("SomeClass.cs").ShouldNotBeNull();
+        }
     }
 }

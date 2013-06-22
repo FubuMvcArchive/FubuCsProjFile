@@ -30,12 +30,10 @@ namespace FubuCsProjFile.Templating
                     .Each(assem => plan.CurrentProject.Add(new SystemReference(assem)));
             };
 
-            /*
-             * TODO: 
-             * // only looks for a csproj.xml file
-             * cs proj files
-             * assembly references
-             */
+            Matching(FileSet.Deep("*.cs")).Do = (file, plan) => {
+                var template = new CodeFileTemplate(file.RelativePath, file.ReadAll());
+                plan.CurrentProject.Add(template);
+            };
         }
 
         protected override void configurePlan(string directory, TemplatePlan plan)
