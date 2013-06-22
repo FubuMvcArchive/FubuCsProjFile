@@ -125,9 +125,19 @@ namespace FubuCsProjFile.Templating
 
         public void CopyUnhandledFiles(string directory)
         {
-            _fileSystem.FindFiles(directory, FileSet.Everything())
-                       .Where(FileIsUnhandled)
-                       .Each(file => Add(new CopyFileToSolution(file.PathRelativeTo(directory), file)));
+            var unhandledFiles = _fileSystem.FindFiles(directory, FileSet.Everything()).Where(FileIsUnhandled);
+
+            if (CurrentProject == null)
+            {
+                unhandledFiles.Each(file => Add(new CopyFileToSolution(file.PathRelativeTo(directory), file)));
+            }
+            else
+            {
+                unhandledFiles.Each(
+                    file => CurrentProject.Add(new CopyFileToProject(file.PathRelativeTo(directory), file)));
+            }
+
+
         }
 
         public void WriteNugetImports()

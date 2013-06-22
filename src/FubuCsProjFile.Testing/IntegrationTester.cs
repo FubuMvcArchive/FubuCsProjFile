@@ -143,5 +143,63 @@ namespace FubuCsProjFile.Testing
             var csProjFile = CsProjFile.LoadFrom("integrated".AppendPath("src", "MyProject", "MyProject.csproj"));
             csProjFile.Find<AssemblyReference>("System.Data").ShouldNotBeNull(); // this reference is NOT in the default 
         }
+
+        [Test]
+        public void copy_project_folder()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
+            });
+
+            assertDirectoryExists("src", "MyProject", "Random");
+        }
+
+        [Test]
+        public void copy_project_file()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
+            });
+
+            assertFileExists("src","MyProject","random.txt");
+        }
+
+        [Test]
+        public void copy_project_folders_in_alteration()
+        {
+            executePlan(x => {
+                x.AddTemplate("Simple");
+
+                var projectRequest = new ProjectRequest {Name = "MyProject", Template = "Simple"};
+                projectRequest.AddAlteration("Assets");
+
+                x.AddProjectRequest(projectRequest);
+            });
+
+            assertDirectoryExists("src", "MyProject", "content");
+            assertDirectoryExists("src", "MyProject", "content", "scripts");
+            assertDirectoryExists("src", "MyProject", "content", "styles");
+            assertDirectoryExists("src", "MyProject", "content", "images");
+        }
+
+        [Test]
+        public void copy_file_in_project_alteration()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+
+                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                projectRequest.AddAlteration("Assets");
+
+                x.AddProjectRequest(projectRequest);
+            });
+
+            assertFileExists("src", "MyProject", "content", "images", "fake.bmp");
+        }
     }
 }

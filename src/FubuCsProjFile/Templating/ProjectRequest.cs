@@ -18,5 +18,10 @@ namespace FubuCsProjFile.Templating
                 _alterations.AddRange(value);
             }
         } 
+
+        public void AddAlteration(string alteration)
+        {
+            _alterations.Add(alteration);
+        }
     }
 }

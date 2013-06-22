@@ -8,12 +8,15 @@ namespace FubuCsProjFile.Testing
         private readonly string _directory;
         private readonly TemplatePlan _plan;
 
-        public DataMother(string directory)
+        public DataMother(string directory, bool withProject = true)
         {
             _directory = directory;
 
             _plan = TemplatePlan.CreateClean(_directory);
-            _plan.Add(new ProjectPlan("SomeProject"));
+            if (withProject)
+            {
+                _plan.Add(new ProjectPlan("SomeProject"));
+            }
         }
 
         public FileContents ToPath(params string[] pathParts)
