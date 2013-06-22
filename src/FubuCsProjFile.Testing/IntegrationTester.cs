@@ -232,5 +232,21 @@ namespace FubuCsProjFile.Testing
             contents.ShouldContain("using FubuMVC.Core;");
             contents.ShouldContain("[assembly: FubuModule]");
         }
+
+        [Test]
+        public void gitignore_directive_in_project()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+
+                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                projectRequest.AddAlteration("FubuBottle");
+
+                x.AddProjectRequest(projectRequest);
+            });
+
+            readFile(".gitignore").ShouldContain("Gemfile.lock");
+        }
     }
 }
