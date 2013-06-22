@@ -126,30 +126,6 @@ namespace FubuCsProjFile.Templating
         public IEnumerable<string> Templates { get; set; } 
     }
 
-    public interface ITemplateLibrary
-    {
-        IEnumerable<Template> All();
-        Template Find(TemplateType type, string name);
-        void ApplyAll(IEnumerable<string> templateNames, TemplatePlan plan, Action<Template, TemplatePlan> action);
-    }
-
-
-    public class RakeFileTransform : ITemplateStep
-    {
-        // Substitute on project name/assembly name
-        // Substitute on solution name
-        // substitute on project relative path
-
-        public RakeFileTransform(string templateFile)
-        {
-        }
-
-        public void Alter(TemplatePlan plan)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
 
     public class SolutionPlanner : TemplatePlanner
     {

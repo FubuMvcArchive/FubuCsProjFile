@@ -51,7 +51,7 @@
     <Compile Include="CodeFile.cs" />
     <Compile Include="CsProjFile.cs" />
     <Compile Include="EmbeddedResource.cs" />
-    <Compile Include="EnvironmentalStringExtensions.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="GlobalSection.cs" />
     <Compile Include="ProjectItem.cs" />
     <Compile Include="ISolutionFileModifier.cs" />
@@ -80,11 +80,13 @@
     <Compile Include="Templating\GitIgnoreStep.cs" />
     <Compile Include="Templating\IProjectAlteration.cs" />
     <Compile Include="Templating\CodeFileTemplate.cs" />
+    <Compile Include="Templating\ITemplateLibrary.cs" />
     <Compile Include="Templating\ITemplatePlanner.cs" />
     <Compile Include="Templating\ITemplatePlannerAction.cs" />
     <Compile Include="Templating\ITemplateStep.cs" />
     <Compile Include="Templating\ProjectDirectory.cs" />
     <Compile Include="Templating\ProjectPlan.cs" />
+    <Compile Include="Templating\RakeFileTransform.cs" />
     <Compile Include="Templating\ReadSolution.cs" />
     <Compile Include="Templating\SolutionDirectory.cs" />
     <Compile Include="Templating\SystemReference.cs" />
