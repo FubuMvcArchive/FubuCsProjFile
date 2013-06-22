@@ -94,5 +94,17 @@ namespace FubuCsProjFile.Testing
 
             contents.ShouldContain("# the solution is MySolution at src/MySolution.sln");
         }
+
+        [Test]
+        public void read_gems_from_solution()
+        {
+            executePlan(x => x.AddTemplate("Simple"));
+            thePlan.Steps.OfType<GemReference>().Any().ShouldBeTrue();
+
+            var contents = readFile("Gemfile");
+
+            contents.ShouldContain("gem \"rake\", \"~>10.0\"");
+            contents.ShouldContain("gem \"fuburake\", \"~>0.5\"");
+        }
     }
 }
