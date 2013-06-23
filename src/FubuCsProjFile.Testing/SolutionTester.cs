@@ -25,10 +25,8 @@ namespace FubuCsProjFile.Testing
             var solution = Solution.CreateNew(".", "foo");
             solution.Configurations().ShouldHaveTheSameElementsAs(
                 new BuildConfiguration("Debug|Any CPU = Debug|Any CPU"),
-                new BuildConfiguration("Debug|Mixed Platforms = Debug|Any CPU"),
                 new BuildConfiguration("Debug|x86 = Debug|x86"),
                 new BuildConfiguration("Release|Any CPU = Release|Any CPU"),
-                new BuildConfiguration("Release|Mixed Platforms = Release|Any CPU"),
                 new BuildConfiguration("Release|x86 = Release|x86")
                 
                 
