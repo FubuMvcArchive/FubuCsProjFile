@@ -22,5 +22,24 @@ namespace FubuCsProjFile.Testing.Templating
 
             File.Exists("copying".AppendPath(file)).ShouldBeTrue();
         }
+
+        [Test]
+        public void copy_a_file_applies_substitutions()
+        {
+            var context = TemplatePlan.CreateClean("copying");
+            context.Solution = Solution.CreateNew("copying".AppendPath("src"), "FooSolution");
+
+            var file = "foo.txt";
+            new FileSystem().WriteStringToFile(file, "*%SOLUTION_NAME%*");
+
+            var step = new CopyFileToSolution("foo.txt", file);
+            step.Alter(context);
+
+            var expectedFile = "copying".AppendPath(file);
+            File.Exists(expectedFile).ShouldBeTrue();
+
+            new FileSystem().ReadStringFromFile(expectedFile)
+                            .ShouldEqual("*FooSolution*");
+        }
     }
 }

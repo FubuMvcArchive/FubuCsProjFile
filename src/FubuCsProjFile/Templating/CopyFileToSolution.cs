@@ -16,7 +16,10 @@ namespace FubuCsProjFile.Templating
         public void Alter(TemplatePlan plan)
         {
             var expectedFile = plan.Root.AppendPath(_relativePath);
-            plan.FileSystem.Copy(_source, expectedFile);
+            var contents = plan.FileSystem.ReadStringFromFile(_source);
+            var transformedContents = plan.ApplySubstitutions(contents);
+
+            plan.FileSystem.WriteStringToFile(expectedFile, transformedContents);
         }
 
         protected bool Equals(CopyFileToSolution other)
