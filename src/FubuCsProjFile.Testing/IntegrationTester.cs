@@ -300,5 +300,26 @@ namespace FubuCsProjFile.Testing
             var csProjFile = CsProjFile.LoadFrom("integrated".AppendPath("src", "MyProject", "MyProject.csproj"));
             csProjFile.Find<CodeFile>("SomeClass.cs").ShouldNotBeNull();
         }
+
+        [Test]
+        public void execute_with_testing_project()
+        {
+            executePlan(x => {
+                x.AddTemplate("Simple");
+
+                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+
+                x.AddProjectRequest(projectRequest);
+
+                x.AddTestingRequest(new TestProjectRequest{Name = "MyProject.Testing", OriginalProject = "MyProject", Template = "unit-testing"});
+            });
+
+            var csProjFile = CsProjFile.LoadFrom("integrated".AppendPath("src", "MyProject.Testing", "MyProject.Testing.csproj"));
+
+            csProjFile.All<ProjectReference>().Single()
+                      .ProjectName.ShouldEqual("MyProject");
+
+
+        }
     }
 }

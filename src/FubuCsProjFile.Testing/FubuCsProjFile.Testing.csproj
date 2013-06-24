@@ -80,6 +80,7 @@
     <Compile Include="Templating\CodeFileTemplateTester.cs" />
     <Compile Include="Templating\CopyFileToProjectTester.cs" />
     <Compile Include="Templating\CopyFileToSolutionTester.cs" />
+    <Compile Include="Templating\CopyProjectReferencesTester.cs" />
     <Compile Include="Templating\CreateSolutionTester.cs" />
     <Compile Include="Templating\GemReferenceTester.cs" />
     <Compile Include="Templating\ProjectPlannerTester.cs" />

@@ -62,7 +62,7 @@ namespace FubuCsProjFile.Templating
 
         public string ToNugetImportStatement()
         {
-            return "{0}: {1}".ToFormat(ProjectName, _nugetDeclarations.Join(", "));
+            return "{0}: {1}".ToFormat(ProjectName, _nugetDeclarations.OrderBy(x => x).Join(", "));
         }
 
         public string ApplySubstitutions(string rawText, string relativePath = null)

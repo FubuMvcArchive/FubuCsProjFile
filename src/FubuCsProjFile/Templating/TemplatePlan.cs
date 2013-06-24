@@ -156,5 +156,10 @@ namespace FubuCsProjFile.Templating
                 });
             }
         }
+
+        public ProjectPlan FindProjectPlan(string name)
+        {
+            return _steps.OfType<ProjectPlan>().FirstOrDefault(x => x.ProjectName == name);
+        }
     }
 }

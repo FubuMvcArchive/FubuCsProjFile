@@ -32,34 +32,44 @@ namespace FubuCsProjFile.Templating
 
             applySolutionTemplates(request, plan);
             applyProjectTemplates(request, plan);
+            applyTestingTemplates(request, plan);
 
             return plan;
         }
 
+        private void applyTestingTemplates(TemplateRequest request, TemplatePlan plan)
+        {
+            request.TestingProjects.Each(proj => {
+                buildProjectPlan(plan, proj, TemplateType.Testing);
+                plan.Add(new CopyProjectReferences(proj.OriginalProject));
+            });
+        }
+
         private void applyProjectTemplates(TemplateRequest request, TemplatePlan plan)
         {
-            request.Projects.Each(proj => {
-                var projectPlan = new ProjectPlan(proj.Name);
-                plan.Add(projectPlan);
+            request.Projects.Each(proj => buildProjectPlan(plan, proj, TemplateType.Project));
+        }
 
-                var planner = new ProjectPlanner();
-                if (FubuCore.StringExtensions.IsNotEmpty(proj.Template))
-                {
-                    planner.CreatePlan(_library.Find((TemplateType) TemplateType.Project, (string) proj.Template).Path, plan);
-                }
+        private void buildProjectPlan(TemplatePlan plan, ProjectRequest proj, TemplateType templateType)
+        {
+            var projectPlan = new ProjectPlan(proj.Name);
+            plan.Add(projectPlan);
 
-                _library.Find((TemplateType) TemplateType.Alteration, (IEnumerable<string>) proj.Alterations)
-                        .Each(template => { planner.CreatePlan(template.Path, plan); });
-            });
+            var planner = new ProjectPlanner();
+            if (proj.Template.IsNotEmpty())
+            {
+                planner.CreatePlan(_library.Find(templateType, proj.Template).Path, plan);
+            }
+
+            _library.Find(TemplateType.Alteration, proj.Alterations)
+                    .Each(template => planner.CreatePlan(template.Path, plan));
         }
 
         private void applySolutionTemplates(TemplateRequest request, TemplatePlan plan)
         {
             var planner = new SolutionPlanner();
-            _library.Find(TemplateType.Solution, request.Templates).Each(template =>
-            {
-                planner.CreatePlan(template.Path, plan);
-            });
+            _library.Find(TemplateType.Solution, request.Templates)
+                .Each(template => planner.CreatePlan(template.Path, plan));
         }
 
         private static void determineSolutionFileHandling(TemplateRequest request, TemplatePlan plan)
