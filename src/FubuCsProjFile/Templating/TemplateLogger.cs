@@ -27,7 +27,7 @@ namespace FubuCsProjFile.Templating
 
             ConsoleWriter.WriteWithIndent(ConsoleColor.White, 0, text);
 
-            _indention = 8;
+            _indention = 4;
         }
 
         public void Trace(string contents, params object[] parameters)
@@ -39,12 +39,12 @@ namespace FubuCsProjFile.Templating
         {
             _alterationNumber = 0;
             _numberOfAlterations = numberOfAlterations;
-            _indention = 12;
+            _indention = 4;
         }
 
         public void EndProject()
         {
-            _indention = 8;
+            _indention = 4;
         }
 
         public void TraceAlteration(IProjectAlteration alteration)

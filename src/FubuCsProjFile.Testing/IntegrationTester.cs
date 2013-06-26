@@ -45,6 +45,19 @@ namespace FubuCsProjFile.Testing
             thePlan.Execute();
         }   
 
+        private void writePreview(Action<TemplateRequest> configure = null)
+        {
+            if (configure != null)
+            {
+                configure(theRequest);
+            }
+
+            thePlan = new TemplatePlanBuilder(library).BuildPlan(theRequest);
+
+
+            thePlan.WritePreview();
+        }
+
         public void assertDirectoryExists(params string[] parts)
         {
             Directory.Exists("integrated".AppendPath(parts)).ShouldBeTrue();
@@ -60,6 +73,20 @@ namespace FubuCsProjFile.Testing
             assertFileExists(parts);
 
             return new FileSystem().ReadStringFromFile("integrated".AppendPath(parts)).ReadLines().ToList();
+        }
+
+        [Test]
+        public void write_template_plan_preview_smoke_tester()
+        {
+            writePreview(x =>
+            {
+                x.AddTemplate("Simple");
+
+                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                projectRequest.AddAlteration("Assets");
+
+                x.AddProjectRequest(projectRequest);
+            });
         }
 
         [Test]

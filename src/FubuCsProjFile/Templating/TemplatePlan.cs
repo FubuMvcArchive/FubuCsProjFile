@@ -122,6 +122,31 @@ namespace FubuCsProjFile.Templating
             Logger.Finish();
         }
 
+        public void WritePreview()
+        {
+            Logger.Starting(_steps.Count);
+
+            _steps.Each(x => {
+                Logger.TraceStep(x);
+                var project = x as ProjectPlan;
+                if (project != null)
+                {
+                    Logger.StartProject(project.Alterations.Count);
+                    project.Alterations.Each(alteration => Logger.TraceAlteration(alteration));
+                    Logger.EndProject();
+                }
+            });
+
+            var projectsWithNugets = determineProjectsWithNugets();
+            if (projectsWithNugets.Any())
+            {
+                Console.WriteLine();
+                Console.WriteLine("Nuget imports:");
+                projectsWithNugets.Each(x => Console.WriteLine(x));
+            }
+
+        }
+
         public void AlterFile(string relativeName, Action<List<string>> alter)
         {
             _fileSystem.AlterFlatFile(Root.AppendPath(relativeName), alter);
@@ -154,10 +179,7 @@ namespace FubuCsProjFile.Templating
 
         public void WriteNugetImports()
         {
-            var projectsWithNugets = Steps
-                .OfType<ProjectPlan>()
-                .Where(x => x.NugetDeclarations.Any())
-                .Select(x => x.ToNugetImportStatement()).ToArray();
+            var projectsWithNugets = determineProjectsWithNugets();
 
             if (projectsWithNugets.Any())
             {
@@ -169,6 +191,15 @@ namespace FubuCsProjFile.Templating
                     list.AddRange(projectsWithNugets);
                 });
             }
+        }
+
+        private string[] determineProjectsWithNugets()
+        {
+            var projectsWithNugets = Steps
+                .OfType<ProjectPlan>()
+                .Where(x => x.NugetDeclarations.Any())
+                .Select(x => x.ToNugetImportStatement()).ToArray();
+            return projectsWithNugets;
         }
 
         public ProjectPlan FindProjectPlan(string name)
