@@ -78,6 +78,7 @@
     <Compile Include="Templating\AssemblyInfoAlterationTester.cs" />
     <Compile Include="Templating\AssemblyReferenceTester.cs" />
     <Compile Include="Templating\CodeFileTemplateTester.cs" />
+    <Compile Include="Templating\CodeFileTester.cs" />
     <Compile Include="Templating\CopyFileToProjectTester.cs" />
     <Compile Include="Templating\CopyFileToSolutionTester.cs" />
     <Compile Include="Templating\CopyProjectReferencesTester.cs" />
