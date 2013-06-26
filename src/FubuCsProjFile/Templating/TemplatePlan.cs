@@ -9,7 +9,6 @@ namespace FubuCsProjFile.Templating
 {
     public class TemplatePlan
     {
-
         public const string SOLUTION_NAME = "%SOLUTION_NAME%";
         public const string SOLUTION_PATH = "%SOLUTION_PATH%";
 
@@ -32,7 +31,11 @@ namespace FubuCsProjFile.Templating
         {
             Root = rootDirectory;
             SourceName = "src";
+
+            Logger = new TemplateLogger();
         }
+
+        public ITemplateLogger Logger { get; private set; }
 
         public string ApplySubstitutions(string rawText)
         {
@@ -102,14 +105,21 @@ namespace FubuCsProjFile.Templating
 
         public void Execute()
         {
-            _steps.Each(x => x.Alter(this));
+            Logger.Starting(_steps.Count);
+            _steps.Each(x => {
+                Logger.TraceStep(x);
+                x.Alter(this);
+            });
 
             if (Solution != null)
             {
+                Logger.Trace("Saving solution to {0}", Solution.Filename);
                 Solution.Save();
             }
 
             WriteNugetImports();
+
+            Logger.Finish();
         }
 
         public void AlterFile(string relativeName, Action<List<string>> alter)
@@ -151,6 +161,10 @@ namespace FubuCsProjFile.Templating
 
             if (projectsWithNugets.Any())
             {
+                Logger.Trace("Writing nuget imports:");
+                projectsWithNugets.Each(x => Logger.Trace(x));
+                Logger.Trace("");
+
                 TemplateLibrary.FileSystem.AlterFlatFile(Root.AppendPath(RippleImportFile), list => {
                     list.AddRange(projectsWithNugets);
                 });

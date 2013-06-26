@@ -22,20 +22,33 @@ namespace FubuCsProjFile.Templating
             _projectName = projectName;
         }
 
-        // TODO -- keep the relative path from the plan root
         public void Alter(TemplatePlan plan)
         {
+            plan.Logger.StartProject(_alterations.Count);
+
             var reference = plan.Solution.FindProject(_projectName);
             if (reference == null)
             {
-                reference = ProjectTemplateFile.IsEmpty()
-                                ? plan.Solution.AddProject(_projectName)
-                                : plan.Solution.AddProjectFromTemplate(_projectName, ProjectTemplateFile);
+                if (ProjectTemplateFile.IsEmpty())
+                {
+                    plan.Logger.Trace("Creating project {0} from the default template", _projectName);
+                    reference = plan.Solution.AddProject(_projectName);
+                }
+                else
+                {
+                    plan.Logger.Trace("Creating project {0} from template at {1}", _projectName, ProjectTemplateFile);
+                    reference = plan.Solution.AddProjectFromTemplate(_projectName, ProjectTemplateFile);
+                }
             }
 
             _relativePath = reference.Project.FileName.PathRelativeTo(plan.Root).Replace("\\", "/");
 
-            _alterations.Each(x => x.Alter(reference.Project, this));
+            _alterations.Each(x => {
+                plan.Logger.TraceAlteration(x);
+                x.Alter(reference.Project, this);
+            });
+
+            plan.Logger.EndProject();
         }
 
         public IList<string> NugetDeclarations
@@ -94,6 +107,11 @@ namespace FubuCsProjFile.Templating
                 .Union(new string[] { projectName })
                 .Reverse()
                 .Join(".");
+        }
+
+        public override string ToString()
+        {
+            return "Create or load project '{0}'".ToFormat(_projectName);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FubuCore;
+using FubuCore.CommandLine;
 
 namespace FubuCsProjFile.Templating
 {
@@ -41,6 +42,11 @@ namespace FubuCsProjFile.Templating
 
                 fileSystem.WriteStringToFile(rakeFile, list.Join(Environment.NewLine));
             }
+        }
+
+        public override string ToString()
+        {
+            return "Add content to the rakefile:";
         }
     }
 }

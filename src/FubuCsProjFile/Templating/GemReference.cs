@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FubuCore;
+using FubuCore.CommandLine;
 
 namespace FubuCsProjFile.Templating
 {
@@ -36,11 +37,7 @@ namespace FubuCsProjFile.Templating
             }
 
             var key = "\"{0}\"".ToFormat(GemName);
-            if (list.Any(x => x.Contains(key)))
-            {
-                // TODO -- trace
-            }
-            else
+            if (!list.Any(x => x.Contains(key)))
             {
                 var line = "gem {0}, \"{1}\"".ToFormat(key, Version);
                 list.Add(line);
@@ -70,7 +67,7 @@ namespace FubuCsProjFile.Templating
 
         public override string ToString()
         {
-            return string.Format("GemName: {0}, Version: {1}", GemName, Version);
+            return string.Format("Add gem to Gemfile: {0}, {1}", GemName, Version);
         }
 
         public static void ConfigurePlan(TextFile textFile, TemplatePlan plan)

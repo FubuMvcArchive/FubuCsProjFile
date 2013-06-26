@@ -31,5 +31,10 @@ namespace FubuCsProjFile.Templating
             var step = new GitIgnoreStep(ignores);
             plan.Add(step);
         }
+
+        public override string ToString()
+        {
+            return string.Format("Adding to .gitignore: {0}", _entries.Join(", "));
+        }
     }
 }

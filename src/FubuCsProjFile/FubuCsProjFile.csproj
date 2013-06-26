@@ -82,6 +82,7 @@
     <Compile Include="Templating\IProjectAlteration.cs" />
     <Compile Include="Templating\CodeFileTemplate.cs" />
     <Compile Include="Templating\ITemplateLibrary.cs" />
+    <Compile Include="Templating\ITemplateLogger.cs" />
     <Compile Include="Templating\ITemplatePlanner.cs" />
     <Compile Include="Templating\ITemplatePlannerAction.cs" />
     <Compile Include="Templating\ITemplateStep.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Templating\TemplateBuilder.cs" />
     <Compile Include="Templating\CopyProjectReferences.cs" />
     <Compile Include="Templating\TemplateLibrary.cs" />
+    <Compile Include="Templating\TemplateLogger.cs" />
     <Compile Include="Templating\TemplatePlan.cs" />
     <Compile Include="Templating\TemplatePlanBuilder.cs" />
     <Compile Include="Templating\TemplatePlanner.cs" />

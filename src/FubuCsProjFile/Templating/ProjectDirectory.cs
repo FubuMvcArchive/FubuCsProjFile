@@ -48,5 +48,10 @@ namespace FubuCsProjFile.Templating
             return Directory.GetDirectories(root, "*", SearchOption.AllDirectories)
                             .Select(dir => new ProjectDirectory(dir.PathRelativeTo(root)));
         }
+
+        public override string ToString()
+        {
+            return string.Format("Create folder {0}", _relativePath);
+        }
     }
 }

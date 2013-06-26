@@ -37,5 +37,10 @@ namespace FubuCsProjFile.Templating
                 .Where(x => !contents.Contains(x))
                 .Each(contents.Add);
         }
+
+        public override string ToString()
+        {
+            return string.Format("AssemblyInfo content:  {0}", _additions.Select(x => "'{0}'").Join("; "));
+        }
     }
 }

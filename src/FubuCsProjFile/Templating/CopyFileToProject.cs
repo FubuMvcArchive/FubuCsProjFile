@@ -15,5 +15,10 @@ namespace FubuCsProjFile.Templating
         {
             file.CopyFileTo(_source, _relativePath);
         }
+
+        public override string ToString()
+        {
+            return string.Format("Copy {0} to {1}", _source, _relativePath);
+        }
     }
 }

@@ -42,7 +42,7 @@ namespace FubuCsProjFile.Templating
 
         public override string ToString()
         {
-            return String.Format("System Assembly Reference to {0}", _assemblyName);
+            return String.Format("Add assembly reference to {0}", _assemblyName);
         }
     }
 }

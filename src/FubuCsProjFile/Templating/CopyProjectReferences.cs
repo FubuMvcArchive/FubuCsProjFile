@@ -15,16 +15,6 @@ namespace FubuCsProjFile.Templating
             _originalProject = originalProject;
         }
 
-        /*
-    <ProjectReference Include="..\FubuCsProjFile\FubuCsProjFile.csproj">
-      <Project>{5630FC3F-8C3E-4EAD-B960-B38FE3D87463}</Project>
-      <Name>FubuCsProjFile</Name>
-    </ProjectReference>
-         */
-
-
-        // TODO -- has to copy all the system assemblies and nuget references of the parent solutionProject
-        // TODO -- adds the solutionProject reference to the parent
         public void Alter(TemplatePlan plan)
         {
             var original = plan.Solution.FindProject(_originalProject).Project;
@@ -73,6 +63,11 @@ namespace FubuCsProjFile.Templating
             };
 
             testProject.Add(reference);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Copy all references from {0}", _originalProject);
         }
     }
 }

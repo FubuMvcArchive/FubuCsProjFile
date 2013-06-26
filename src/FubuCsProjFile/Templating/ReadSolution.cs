@@ -37,5 +37,10 @@ namespace FubuCsProjFile.Templating
         {
             return (_solutionFile != null ? _solutionFile.GetHashCode() : 0);
         }
+
+        public override string ToString()
+        {
+            return string.Format("Read solution {0}", _solutionFile);
+        }
     }
 }

@@ -70,5 +70,10 @@ namespace FubuCsProjFile.Templating
 
             file.Add<CodeFile>(_relativePath);
         }
+
+        public override string ToString()
+        {
+            return string.Format("Write and attach code file: {0}", _relativePath);
+        }
     }
 }
