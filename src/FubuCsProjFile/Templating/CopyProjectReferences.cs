@@ -15,6 +15,11 @@ namespace FubuCsProjFile.Templating
             _originalProject = originalProject;
         }
 
+        public string OriginalProject
+        {
+            get { return _originalProject; }
+        }
+
         public void Alter(TemplatePlan plan)
         {
             var original = plan.Solution.FindProject(_originalProject).Project;

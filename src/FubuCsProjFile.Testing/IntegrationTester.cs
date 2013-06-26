@@ -348,5 +348,23 @@ namespace FubuCsProjFile.Testing
 
 
         }
+
+        [Test]
+        public void testing_project_adds_a_copy_references_step()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+
+                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+
+                x.AddProjectRequest(projectRequest);
+
+                x.AddTestingRequest(new TestProjectRequest { Name = "MyProject.Testing", OriginalProject = "MyProject", Template = "unit-testing" });
+            });
+
+            var step = thePlan.Steps.OfType<CopyProjectReferences>().Single();
+            step.OriginalProject.ShouldEqual("MyProject");
+        }
     }
 }
