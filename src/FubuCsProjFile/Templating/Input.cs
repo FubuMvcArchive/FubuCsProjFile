@@ -42,7 +42,12 @@ namespace FubuCsProjFile.Templating
                 return Enumerable.Empty<Input>();
             }
 
-            return fileSystem.ReadStringFromFile(file).ReadLines().Where(x => x.IsNotEmpty())
+            return ReadFromFile(file);
+        }
+
+        public static IEnumerable<Input> ReadFromFile(string file)
+        {
+            return new FileSystem().ReadStringFromFile(file).ReadLines().Where(x => x.IsNotEmpty())
                              .Select(x => new Input(x)).ToArray();
         }
     }

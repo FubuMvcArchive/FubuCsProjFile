@@ -14,12 +14,6 @@ namespace FubuCsProjFile.Templating
         }
 
 
-        public static void ConfigureProjectTemplate(Template template, TemplatePlan plan)
-        {
-            new ProjectPlanner().CreatePlan(template.Path, plan);
-        }
-
-
         // TODO -- do a bulk validation of TemplateRequest against the library 
         public TemplatePlan BuildPlan(TemplateRequest request)
         {
@@ -61,18 +55,18 @@ namespace FubuCsProjFile.Templating
             var planner = new ProjectPlanner();
             if (proj.Template.IsNotEmpty())
             {
-                planner.CreatePlan(_library.Find(templateType, proj.Template).Path, plan);
+                planner.CreatePlan(_library.Find(templateType, proj.Template), plan);
             }
 
             _library.Find(TemplateType.Alteration, proj.Alterations)
-                    .Each(template => planner.CreatePlan(template.Path, plan));
+                    .Each(template => planner.CreatePlan(template, plan));
         }
 
         private void applySolutionTemplates(TemplateRequest request, TemplatePlan plan)
         {
             var planner = new SolutionPlanner();
             _library.Find(TemplateType.Solution, request.Templates)
-                .Each(template => planner.CreatePlan(template.Path, plan));
+                .Each(template => planner.CreatePlan(template, plan));
         }
 
         private static void determineSolutionFileHandling(TemplateRequest request, TemplatePlan plan)

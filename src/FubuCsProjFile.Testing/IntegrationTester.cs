@@ -102,6 +102,15 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void reads_solution_inputs()
+        {
+            executePlan(x => x.AddTemplate("Simple"));
+
+            thePlan.Substitutions.ValueFor("Foo").ShouldEqual("One");
+            thePlan.Substitutions.ValueFor("Bar").ShouldEqual("Two");
+        }
+
+        [Test]
         public void solution_files()
         {
             executePlan(x => x.AddTemplate("Simple"));
@@ -154,6 +163,19 @@ namespace FubuCsProjFile.Testing
             });
 
             assertFileExists("src", "MyProject", "MyProject.csproj");
+        }
+
+        [Test]
+        public void read_inputs_for_a_project()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
+            });
+
+            thePlan.CurrentProject.Substitutions.ValueFor("%REGISTRY_NAME%")
+                   .ShouldEqual("MyProjectRegistry");
         }
 
         [Test]

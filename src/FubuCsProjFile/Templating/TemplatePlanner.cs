@@ -17,15 +17,19 @@ namespace FubuCsProjFile.Templating
             ShallowMatch(RakeFileTransform.SourceFile).Do = (file, plan) => {
                 plan.Add(new RakeFileTransform(file.ReadAll()));
             };
+
+            ShallowMatch(Input.File).Do = (file, plan) => {
+
+            };
         }
 
-        public void CreatePlan(string directory, TemplatePlan plan)
+        public void CreatePlan(Template template, TemplatePlan plan)
         {
-            configurePlan(directory, plan);
+            configurePlan(template.Path, plan);
 
-            _planners.Each(x => x.DetermineSteps(directory, plan));
+            _planners.Each(x => x.DetermineSteps(template.Path, plan));
 
-            plan.CopyUnhandledFiles(directory);
+            plan.CopyUnhandledFiles(template.Path);
         }
 
         protected abstract void configurePlan(string directory, TemplatePlan plan);

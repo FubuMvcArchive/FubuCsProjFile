@@ -52,14 +52,14 @@ namespace FubuCsProjFile.Testing
 
         public TemplatePlan BuildSolutionPlan()
         {
-            new SolutionPlanner().CreatePlan(_directory, _plan);
+            new SolutionPlanner().CreatePlan(new Template{Path = _directory}, _plan);
 
             return _plan;
         }
 
         public TemplatePlan RunPlanner<T>() where T : TemplatePlanner, new()
         {
-            new T().CreatePlan(_directory, _plan);
+            new T().CreatePlan(new Template { Path = _directory }, _plan);
 
             return _plan;
         }

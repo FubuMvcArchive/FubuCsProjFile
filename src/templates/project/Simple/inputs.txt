@@ -1,0 +1,3 @@
+Foo=Three
+Bar=Four
+%REGISTRY_NAME%=%ASSEMBLY_NAME%Registry
