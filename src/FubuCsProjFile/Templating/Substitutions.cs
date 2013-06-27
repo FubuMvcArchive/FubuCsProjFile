@@ -9,6 +9,8 @@ namespace FubuCsProjFile.Templating
 {
     public class Substitutions
     {
+        public static readonly string ConfigFile = "fubu.templates.config";
+        
         private readonly Cache<string, string> _values = new Cache<string, string>();
  
         public void SetIfNone(string key, string value)

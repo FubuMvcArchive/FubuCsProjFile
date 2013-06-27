@@ -165,6 +165,36 @@ namespace FubuCsProjFile.Testing
             assertFileExists("src", "MyProject", "MyProject.csproj");
         }
 
+
+        [Test]
+        public void writes_the_saved_template_substitutions_per_solution()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+                x.Substitutions.Set("Ten", "Toes");
+            });
+
+            assertFileExists(Substitutions.ConfigFile);
+            readFile(Substitutions.ConfigFile).ShouldContain("Ten=Toes");
+        }
+
+        [Test]
+        public void writes_the_saved_template_substitutions_per_project()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+                var projectRequest = new ProjectRequest {Name = "MyProject", Template = "Simple"};
+                projectRequest.Substitutions.Set("Foo", "Bar");
+
+                x.AddProjectRequest(projectRequest);
+            });
+
+            assertFileExists("src", "MyProject", Substitutions.ConfigFile);
+            readFile("src", "MyProject", Substitutions.ConfigFile).ShouldContain("Foo=Bar");
+        }
+
         [Test]
         public void read_inputs_for_a_project()
         {

@@ -125,6 +125,7 @@ namespace FubuCsProjFile.Templating
                 Solution.Save();
             }
 
+            Substitutions.WriteTo(Root.AppendPath(Substitutions.ConfigFile));
             WriteNugetImports();
 
             Logger.Finish();

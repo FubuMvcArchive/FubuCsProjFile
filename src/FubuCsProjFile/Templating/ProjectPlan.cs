@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using FubuCore;
@@ -50,6 +51,9 @@ namespace FubuCsProjFile.Templating
                 }
             }
 
+            var projectDirectory = reference.Project.ProjectDirectory;
+            plan.FileSystem.CreateDirectory(projectDirectory);
+
             _relativePath = reference.Project.FileName.PathRelativeTo(plan.Root).Replace("\\", "/");
             _substitutions.Set(PROJECT_PATH, _relativePath);
 
@@ -57,6 +61,9 @@ namespace FubuCsProjFile.Templating
                 plan.Logger.TraceAlteration(x);
                 x.Alter(reference.Project, this);
             });
+
+            
+            Substitutions.WriteTo(projectDirectory.AppendPath(Substitutions.ConfigFile));
 
             plan.Logger.EndProject();
         }
