@@ -90,17 +90,17 @@ namespace FubuCsProjFile.Templating
 
         public string ApplySubstitutions(string rawText, string relativePath = null)
         {
-            var builder = new StringBuilder(rawText);
-            ApplySubstitutions(relativePath, builder);
-
-            return builder.ToString();
+            return _substitutions.ApplySubstitutions(rawText, builder => writeNamespace(relativePath, builder));
         }
 
         internal void ApplySubstitutions(string relativePath, StringBuilder builder)
         {
-            builder.Replace(ASSEMBLY_NAME, ProjectName);
-            builder.Replace(PROJECT_PATH, _relativePath);
+            _substitutions.ApplySubstitutions(builder);
+            writeNamespace(relativePath, builder);
+        }
 
+        private void writeNamespace(string relativePath, StringBuilder builder)
+        {
             if (relativePath.IsNotEmpty())
             {
                 var @namespace = GetNamespace(relativePath, ProjectName);
