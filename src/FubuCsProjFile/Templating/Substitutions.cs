@@ -58,5 +58,10 @@ namespace FubuCsProjFile.Templating
         {
             _values.Each((key, value) => builder.Replace(key, value));
         }
+
+        public void CopyTo(Substitutions substitutions2)
+        {
+            _values.Each(substitutions2.Set);
+        }
     }
 }

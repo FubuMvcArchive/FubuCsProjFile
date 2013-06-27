@@ -20,6 +20,20 @@ namespace FubuCsProjFile.Testing.Templating
         }
 
         [Test]
+        public void copy_to()
+        {
+            var substitutions = new Substitutions();
+            substitutions.Set("key", "something");
+            substitutions.Set("two", "twenty");
+
+            var substitutions2 = new Substitutions();
+            substitutions.CopyTo(substitutions2);
+
+            substitutions2.ValueFor("key").ShouldEqual("something");
+            substitutions2.ValueFor("two").ShouldEqual("twenty");
+        }
+
+        [Test]
         public void set_if_none_will_not_override_if_it_exists()
         {
             var substitutions = new Substitutions();
