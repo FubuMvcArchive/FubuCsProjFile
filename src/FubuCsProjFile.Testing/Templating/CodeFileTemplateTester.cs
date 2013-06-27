@@ -47,6 +47,30 @@ namespace TemplatedProject
                 .ShouldBeTrue();
         }
 
+        [Test]
+        public void add_simple_class_that_has_substitutions_on_its_name()
+        {
+            thePlan.Substitutions.Set("%SHORT_NAME%", "MyFoo");
+
+            CodeFileTemplate.Class("%SHORT_NAME%Registry").Alter(theProject, thePlan);
+
+            var file = "Templated".AppendPath("TemplatedProject", "MyFooRegistry.cs");
+            File.Exists(file).ShouldBeTrue();
+
+            new FileSystem().ReadStringFromFile(file).ShouldEqualWithLineEndings(@"
+namespace TemplatedProject
+{
+    public class MyFooRegistry
+    {
+
+    }
+}
+".Trim());
+
+            theProject.All<CodeFile>().Any(x => x.Include == "MyFooRegistry.cs")
+                .ShouldBeTrue();
+        }
+
 
         [Test]
         public void add_deeper_class_to_root_of_project()

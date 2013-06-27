@@ -57,8 +57,8 @@ namespace FubuCsProjFile.Templating
 
         public void Alter(CsProjFile file, ProjectPlan plan)
         {
-
-            var filename = file.FileName.ParentDirectory().AppendPath(_relativePath);
+            var includePath = plan.ApplySubstitutions(_relativePath);
+            var filename = file.FileName.ParentDirectory().AppendPath(includePath);
             if (!filename.EndsWith(".cs"))
             {
                 filename = filename + ".cs";
@@ -68,7 +68,7 @@ namespace FubuCsProjFile.Templating
 
             new FileSystem().WriteStringToFile(filename, text);
 
-            file.Add<CodeFile>(_relativePath);
+            file.Add<CodeFile>(includePath);
         }
 
         public override string ToString()
