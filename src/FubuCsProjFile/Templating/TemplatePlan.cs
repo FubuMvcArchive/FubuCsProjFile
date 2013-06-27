@@ -114,6 +114,8 @@ namespace FubuCsProjFile.Templating
         public void Execute()
         {
             Logger.Starting(_steps.Count);
+            _substitutions.Trace(Logger);
+
             _steps.Each(x => {
                 Logger.TraceStep(x);
                 x.Alter(this);
@@ -134,13 +136,17 @@ namespace FubuCsProjFile.Templating
         public void WritePreview()
         {
             Logger.Starting(_steps.Count);
+            _substitutions.Trace(Logger);
 
             _steps.Each(x => {
                 Logger.TraceStep(x);
                 var project = x as ProjectPlan;
+                
+
                 if (project != null)
                 {
                     Logger.StartProject(project.Alterations.Count);
+                    project.Substitutions.Trace(Logger);
                     project.Alterations.Each(alteration => Logger.TraceAlteration(alteration));
                     Logger.EndProject();
                 }

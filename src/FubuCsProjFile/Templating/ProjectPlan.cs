@@ -35,6 +35,7 @@ namespace FubuCsProjFile.Templating
         public void Alter(TemplatePlan plan)
         {
             plan.Logger.StartProject(_alterations.Count);
+            _substitutions.Trace(plan.Logger);
 
             var reference = plan.Solution.FindProject(_projectName);
             if (reference == null)

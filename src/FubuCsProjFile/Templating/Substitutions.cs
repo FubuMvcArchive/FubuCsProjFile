@@ -74,5 +74,12 @@ namespace FubuCsProjFile.Templating
                 SetIfNone(x.Name, resolved);
             });
         }
+
+        public void Trace(ITemplateLogger logger)
+        {
+            _values.Each((key, value) => {
+                logger.Trace("{0}={1}", key, value);
+            });
+        }
     }
 }
