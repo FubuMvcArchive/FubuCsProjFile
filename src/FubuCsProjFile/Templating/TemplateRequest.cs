@@ -7,6 +7,12 @@ namespace FubuCsProjFile.Templating
         private readonly IList<string> _templates = new List<string>();
         private readonly IList<ProjectRequest> _projects = new List<ProjectRequest>();
         private readonly IList<TestProjectRequest> _testingProjects = new List<TestProjectRequest>();
+        private readonly Substitutions _substitutions = new Substitutions();
+
+        public Substitutions Substitutions
+        {
+            get { return _substitutions; }
+        }
 
         public string RootDirectory { get; set; }
         public IEnumerable<string> Templates

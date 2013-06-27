@@ -17,6 +17,25 @@ namespace FubuCsProjFile.Testing.Templating
         }
 
         [Test]
+        public void copies_substitution_values_from_request_to_solution()
+        {
+            var request = new TemplateRequest
+            {
+                SolutionName = "MySolution",
+                RootDirectory = "root"
+            };
+
+            request.Substitutions.Set("Key", "12345");
+            request.Substitutions.Set("Password", "45678");
+
+            var plan = new TemplatePlanBuilder(new TemplateLibrary("."))
+                .BuildPlan(request);
+
+            plan.Substitutions.ValueFor("Key").ShouldEqual("12345");
+            plan.Substitutions.ValueFor("Password").ShouldEqual("45678");
+        }
+
+        [Test]
         public void build_with_missing_solution()
         {
             var request = new TemplateRequest

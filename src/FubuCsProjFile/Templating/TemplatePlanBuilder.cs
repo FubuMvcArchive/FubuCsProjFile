@@ -24,13 +24,14 @@ namespace FubuCsProjFile.Templating
         public TemplatePlan BuildPlan(TemplateRequest request)
         {
             var plan = new TemplatePlan(request.RootDirectory);
-            
             if (request.SolutionName.IsNotEmpty())
             {
                 determineSolutionFileHandling(request, plan);
             }
 
             applySolutionTemplates(request, plan);
+            request.Substitutions.CopyTo(plan.Substitutions);
+            
             applyProjectTemplates(request, plan);
             applyTestingTemplates(request, plan);
 
