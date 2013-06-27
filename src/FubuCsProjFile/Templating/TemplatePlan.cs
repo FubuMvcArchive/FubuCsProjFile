@@ -163,6 +163,7 @@ namespace FubuCsProjFile.Templating
         public bool FileIsUnhandled(string file)
         {
             if (Path.GetFileName(file).ToLowerInvariant() == TemplateLibrary.DescriptionFile) return false;
+            if (Path.GetFileName(file).ToLowerInvariant() == Input.File) return false;
 
             var path = file.CanonicalPath();
             return !_handled.Contains(path);

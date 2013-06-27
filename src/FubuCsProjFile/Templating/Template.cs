@@ -1,4 +1,6 @@
-﻿namespace FubuCsProjFile.Templating
+﻿using System.Collections.Generic;
+
+namespace FubuCsProjFile.Templating
 {
     public class Template
     {
@@ -6,5 +8,10 @@
         public string Name { get; set; }
         public string Path { get; set; }
         public string Description { get; set; }
+
+        public IEnumerable<Input> Inputs()
+        {
+            return Input.ReadFrom(Path);
+        } 
     }
 }

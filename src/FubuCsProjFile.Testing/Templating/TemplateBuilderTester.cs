@@ -23,6 +23,21 @@ namespace FubuCsProjFile.Testing.Templating
             plan.Steps.OfType<CopyFileToSolution>().Any().ShouldBeFalse();
         }
 
+
+        [Test]
+        public void inputs_txt_is_ignored()
+        {
+            var mother = new DataMother("empty");
+            mother.ToPath("inputs.txt").WriteEmpty();
+
+            var plan = mother.BuildSolutionPlan();
+            plan.FileIsUnhandled("inputs.txt").ShouldBeFalse();
+
+            plan.Steps.OfType<CopyFileToSolution>().Any().ShouldBeFalse();
+        }
+
+        // TODO -- do the same for instructions.txt
+
         [Test]
         public void other_files_are_copied()
         {

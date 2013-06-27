@@ -84,6 +84,7 @@
     <Compile Include="Templating\CopyProjectReferencesTester.cs" />
     <Compile Include="Templating\CreateSolutionTester.cs" />
     <Compile Include="Templating\GemReferenceTester.cs" />
+    <Compile Include="Templating\InputTester.cs" />
     <Compile Include="Templating\ProjectPlannerTester.cs" />
     <Compile Include="Templating\GitIgnoreStepTester.cs" />
     <Compile Include="Templating\ProjectDirectoryTester.cs" />

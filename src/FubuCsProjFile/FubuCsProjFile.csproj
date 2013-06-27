@@ -79,6 +79,7 @@
     <Compile Include="Templating\FilesTemplatePlanner.cs" />
     <Compile Include="Templating\GemReference.cs" />
     <Compile Include="Templating\GitIgnoreStep.cs" />
+    <Compile Include="Templating\Input.cs" />
     <Compile Include="Templating\IProjectAlteration.cs" />
     <Compile Include="Templating\CodeFileTemplate.cs" />
     <Compile Include="Templating\ITemplateLibrary.cs" />
