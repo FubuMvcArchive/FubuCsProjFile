@@ -56,6 +56,8 @@ namespace FubuCsProjFile.Templating
             var projectPlan = new ProjectPlan(proj.Name);
             plan.Add(projectPlan);
 
+            proj.Substitutions.CopyTo(projectPlan.Substitutions);
+
             var planner = new ProjectPlanner();
             if (proj.Template.IsNotEmpty())
             {

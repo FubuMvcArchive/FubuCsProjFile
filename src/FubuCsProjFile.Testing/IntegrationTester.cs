@@ -157,6 +157,22 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void copies_project_substitutions()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+                var projectRequest = new ProjectRequest {Name = "MyProject", Template = "Simple"};  
+                projectRequest.Substitutions.Set("something-class", "MyProjectClass");
+
+                x.AddProjectRequest(projectRequest);
+            });
+
+            thePlan.CurrentProject.Substitutions.ValueFor("something-class")
+                   .ShouldEqual("MyProjectClass");
+        }
+
+        [Test]
         public void create_a_project_from_a_csproj_file_template()
         {
             executePlan(x =>

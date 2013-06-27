@@ -5,9 +5,15 @@ namespace FubuCsProjFile.Templating
     public class ProjectRequest
     {
         private readonly IList<string> _alterations = new List<string>(); 
+        private readonly Substitutions _substitutions = new Substitutions();
 
         public string Name { get; set; }
         public string Template { get; set; }
+
+        public Substitutions Substitutions
+        {
+            get { return _substitutions; }
+        }
 
         public IEnumerable<string> Alterations
         {

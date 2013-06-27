@@ -35,6 +35,8 @@ namespace FubuCsProjFile.Testing.Templating
             plan.Substitutions.ValueFor("Password").ShouldEqual("45678");
         }
 
+        
+
         [Test]
         public void build_with_missing_solution()
         {

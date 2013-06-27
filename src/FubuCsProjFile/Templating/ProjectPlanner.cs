@@ -39,7 +39,6 @@ namespace FubuCsProjFile.Templating
         protected override void configurePlan(string directory, TemplatePlan plan)
         {
             ProjectDirectory.PlanForDirectory(directory).Each(plan.CurrentProject.Add);
-
         }
     }
 }
