@@ -10,6 +10,10 @@ namespace FubuCsProjFile.Templating
 
         public ProjectPlanner()
         {
+            ShallowMatch(Substitutions.ConfigFile).Do = (file, plan) => {
+                plan.CurrentProject.Substitutions.ReadFrom(file.Path);
+            };
+
             ShallowMatch(Input.File).Do = (file, plan) => {
                 var inputs = Input.ReadFromFile(file.Path);
                 plan.CurrentProject.Substitutions.ReadInputs(inputs);

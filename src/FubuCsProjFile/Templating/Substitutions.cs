@@ -34,7 +34,7 @@ namespace FubuCsProjFile.Templating
                 if (line.IsEmpty()) return;
 
                 var parts = line.Split('=');
-                _values[parts.First()] = parts.Last();
+                SetIfNone(parts.First(), parts.Last());
             });
         }
 
