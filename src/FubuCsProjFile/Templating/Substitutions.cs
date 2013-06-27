@@ -41,12 +41,22 @@ namespace FubuCsProjFile.Templating
                 .WriteToFlatFile(file, writer => _values.Each(writer.WriteProperty));
         }
 
-        public string ApplySubstitutions(string rawText)
+        public string ApplySubstitutions(string rawText, Action<StringBuilder> moreAlteration = null)
         {
             var builder = new StringBuilder(rawText);
-            _values.Each((key, value) => builder.Replace(key, value));
+            if (moreAlteration != null)
+            {
+                moreAlteration(builder);
+            }
+
+            ApplySubstitutions(builder);
 
             return builder.ToString();
+        }
+
+        public void ApplySubstitutions(StringBuilder builder)
+        {
+            _values.Each((key, value) => builder.Replace(key, value));
         }
     }
 }

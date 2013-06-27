@@ -17,6 +17,7 @@ namespace FubuCsProjFile.Templating
 
         private readonly IFileSystem _fileSystem = new FileSystem();
         private readonly IList<string> _handled = new List<string>(); 
+        private readonly Substitutions _substitutions = new Substitutions();
 
         public static TemplatePlan CreateClean(string directory)
         {
@@ -35,24 +36,21 @@ namespace FubuCsProjFile.Templating
             Logger = new TemplateLogger();
         }
 
+        public Substitutions Substitutions
+        {
+            get { return _substitutions; }
+        }
+
         public ITemplateLogger Logger { get; private set; }
 
         public string ApplySubstitutions(string rawText)
         {
-            var builder = new StringBuilder(rawText);
-
-            if (CurrentProject != null)
-            {
-                CurrentProject.ApplySubstitutions(null, builder);
-            }
-
-            if (Solution != null)
-            {
-                builder.Replace(SOLUTION_NAME, Solution.Name);
-                builder.Replace(SOLUTION_PATH, Solution.Filename.PathRelativeTo(Root).Replace("\\", "/"));
-            }
-
-            return builder.ToString();
+            return _substitutions.ApplySubstitutions(rawText, builder => {
+                if (CurrentProject != null)
+                {
+                    CurrentProject.ApplySubstitutions(null, builder);
+                }
+            });
         }
 
 
@@ -72,7 +70,16 @@ namespace FubuCsProjFile.Templating
             get { return Root.AppendPath(SourceName); }
         }
 
-        public Solution Solution { get; set; }
+        public Solution Solution
+        {
+            get { return _solution; }
+            set
+            {
+                _solution = value;
+                _substitutions.Set(SOLUTION_NAME, _solution.Name);
+                _substitutions.Set(SOLUTION_PATH, Solution.Filename.PathRelativeTo(Root).Replace("\\", "/"));
+            }
+        }
 
         public IFileSystem FileSystem
         {
@@ -81,6 +88,7 @@ namespace FubuCsProjFile.Templating
 
         private readonly IList<ITemplateStep> _steps = new List<ITemplateStep>();
         private ProjectPlan _currentProject;
+        private Solution _solution;
 
 
         public void Add(ITemplateStep step)

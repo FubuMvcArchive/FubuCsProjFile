@@ -17,9 +17,18 @@ namespace FubuCsProjFile.Templating
         private readonly IList<string> _nugetDeclarations = new List<string>();
         private string _relativePath;
 
+        private readonly Substitutions _substitutions = new Substitutions();
+
         public ProjectPlan(string projectName)
         {
             _projectName = projectName;
+
+            _substitutions.Set(ASSEMBLY_NAME, projectName);
+        }
+
+        public Substitutions Substitutions
+        {
+            get { return _substitutions; }
         }
 
         public void Alter(TemplatePlan plan)
@@ -42,6 +51,7 @@ namespace FubuCsProjFile.Templating
             }
 
             _relativePath = reference.Project.FileName.PathRelativeTo(plan.Root).Replace("\\", "/");
+            _substitutions.Set(PROJECT_PATH, _relativePath);
 
             _alterations.Each(x => {
                 plan.Logger.TraceAlteration(x);
