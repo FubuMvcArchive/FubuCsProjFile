@@ -91,6 +91,7 @@
     <Compile Include="Templating\RakeFileTransformTester.cs" />
     <Compile Include="Templating\ReadSolutionTester.cs" />
     <Compile Include="Templating\SolutionDirectoryTester.cs" />
+    <Compile Include="Templating\SubstitutionsTester.cs" />
     <Compile Include="Templating\TemplateBuilderTester.cs" />
     <Compile Include="Templating\TemplateContextTester.cs" />
     <Compile Include="Templating\TemplateLibraryTester.cs" />
