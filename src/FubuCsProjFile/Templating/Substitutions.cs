@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using FubuCore;
 using FubuCore.Util;
@@ -62,6 +63,14 @@ namespace FubuCsProjFile.Templating
         public void CopyTo(Substitutions substitutions2)
         {
             _values.Each(substitutions2.Set);
+        }
+
+        public void ReadInputs(IEnumerable<Input> inputs)
+        {
+            inputs.Each(x => {
+                var resolved = ApplySubstitutions((x.Default ?? string.Empty));
+                SetIfNone(x.Name, resolved);
+            });
         }
     }
 }

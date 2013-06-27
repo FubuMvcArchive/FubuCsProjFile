@@ -89,5 +89,46 @@ namespace FubuCsProjFile.Testing.Templating
             substitutions2.ValueFor("key").ShouldEqual("something");
             substitutions2.ValueFor("two").ShouldEqual("twenty");
         }
+
+    }
+
+    [TestFixture]
+    public class when_reading_inputs
+    {
+        private Substitutions substitutions;
+
+        [SetUp]
+        public void SetUp()
+        {
+            substitutions = new Substitutions();
+            substitutions.Set("%SHORT_NAME%", "BigProject");
+
+            var inputs = new Input[]
+            {
+                new Input("%REGISTRY%=%SHORT_NAME%Registry"),
+                new Input("Foo=Bar") ,
+                new Input("%SHORT_NAME%=different") 
+            };
+
+            substitutions.ReadInputs(inputs);
+        }
+
+        [Test]
+        public void does_not_overwrite()
+        {
+            substitutions.ValueFor("%SHORT_NAME%").ShouldEqual("BigProject");
+        }
+
+        [Test]
+        public void imports_new_simple_input()
+        {
+            substitutions.ValueFor("Foo").ShouldEqual("Bar");
+        }
+
+        [Test]
+        public void resolves_substitutions_in_input_value_defaults()
+        {
+            substitutions.ValueFor("%REGISTRY%").ShouldEqual("BigProjectRegistry");
+        }
     }
 }
