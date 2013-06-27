@@ -50,5 +50,30 @@ namespace FubuCsProjFile.Testing.Templating
             plan.ApplySubstitutions("*%SOLUTION_PATH%*")
                 .ShouldEqual("*src/MySolution.sln*");
         }
+
+        [Test]
+        public void add_instructions_simple()
+        {
+            var plan = new TemplatePlan("root");
+            plan.AddInstructions("some foo");
+
+            plan.WriteInstructions();
+
+            new FileSystem().ReadStringFromFile("root".AppendPath(TemplatePlan.InstructionsFile))
+                .ShouldContain("some foo");
+        }
+
+        [Test]
+        public void add_instructions_with_substitution()
+        {
+            var plan = new TemplatePlan("root");
+            plan.Substitutions.Set("%SOLUTION_NAME%", "Foo");
+            plan.AddInstructions("the solution is '%SOLUTION_NAME%'");
+
+            plan.WriteInstructions();
+
+            new FileSystem().ReadStringFromFile("root".AppendPath(TemplatePlan.InstructionsFile))
+                .ShouldContain("the solution is 'Foo'");
+        }
     }
 }

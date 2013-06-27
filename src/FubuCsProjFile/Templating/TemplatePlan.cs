@@ -14,10 +14,13 @@ namespace FubuCsProjFile.Templating
 
 
         public static readonly string RippleImportFile = "ripple-install.txt";
+        public static readonly string InstructionsFile = "instructions.txt";
 
         private readonly IFileSystem _fileSystem = new FileSystem();
         private readonly IList<string> _handled = new List<string>(); 
         private readonly Substitutions _substitutions = new Substitutions();
+        private readonly StringWriter _instructions = new StringWriter();
+
 
         public static TemplatePlan CreateClean(string directory)
         {
@@ -221,6 +224,21 @@ namespace FubuCsProjFile.Templating
         public ProjectPlan FindProjectPlan(string name)
         {
             return _steps.OfType<ProjectPlan>().FirstOrDefault(x => x.ProjectName == name);
+        }
+
+        public void AddInstructions(string rawText)
+        {
+            _instructions.WriteLine(ApplySubstitutions(rawText));
+            _instructions.WriteLine();
+            _instructions.WriteLine();
+        }
+
+
+        public void WriteInstructions()
+        {
+            FileSystem.AlterFlatFile(Root.AppendPath(InstructionsFile), list => {
+                list.AddRange(_instructions.ToString().SplitOnNewLine());
+            });
         }
     }
 }
