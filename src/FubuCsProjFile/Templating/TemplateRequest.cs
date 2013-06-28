@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FubuCsProjFile.Templating
 {
@@ -62,5 +64,29 @@ namespace FubuCsProjFile.Templating
         {
             _testingProjects.Add(request);
         }
+
+        public IEnumerable<MissingTemplate> Validate(ITemplateLibrary templates)
+        {
+            var solutionErrors = templates.Validate(TemplateType.Solution, _templates.ToArray());
+            var projectErrors = templates.Validate(TemplateType.Project, _projects.Select(x => x.Template).ToArray());
+            var alterationErrors = templates.Validate(TemplateType.Alteration,
+                                                      _projects.SelectMany(x => x.Alterations).ToArray());
+
+            var testingErrors = templates.Validate(TemplateType.Testing,
+                                                   _testingProjects.Select(x => x.Template).ToArray());
+
+            var testingAlterationErrors = templates.Validate(TemplateType.Testing,
+                                                             _testingProjects.SelectMany(x => x.Alterations).ToArray());
+
+
+
+            return solutionErrors
+                .Union(projectErrors)
+                .Union(alterationErrors)
+                .Union(testingErrors)
+                .Union(testingAlterationErrors);
+
+        } 
+
     }
 }

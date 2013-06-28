@@ -89,6 +89,24 @@ namespace FubuCsProjFile.Templating
             return names.Select(x => Find(type, x));
         }
 
+        public IEnumerable<MissingTemplate> Validate(TemplateType type, params string[] names)
+        {
+            var templates = readTemplates(type);
 
+            foreach (var name in names)
+            {
+                if (templates.Any(x => x.Name.EqualsIgnoreCase(name)))
+                {
+                    continue;
+                }
+
+                yield return new MissingTemplate
+                {
+                    Name = name,
+                    TemplateType = type,
+                    ValidChoices = templates.Select(x => x.Name).ToArray()
+                };
+            }
+        }
     }
 }
