@@ -4,6 +4,11 @@ namespace FubuCsProjFile.Templating
 {
     public class TestProjectRequest : ProjectRequest
     {
-        public string OriginalProject { get; set; }
+        public TestProjectRequest(string name, string template, string originalProject) : base(name, template)
+        {
+            OriginalProject = originalProject;
+        }
+
+        public string OriginalProject { get; private set; }
     }
 }

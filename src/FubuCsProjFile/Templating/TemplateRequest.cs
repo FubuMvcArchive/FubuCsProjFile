@@ -11,6 +11,13 @@ namespace FubuCsProjFile.Templating
         private readonly IList<TestProjectRequest> _testingProjects = new List<TestProjectRequest>();
         private readonly Substitutions _substitutions = new Substitutions();
 
+        public IEnumerable<string> Validate()
+        {
+
+
+            throw new NotImplementedException();
+        } 
+
         public Substitutions Substitutions
         {
             get { return _substitutions; }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FubuCsProjFile.Templating
 {
@@ -7,8 +8,17 @@ namespace FubuCsProjFile.Templating
         private readonly IList<string> _alterations = new List<string>(); 
         private readonly Substitutions _substitutions = new Substitutions();
 
-        public string Name { get; set; }
-        public string Template { get; set; }
+        public ProjectRequest(string name, string template)
+        {
+            if (name == null) throw new ArgumentNullException("name");
+            if (template == null) throw new ArgumentNullException("template");
+
+            Name = name;
+            Template = template;
+        }
+
+        public string Name { get; private set; }
+        public string Template { get; private set; }
 
         public Substitutions Substitutions
         {

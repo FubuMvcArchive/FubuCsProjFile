@@ -82,7 +82,7 @@ namespace FubuCsProjFile.Testing
             {
                 x.AddTemplate("Simple");
 
-                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                var projectRequest = new ProjectRequest("MyProject", "Simple");
                 projectRequest.AddAlteration("Assets");
 
                 x.AddProjectRequest(projectRequest);
@@ -136,7 +136,7 @@ namespace FubuCsProjFile.Testing
             executePlan(x =>
             {
                 x.AddTemplate("Simple");
-                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
+                x.AddProjectRequest(new ProjectRequest("MyProject", "Simple"));
             });
 
             var content = readFile(TemplatePlan.InstructionsFile);
@@ -183,7 +183,7 @@ namespace FubuCsProjFile.Testing
         {
             executePlan(x => {
                 x.AddTemplate("Simple");
-                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
+                x.AddProjectRequest(new ProjectRequest("MyProject", "Simple"));
             });
 
             assertFileExists("src", "MyProject", "MyProject.csproj");
@@ -209,7 +209,7 @@ namespace FubuCsProjFile.Testing
             executePlan(x =>
             {
                 x.AddTemplate("Simple");
-                var projectRequest = new ProjectRequest {Name = "MyProject", Template = "Simple"};
+                var projectRequest = new ProjectRequest("MyProject", "Simple");
                 projectRequest.Substitutions.Set("Foo", "Bar");
 
                 x.AddProjectRequest(projectRequest);
@@ -225,7 +225,7 @@ namespace FubuCsProjFile.Testing
             executePlan(x =>
             {
                 x.AddTemplate("Simple");
-                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
+                x.AddProjectRequest(new ProjectRequest("MyProject", "Simple" ));
             });
 
             thePlan.CurrentProject.Substitutions.ValueFor("%REGISTRY_NAME%")
@@ -238,7 +238,7 @@ namespace FubuCsProjFile.Testing
             executePlan(x =>
             {
                 x.AddTemplate("Simple");
-                var projectRequest = new ProjectRequest {Name = "MyProject", Template = "Simple"};  
+                var projectRequest = new ProjectRequest("MyProject", "Simple");  
                 projectRequest.Substitutions.Set("something-class", "MyProjectClass");
 
                 x.AddProjectRequest(projectRequest);
@@ -254,7 +254,7 @@ namespace FubuCsProjFile.Testing
             executePlan(x =>
             {
                 x.AddTemplate("Simple");
-                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template="CustomProjFile"  });
+                x.AddProjectRequest(new ProjectRequest("MyProject", "CustomProjFile"));
             });
 
             assertFileExists("src", "MyProject", "MyProject.csproj");
@@ -269,7 +269,7 @@ namespace FubuCsProjFile.Testing
             executePlan(x =>
             {
                 x.AddTemplate("Simple");
-                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
+                x.AddProjectRequest(new ProjectRequest("MyProject", "Simple"));
             });
 
             assertDirectoryExists("src", "MyProject", "Random");
@@ -281,7 +281,7 @@ namespace FubuCsProjFile.Testing
             executePlan(x =>
             {
                 x.AddTemplate("Simple");
-                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
+                x.AddProjectRequest(new ProjectRequest("MyProject", "Simple"));
             });
 
             assertFileExists("src","MyProject","random.txt");
@@ -293,7 +293,7 @@ namespace FubuCsProjFile.Testing
             executePlan(x => {
                 x.AddTemplate("Simple");
 
-                var projectRequest = new ProjectRequest {Name = "MyProject", Template = "Simple"};
+                var projectRequest = new ProjectRequest("MyProject", "Simple");
                 projectRequest.AddAlteration("Assets");
 
                 x.AddProjectRequest(projectRequest);
@@ -312,7 +312,7 @@ namespace FubuCsProjFile.Testing
             {
                 x.AddTemplate("Simple");
 
-                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                var projectRequest = new ProjectRequest("MyProject", "Simple");
                 projectRequest.AddAlteration("Assets");
 
                 x.AddProjectRequest(projectRequest);
@@ -327,7 +327,7 @@ namespace FubuCsProjFile.Testing
             executePlan(x =>
             {
                 x.AddTemplate("Simple");
-                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
+                x.AddProjectRequest(new ProjectRequest("MyProject", "Simple"));
             });
 
             var contents = readFile("rakefile");
@@ -341,7 +341,7 @@ namespace FubuCsProjFile.Testing
             {
                 x.AddTemplate("Simple");
 
-                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                var projectRequest = new ProjectRequest("MyProject", "Simple");
                 projectRequest.AddAlteration("FubuBottle");
 
                 x.AddProjectRequest(projectRequest);
@@ -359,7 +359,7 @@ namespace FubuCsProjFile.Testing
             {
                 x.AddTemplate("Simple");
 
-                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                var projectRequest = new ProjectRequest("MyProject", "Simple");
                 projectRequest.AddAlteration("FubuBottle");
 
                 x.AddProjectRequest(projectRequest);
@@ -375,7 +375,7 @@ namespace FubuCsProjFile.Testing
             {
                 x.AddTemplate("Simple");
 
-                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                var projectRequest = new ProjectRequest("MyProject", "Simple");
 
                 x.AddProjectRequest(projectRequest);
             });
@@ -394,7 +394,7 @@ namespace FubuCsProjFile.Testing
             {
                 x.AddTemplate("Simple");
 
-                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                var projectRequest = new ProjectRequest("MyProject", "Simple");
 
                 x.AddProjectRequest(projectRequest);
             });
@@ -411,7 +411,7 @@ namespace FubuCsProjFile.Testing
             {
                 x.AddTemplate("Simple");
 
-                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                var projectRequest = new ProjectRequest("MyProject", "Simple");
 
                 x.AddProjectRequest(projectRequest);
             });
@@ -426,11 +426,11 @@ namespace FubuCsProjFile.Testing
             executePlan(x => {
                 x.AddTemplate("Simple");
 
-                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                var projectRequest = new ProjectRequest("MyProject", "Simple");
 
                 x.AddProjectRequest(projectRequest);
 
-                x.AddTestingRequest(new TestProjectRequest{Name = "MyProject.Testing", OriginalProject = "MyProject", Template = "unit-testing"});
+                x.AddTestingRequest(new TestProjectRequest("MyProject.Testing", "unit-testing", "MyProject"));
             });
 
             var csProjFile = CsProjFile.LoadFrom("integrated".AppendPath("src", "MyProject.Testing", "MyProject.Testing.csproj"));
@@ -448,11 +448,11 @@ namespace FubuCsProjFile.Testing
             {
                 x.AddTemplate("Simple");
 
-                var projectRequest = new ProjectRequest { Name = "MyProject", Template = "Simple" };
+                var projectRequest = new ProjectRequest("MyProject", "Simple");
 
                 x.AddProjectRequest(projectRequest);
 
-                x.AddTestingRequest(new TestProjectRequest { Name = "MyProject.Testing", OriginalProject = "MyProject", Template = "unit-testing" });
+                x.AddTestingRequest(new TestProjectRequest("MyProject.Testing",  "unit-testing", "MyProject"));
             });
 
             var step = thePlan.Steps.OfType<CopyProjectReferences>().Single();
