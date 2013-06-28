@@ -36,7 +36,17 @@ namespace FubuCsProjFile.Testing.Templating
             plan.Steps.OfType<CopyFileToSolution>().Any().ShouldBeFalse();
         }
 
-        // TODO -- do the same for instructions.txt
+        [Test]
+        public void instructions_txt_is_ignored()
+        {
+            var mother = new DataMother("empty");
+            mother.ToPath(TemplatePlan.InstructionsFile).WriteEmpty();
+
+            var plan = mother.BuildSolutionPlan();
+            plan.FileIsUnhandled(TemplatePlan.InstructionsFile).ShouldBeFalse();
+
+            plan.Steps.OfType<CopyFileToSolution>().Any().ShouldBeFalse();
+        }
 
         [Test]
         public void other_files_are_copied()

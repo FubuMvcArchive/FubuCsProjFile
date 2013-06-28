@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using FubuCore;
 using System.Linq;
+using FubuCore.CommandLine;
 
 namespace FubuCsProjFile.Templating
 {
@@ -133,6 +134,9 @@ namespace FubuCsProjFile.Templating
             Substitutions.WriteTo(Root.AppendPath(Substitutions.ConfigFile));
             WriteNugetImports();
 
+            WriteInstructions();
+
+
             Logger.Finish();
         }
 
@@ -174,6 +178,7 @@ namespace FubuCsProjFile.Templating
         {
             if (Path.GetFileName(file).ToLowerInvariant() == TemplateLibrary.DescriptionFile) return false;
             if (Path.GetFileName(file).ToLowerInvariant() == Input.File) return false;
+            if (Path.GetFileName(file).ToLowerInvariant() == TemplatePlan.InstructionsFile) return false;
 
             var path = file.CanonicalPath();
             return !_handled.Contains(path);
@@ -236,9 +241,22 @@ namespace FubuCsProjFile.Templating
 
         public void WriteInstructions()
         {
+            if (_instructions.ToString().IsEmpty()) return;
+
             FileSystem.AlterFlatFile(Root.AppendPath(InstructionsFile), list => {
                 list.AddRange(_instructions.ToString().SplitOnNewLine());
             });
+
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            _instructions.ToString().SplitOnNewLine().Each(x => {
+                Console.WriteLine(x);
+            });
+
+            Console.ResetColor();
         }
     }
 }

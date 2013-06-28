@@ -123,6 +123,30 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void instructions_in_a_solution_template()
+        {
+            executePlan(x => x.AddTemplate("Simple"));
+
+            readFile("instructions.txt").ShouldContain("The next thing you wanna do is run rake");
+        }
+
+        [Test]
+        public void instructions_in_a_project_template()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+                x.AddProjectRequest(new ProjectRequest { Name = "MyProject", Template = "Simple" });
+            });
+
+            var content = readFile(TemplatePlan.InstructionsFile);
+            content.Each(x => Debug.WriteLine(x));
+
+            content
+                .ShouldContain("Open src/MyProject/MyProject.csproj to continue");
+        }
+
+        [Test]
         public void rake_files()
         {
             executePlan(x => x.AddTemplate("Simple"));

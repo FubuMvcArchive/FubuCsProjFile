@@ -63,6 +63,8 @@ namespace FubuCsProjFile.Testing.Templating
                 .ShouldContain("some foo");
         }
 
+
+
         [Test]
         public void add_instructions_with_substitution()
         {

@@ -1,0 +1,1 @@
+Open %PROJECT_PATH% to continue

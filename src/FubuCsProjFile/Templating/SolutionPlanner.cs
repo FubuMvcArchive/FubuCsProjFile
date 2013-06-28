@@ -15,6 +15,8 @@ namespace FubuCsProjFile.Templating
                 var inputs = Input.ReadFromFile(file.Path);
                 plan.Substitutions.ReadInputs(inputs);
             };
+
+
         }
 
         protected override void configurePlan(string directory, TemplatePlan plan)
