@@ -26,6 +26,31 @@ namespace FubuCsProjFile.Testing.Templating
         }
 
         [Test]
+        public void short_name_is_set_automatically()
+        {
+            new ProjectPlan("FubuMVC.Diagnostics")
+                .Substitutions.ValueFor(ProjectPlan.SHORT_NAME)
+                .ShouldEqual("Diagnostics");
+        }
+
+        [Test]
+        public void short_name_is_set_automatically_2()
+        {
+            new ProjectPlan("FubuMVC.Authentication.Twitter")
+                .Substitutions.ValueFor(ProjectPlan.SHORT_NAME)
+                .ShouldEqual("Twitter");
+        }
+
+
+        [Test]
+        public void short_name_is_set_automatically_3()
+        {
+            new ProjectPlan("FubuMVC")
+                .Substitutions.ValueFor(ProjectPlan.SHORT_NAME)
+                .ShouldEqual("FubuMVC");
+        }
+
+        [Test]
         public void alter_by_creating_new_project_from_default_template()
         {
             thePlan = TemplatePlan.CreateClean("create-solutionProject");

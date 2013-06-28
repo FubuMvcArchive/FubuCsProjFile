@@ -10,6 +10,7 @@ namespace FubuCsProjFile.Templating
     {
         public const string NAMESPACE = "%NAMESPACE%";
         public const string ASSEMBLY_NAME = "%ASSEMBLY_NAME%";
+        public const string SHORT_NAME = "%SHORT_NAME%";
         public const string PROJECT_PATH = "%PROJECT_PATH%";
         public static readonly string TemplateFile = "csproj.xml";
 
@@ -25,6 +26,8 @@ namespace FubuCsProjFile.Templating
             _projectName = projectName;
 
             _substitutions.Set(ASSEMBLY_NAME, projectName);
+            _substitutions.Set(SHORT_NAME, projectName.Split('.').Last());
+            
         }
 
         public Substitutions Substitutions
