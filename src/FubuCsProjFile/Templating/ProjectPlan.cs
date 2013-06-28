@@ -53,6 +53,8 @@ namespace FubuCsProjFile.Templating
                     plan.Logger.Trace("Creating project {0} from template at {1}", _projectName, ProjectTemplateFile);
                     reference = plan.Solution.AddProjectFromTemplate(_projectName, ProjectTemplateFile);
                 }
+
+                reference.Project.AssemblyName = reference.Project.RootNamespace = ProjectName;
             }
 
             var projectDirectory = reference.Project.ProjectDirectory;
