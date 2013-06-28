@@ -67,24 +67,17 @@ namespace FubuCsProjFile.Templating
             _values.Each(substitutions2.Set);
         }
 
-        public void ReadInputs(IEnumerable<Input> inputs)
+        public void ReadInputs(IEnumerable<Input> inputs, Action<string> markMissing)
         {
-            var missing = new List<string>();
-
             inputs.Each(x => {
                 if (!_values.Has(x.Name) && x.Default.IsEmpty())
                 {
-                    missing.Add(x.Name);
+                    markMissing(x.Name);
                 }
                 
                 var resolved = ApplySubstitutions((x.Default ?? string.Empty));
                 SetIfNone(x.Name, resolved);
             });
-
-            if (missing.Any())
-            {
-                throw new MissingInputException(missing);
-            }
         }
 
         public void Trace(ITemplateLogger logger)

@@ -9,6 +9,18 @@ namespace FubuCsProjFile.Testing.Templating
     public class TemplatePlanTester
     {
         [Test]
+        public void execute_blows_up_if_there_are_any_missing_inputs()
+        {
+            var plan = TemplatePlan.CreateClean("missing-inputs");
+            plan.MissingInputs.Add("Foo");
+            plan.MissingInputs.Add("Bar");
+
+            Exception<MissingInputException>.ShouldBeThrownBy(() => {
+                plan.Execute();
+            }).InputNames.ShouldHaveTheSameElementsAs("Foo", "Bar");
+        }
+
+        [Test]
         public void write_out_nuget_imports()
         {
             var plan = TemplatePlan.CreateClean("nuget-imports");

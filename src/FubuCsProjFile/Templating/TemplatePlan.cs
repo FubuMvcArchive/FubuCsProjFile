@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using FubuCore;
 using System.Linq;
-using FubuCore.CommandLine;
+using FubuCore;
 
 namespace FubuCsProjFile.Templating
 {
@@ -18,19 +16,14 @@ namespace FubuCsProjFile.Templating
         public static readonly string InstructionsFile = "instructions.txt";
 
         private readonly IFileSystem _fileSystem = new FileSystem();
-        private readonly IList<string> _handled = new List<string>(); 
-        private readonly Substitutions _substitutions = new Substitutions();
+        private readonly IList<string> _handled = new List<string>();
         private readonly StringWriter _instructions = new StringWriter();
+        private readonly IList<string> _missingInputs = new List<string>();
+        private readonly IList<ITemplateStep> _steps = new List<ITemplateStep>();
+        private readonly Substitutions _substitutions = new Substitutions();
+        private ProjectPlan _currentProject;
+        private Solution _solution;
 
-
-        public static TemplatePlan CreateClean(string directory)
-        {
-            var system = new FileSystem();
-            system.CreateDirectory(directory);
-            system.CleanDirectory(directory);
-
-            return new TemplatePlan(directory);
-        }
 
         public TemplatePlan(string rootDirectory)
         {
@@ -40,29 +33,17 @@ namespace FubuCsProjFile.Templating
             Logger = new TemplateLogger();
         }
 
+        public IList<string> MissingInputs
+        {
+            get { return _missingInputs; }
+        }
+
         public Substitutions Substitutions
         {
             get { return _substitutions; }
         }
 
         public ITemplateLogger Logger { get; private set; }
-
-        public string ApplySubstitutions(string rawText)
-        {
-            return _substitutions.ApplySubstitutions(rawText, builder => {
-                if (CurrentProject != null)
-                {
-                    CurrentProject.ApplySubstitutions(null, builder);
-                }
-            });
-        }
-
-
-
-        public void MarkHandled(string file)
-        {
-            _handled.Add(file.CanonicalPath());
-        }
 
         public string Root { get; set; }
 
@@ -90,10 +71,40 @@ namespace FubuCsProjFile.Templating
             get { return _fileSystem; }
         }
 
-        private readonly IList<ITemplateStep> _steps = new List<ITemplateStep>();
-        private ProjectPlan _currentProject;
-        private Solution _solution;
+        public IEnumerable<ITemplateStep> Steps
+        {
+            get { return _steps; }
+        }
 
+        public ProjectPlan CurrentProject
+        {
+            get { return _currentProject; }
+        }
+
+        public static TemplatePlan CreateClean(string directory)
+        {
+            var system = new FileSystem();
+            system.CreateDirectory(directory);
+            system.CleanDirectory(directory);
+
+            return new TemplatePlan(directory);
+        }
+
+        public string ApplySubstitutions(string rawText)
+        {
+            return _substitutions.ApplySubstitutions(rawText, builder => {
+                if (CurrentProject != null)
+                {
+                    CurrentProject.ApplySubstitutions(null, builder);
+                }
+            });
+        }
+
+
+        public void MarkHandled(string file)
+        {
+            _handled.Add(file.CanonicalPath());
+        }
 
         public void Add(ITemplateStep step)
         {
@@ -105,18 +116,17 @@ namespace FubuCsProjFile.Templating
             _steps.Add(step);
         }
 
-        public IEnumerable<ITemplateStep> Steps
-        {
-            get { return _steps; }
-        }
-
-        public ProjectPlan CurrentProject
-        {
-            get { return _currentProject; }
-        }
-
         public void Execute()
         {
+            if (_missingInputs.Any())
+            {
+                Logger.Trace("Missing Inputs:");
+                Logger.Trace("---------------");
+                _missingInputs.Each(x => Console.WriteLine(x));
+
+                throw new MissingInputException(_missingInputs.ToArray());
+            }
+
             Logger.Starting(_steps.Count);
             _substitutions.Trace(Logger);
 
@@ -148,7 +158,7 @@ namespace FubuCsProjFile.Templating
             _steps.Each(x => {
                 Logger.TraceStep(x);
                 var project = x as ProjectPlan;
-                
+
 
                 if (project != null)
                 {
@@ -159,14 +169,13 @@ namespace FubuCsProjFile.Templating
                 }
             });
 
-            var projectsWithNugets = determineProjectsWithNugets();
+            string[] projectsWithNugets = determineProjectsWithNugets();
             if (projectsWithNugets.Any())
             {
                 Console.WriteLine();
                 Console.WriteLine("Nuget imports:");
                 projectsWithNugets.Each(x => Console.WriteLine(x));
             }
-
         }
 
         public void AlterFile(string relativeName, Action<List<string>> alter)
@@ -178,15 +187,16 @@ namespace FubuCsProjFile.Templating
         {
             if (Path.GetFileName(file).ToLowerInvariant() == TemplateLibrary.DescriptionFile) return false;
             if (Path.GetFileName(file).ToLowerInvariant() == Input.File) return false;
-            if (Path.GetFileName(file).ToLowerInvariant() == TemplatePlan.InstructionsFile) return false;
+            if (Path.GetFileName(file).ToLowerInvariant() == InstructionsFile) return false;
 
-            var path = file.CanonicalPath();
+            string path = file.CanonicalPath();
             return !_handled.Contains(path);
         }
 
         public void CopyUnhandledFiles(string directory)
         {
-            var unhandledFiles = _fileSystem.FindFiles(directory, FileSet.Everything()).Where(FileIsUnhandled);
+            IEnumerable<string> unhandledFiles =
+                _fileSystem.FindFiles(directory, FileSet.Everything()).Where(FileIsUnhandled);
 
             if (CurrentProject == null)
             {
@@ -197,13 +207,11 @@ namespace FubuCsProjFile.Templating
                 unhandledFiles.Each(
                     file => CurrentProject.Add(new CopyFileToProject(file.PathRelativeTo(directory), file)));
             }
-
-
         }
 
         public void WriteNugetImports()
         {
-            var projectsWithNugets = determineProjectsWithNugets();
+            string[] projectsWithNugets = determineProjectsWithNugets();
 
             if (projectsWithNugets.Any())
             {
@@ -211,15 +219,14 @@ namespace FubuCsProjFile.Templating
                 projectsWithNugets.Each(x => Logger.Trace(x));
                 Logger.Trace("");
 
-                TemplateLibrary.FileSystem.AlterFlatFile(Root.AppendPath(RippleImportFile), list => {
-                    list.AddRange(projectsWithNugets);
-                });
+                TemplateLibrary.FileSystem.AlterFlatFile(Root.AppendPath(RippleImportFile),
+                                                         list => { list.AddRange(projectsWithNugets); });
             }
         }
 
         private string[] determineProjectsWithNugets()
         {
-            var projectsWithNugets = Steps
+            string[] projectsWithNugets = Steps
                 .OfType<ProjectPlan>()
                 .Where(x => x.NugetDeclarations.Any())
                 .Select(x => x.ToNugetImportStatement()).ToArray();
@@ -243,18 +250,15 @@ namespace FubuCsProjFile.Templating
         {
             if (_instructions.ToString().IsEmpty()) return;
 
-            FileSystem.AlterFlatFile(Root.AppendPath(InstructionsFile), list => {
-                list.AddRange(_instructions.ToString().SplitOnNewLine());
-            });
+            FileSystem.AlterFlatFile(Root.AppendPath(InstructionsFile),
+                                     list => { list.AddRange(_instructions.ToString().SplitOnNewLine()); });
 
 
             Console.WriteLine();
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Cyan;
 
-            _instructions.ToString().SplitOnNewLine().Each(x => {
-                Console.WriteLine(x);
-            });
+            _instructions.ToString().SplitOnNewLine().Each(x => { Console.WriteLine(x); });
 
             Console.ResetColor();
         }

@@ -13,7 +13,7 @@ namespace FubuCsProjFile.Templating
 
             ShallowMatch(Input.File).Do = (file, plan) => {
                 var inputs = Input.ReadFromFile(file.Path);
-                plan.Substitutions.ReadInputs(inputs);
+                plan.Substitutions.ReadInputs(inputs, plan.MissingInputs.Add);
             };
 
 

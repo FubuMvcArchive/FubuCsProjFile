@@ -16,7 +16,7 @@ namespace FubuCsProjFile.Templating
 
             ShallowMatch(Input.File).Do = (file, plan) => {
                 var inputs = Input.ReadFromFile(file.Path);
-                plan.CurrentProject.Substitutions.ReadInputs(inputs);
+                plan.CurrentProject.Substitutions.ReadInputs(inputs, plan.MissingInputs.Add);
             };
 
             Matching(FileSet.Shallow(ProjectPlan.TemplateFile)).Do = (file, plan) => {
