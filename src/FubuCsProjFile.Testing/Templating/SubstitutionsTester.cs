@@ -108,6 +108,23 @@ namespace FubuCsProjFile.Testing.Templating
             substitutions2.ValueFor("two").ShouldEqual("twenty");
         }
 
+        [Test]
+        public void reading_inputs_that_have_no_known_values_throws()
+        {
+            var substitutions = new Substitutions();
+            substitutions.Set("key", "something");
+
+            var inputs = new Input[]
+            {
+                new Input {Name = "Foo"},
+                new Input {Name = "Bar"},
+            };
+
+            Exception<MissingInputException>.ShouldBeThrownBy(() => {
+                substitutions.ReadInputs(inputs);
+            }).InputNames.ShouldHaveTheSameElementsAs("Foo", "Bar");
+        }
+
     }
 
     [TestFixture]

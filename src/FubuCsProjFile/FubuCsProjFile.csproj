@@ -88,6 +88,7 @@
     <Compile Include="Templating\ITemplatePlanner.cs" />
     <Compile Include="Templating\ITemplatePlannerAction.cs" />
     <Compile Include="Templating\ITemplateStep.cs" />
+    <Compile Include="Templating\MissingInputException.cs" />
     <Compile Include="Templating\ProjectDirectory.cs" />
     <Compile Include="Templating\ProjectPlan.cs" />
     <Compile Include="Templating\ProjectPlanner.cs" />
