@@ -12,8 +12,14 @@ namespace FubuCsProjFile
 {
     public class CsProjFile
     {
-
+        /*
+             <RootNamespace>MyProject</RootNamespace>
+    <AssemblyName>MyProject</AssemblyName>
+         */
         private const string PROJECTGUID = "ProjectGuid";
+        private const string ROOT_NAMESPACE = "RootNamespace";
+        private const string ASSEMBLY_NAME = "AssemblyName";
+
         private readonly string _fileName;
         private readonly MSBuildProject _project;
         public static readonly Guid ClassLibraryType = Guid.Parse("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC");
@@ -44,6 +50,40 @@ namespace FubuCsProjFile
                             ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
 
                 group.SetPropertyValue(PROJECTGUID, value.ToString().ToUpper(), true);
+            }
+        }
+
+        public string AssemblyName
+        {
+            get
+            {
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ASSEMBLY_NAME))
+                            ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
+
+                return group.GetPropertyValue(ASSEMBLY_NAME);
+            }
+            set
+            {
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ASSEMBLY_NAME))
+                            ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
+                group.SetPropertyValue(ASSEMBLY_NAME, value, true);
+            }
+        }
+
+        public string RootNamespace
+        {
+            get
+            {
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ROOT_NAMESPACE))
+                            ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
+
+                return group.GetPropertyValue(ROOT_NAMESPACE);
+            }
+            set
+            {
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ROOT_NAMESPACE))
+                            ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
+                group.SetPropertyValue(ROOT_NAMESPACE, value, true);
             }
         }
 
@@ -84,7 +124,11 @@ namespace FubuCsProjFile
 
             @group.SetPropertyValue(PROJECTGUID, Guid.NewGuid().ToString().ToUpper(), true);
 
-            return new CsProjFile(fileName, project);
+            var file =  new CsProjFile(fileName, project);
+            file.AssemblyName = file.RootNamespace = file.ProjectName;
+
+            return file;
+
         }
 
         public static CsProjFile LoadFrom(string filename)

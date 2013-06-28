@@ -59,6 +59,15 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void sets_the_assembly_name_and_root_namespace_on_creation()
+        {
+            var project = CsProjFile.CreateAtSolutionDirectory("Goofy", "Directory");
+            project.RootNamespace.ShouldEqual("Goofy");
+            project.AssemblyName.ShouldEqual("Goofy");
+
+        }
+
+        [Test]
         public void read_the_project_types_when_it_is_explicit_in_the_project()
         {
             var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
