@@ -164,7 +164,7 @@ namespace FubuCsProjFile.Templating
                 {
                     Logger.StartProject(project.Alterations.Count);
                     project.Substitutions.Trace(Logger);
-                    project.Alterations.Each(alteration => Logger.TraceAlteration(alteration));
+                    project.Alterations.Each(alteration => Logger.TraceAlteration(ApplySubstitutions(alteration.ToString())));
                     Logger.EndProject();
                 }
             });

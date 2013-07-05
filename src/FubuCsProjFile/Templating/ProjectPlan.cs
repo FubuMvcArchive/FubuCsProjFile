@@ -67,7 +67,7 @@ namespace FubuCsProjFile.Templating
             _substitutions.Set(PROJECT_PATH, _relativePath);
 
             _alterations.Each(x => {
-                plan.Logger.TraceAlteration(x);
+                plan.Logger.TraceAlteration(ApplySubstitutions(x.ToString()));
                 x.Alter(reference.Project, this);
             });
 

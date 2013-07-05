@@ -47,10 +47,10 @@ namespace FubuCsProjFile.Templating
             _indention = 4;
         }
 
-        public void TraceAlteration(IProjectAlteration alteration)
+        public void TraceAlteration(string alteration)
         {
             _alterationNumber++;
-            var text = _alterationNumber.ToString().PadLeft(3) + "/" + _numberOfAlterations + ": " + alteration.ToString();
+            var text = _alterationNumber.ToString().PadLeft(3) + "/" + _numberOfAlterations + ": " + alteration;
         
             ConsoleWriter.WriteWithIndent(ConsoleColor.Gray, _indention, text);
         }

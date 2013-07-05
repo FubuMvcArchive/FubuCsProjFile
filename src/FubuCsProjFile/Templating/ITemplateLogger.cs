@@ -7,7 +7,7 @@ namespace FubuCsProjFile.Templating
         void Trace(string contents, params object[] parameters);
         void StartProject(int numberOfAlterations);
         void EndProject();
-        void TraceAlteration(IProjectAlteration alteration);
+        void TraceAlteration(string alteration);
         void Finish();
         void WriteSuccess(string message);
         void WriteWarning(string message);
