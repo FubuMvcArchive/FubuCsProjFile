@@ -144,9 +144,6 @@ namespace FubuCsProjFile.Templating
             Substitutions.WriteTo(Root.AppendPath(Substitutions.ConfigFile));
             WriteNugetImports();
 
-            WriteInstructions();
-
-
             Logger.Finish();
         }
 

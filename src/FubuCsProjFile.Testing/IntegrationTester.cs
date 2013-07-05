@@ -127,6 +127,9 @@ namespace FubuCsProjFile.Testing
         {
             executePlan(x => x.AddTemplate("Simple"));
 
+            // instructions are built as part of the plan, but not written now
+            thePlan.WriteInstructions();
+
             readFile("instructions.txt").ShouldContain("The next thing you wanna do is run rake");
         }
 
@@ -138,6 +141,9 @@ namespace FubuCsProjFile.Testing
                 x.AddTemplate("Simple");
                 x.AddProjectRequest(new ProjectRequest("MyProject", "Simple"));
             });
+
+            // Instructions are now pulled out of Execute()
+            thePlan.WriteInstructions();
 
             var content = readFile(TemplatePlan.InstructionsFile);
             content.Each(x => Debug.WriteLine(x));
