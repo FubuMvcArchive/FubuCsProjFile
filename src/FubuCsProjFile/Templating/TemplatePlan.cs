@@ -10,6 +10,7 @@ namespace FubuCsProjFile.Templating
     {
         public const string SOLUTION_NAME = "%SOLUTION_NAME%";
         public const string SOLUTION_PATH = "%SOLUTION_PATH%";
+        public const string INSTRUCTIONS = "%INSTRUCTIONS%";
 
 
         public static readonly string RippleImportFile = "ripple-install.txt";
@@ -130,6 +131,8 @@ namespace FubuCsProjFile.Templating
             Logger.Starting(_steps.Count);
             _substitutions.Trace(Logger);
 
+            _substitutions.Set(INSTRUCTIONS, GetInstructions().Replace("\"", "'"));
+
             _steps.Each(x => {
                 Logger.TraceStep(x);
                 x.Alter(this);
@@ -247,7 +250,7 @@ namespace FubuCsProjFile.Templating
         {
             if (_instructions.ToString().IsEmpty()) return;
 
-            var instructionText = ApplySubstitutions(_instructions.ToString());
+            var instructionText = GetInstructions();
             var contents = instructionText.SplitOnNewLine();
 
             FileSystem.AlterFlatFile(Root.AppendPath(InstructionsFile),
@@ -261,6 +264,11 @@ namespace FubuCsProjFile.Templating
             contents.Each(x => Console.WriteLine(x));
 
             Console.ResetColor();
+        }
+
+        public string GetInstructions()
+        {
+            return ApplySubstitutions(_instructions.ToString());
         }
     }
 }

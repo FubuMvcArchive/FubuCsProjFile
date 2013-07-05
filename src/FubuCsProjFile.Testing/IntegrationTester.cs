@@ -153,6 +153,20 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void instructions_are_available_as_a_substitution()
+        {
+            executePlan(x =>
+            {
+                x.AddTemplate("Simple");
+                x.AddProjectRequest(new ProjectRequest("MyProject", "Simple"));
+            });
+
+            var file = readFile("src", "MyProject", "SomeClass.cs");
+            file.Each(x => Debug.WriteLine(x));
+                file.ShouldContain("Open src/MyProject/MyProject.csproj to continue");
+        }
+
+        [Test]
         public void rake_files()
         {
             executePlan(x => x.AddTemplate("Simple"));

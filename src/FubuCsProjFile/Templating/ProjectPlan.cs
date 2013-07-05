@@ -37,6 +37,9 @@ namespace FubuCsProjFile.Templating
 
         public void Alter(TemplatePlan plan)
         {
+            // Hokey.
+            _substitutions.Set(TemplatePlan.INSTRUCTIONS, plan.GetInstructions());
+
             plan.Logger.StartProject(_alterations.Count);
             _substitutions.Trace(plan.Logger);
 
