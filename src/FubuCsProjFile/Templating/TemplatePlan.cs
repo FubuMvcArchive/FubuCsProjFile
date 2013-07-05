@@ -237,7 +237,7 @@ namespace FubuCsProjFile.Templating
 
         public void AddInstructions(string rawText)
         {
-            _instructions.WriteLine(ApplySubstitutions(rawText));
+            _instructions.WriteLine(rawText);
             _instructions.WriteLine();
             _instructions.WriteLine();
         }
@@ -247,15 +247,18 @@ namespace FubuCsProjFile.Templating
         {
             if (_instructions.ToString().IsEmpty()) return;
 
+            var instructionText = ApplySubstitutions(_instructions.ToString());
+            var contents = instructionText.SplitOnNewLine();
+
             FileSystem.AlterFlatFile(Root.AppendPath(InstructionsFile),
-                                     list => { list.AddRange(_instructions.ToString().SplitOnNewLine()); });
+                                     list => list.AddRange(contents));
 
 
             Console.WriteLine();
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Cyan;
 
-            _instructions.ToString().SplitOnNewLine().Each(x => { Console.WriteLine(x); });
+            contents.Each(x => Console.WriteLine(x));
 
             Console.ResetColor();
         }
