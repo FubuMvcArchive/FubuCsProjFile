@@ -79,10 +79,10 @@ namespace FubuCsProjFile.Templating
             var alterationErrors = templates.Validate(TemplateType.Alteration,
                                                       _projects.SelectMany(x => x.Alterations).ToArray());
 
-            var testingErrors = templates.Validate(TemplateType.Testing,
+            var testingErrors = templates.Validate(TemplateType.Project,
                                                    _testingProjects.Select(x => x.Template).ToArray());
 
-            var testingAlterationErrors = templates.Validate(TemplateType.Testing,
+            var testingAlterationErrors = templates.Validate(TemplateType.Alteration,
                                                              _testingProjects.SelectMany(x => x.Alterations).ToArray());
 
 

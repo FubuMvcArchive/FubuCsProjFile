@@ -35,17 +35,17 @@ namespace FubuCsProjFile.Templating
         private void applyTestingTemplates(TemplateRequest request, TemplatePlan plan)
         {
             request.TestingProjects.Each(proj => {
-                buildProjectPlan(plan, proj, TemplateType.Testing);
+                buildProjectPlan(plan, proj);
                 plan.Add(new CopyProjectReferences(proj.OriginalProject));
             });
         }
 
         private void applyProjectTemplates(TemplateRequest request, TemplatePlan plan)
         {
-            request.Projects.Each(proj => buildProjectPlan(plan, proj, TemplateType.Project));
+            request.Projects.Each(proj => buildProjectPlan(plan, proj));
         }
 
-        private void buildProjectPlan(TemplatePlan plan, ProjectRequest proj, TemplateType templateType)
+        private void buildProjectPlan(TemplatePlan plan, ProjectRequest proj)
         {
             var projectPlan = new ProjectPlan(proj.Name);
             plan.Add(projectPlan);
@@ -55,7 +55,7 @@ namespace FubuCsProjFile.Templating
             var planner = new ProjectPlanner();
             if (proj.Template.IsNotEmpty())
             {
-                planner.CreatePlan(_library.Find(templateType, proj.Template), plan);
+                planner.CreatePlan(_library.Find(TemplateType.Project, proj.Template), plan);
             }
 
             _library.Find(TemplateType.Alteration, proj.Alterations)

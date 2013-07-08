@@ -4,7 +4,6 @@
     {
         Solution,
         Project, 
-        Testing,
         Alteration
     }
 }

@@ -18,8 +18,6 @@ namespace FubuCsProjFile.Testing.Templating
             theTemplates.StartTemplate(TemplateType.Solution, "Complex");
             theTemplates.StartTemplate(TemplateType.Project, "MvcApp");
             theTemplates.StartTemplate(TemplateType.Project, "MvcBottle");
-            theTemplates.StartTemplate(TemplateType.Testing, "NUnit");
-            theTemplates.StartTemplate(TemplateType.Testing, "xUnit");
             theTemplates.StartTemplate(TemplateType.Alteration, "Assets");
             theTemplates.StartTemplate(TemplateType.Alteration, "HtmlConventions");
         }
@@ -38,7 +36,7 @@ namespace FubuCsProjFile.Testing.Templating
 
             request.Projects.Single().AddAlteration("Assets");
 
-            request.AddTestingRequest(new TestProjectRequest("foo", "NUnit", "original"));
+            request.AddTestingRequest(new TestProjectRequest("foo", "MvcApp", "original"));
 
             request.Validate(theTemplates).Any().ShouldBeFalse();
 
@@ -94,23 +92,9 @@ namespace FubuCsProjFile.Testing.Templating
 
             var missing = request.Validate(theTemplates).Single();
             missing.Name.ShouldEqual("NonExistent");
-            missing.TemplateType.ShouldEqual(TemplateType.Testing);
-            missing.ValidChoices.ShouldHaveTheSameElementsAs("NUnit", "xUnit");
+            missing.TemplateType.ShouldEqual(TemplateType.Project);
+            missing.ValidChoices.ShouldHaveTheSameElementsAs("MvcApp", "MvcBottle");
         }
 
-        [Test]
-        public void validate_missing_alteration_template_on_testing_project()
-        {
-            var request = new TemplateRequest();
-            request.AddTemplate("Simple");
-            request.AddTestingRequest(new TestProjectRequest("foo", "NUnit", "original"));
-            request.TestingProjects.Last().AddAlteration("NonExistent");
-
-
-            var missing = request.Validate(theTemplates).Single();
-            missing.Name.ShouldEqual("NonExistent");
-            missing.TemplateType.ShouldEqual(TemplateType.Testing);
-            missing.ValidChoices.ShouldHaveTheSameElementsAs("NUnit", "xUnit");
-        }
     }
 }

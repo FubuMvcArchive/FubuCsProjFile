@@ -36,18 +36,7 @@ namespace FubuCsProjFile.Testing.Templating
                 .ShouldHaveTheSameElementsAs("proj1", "proj2", "proj3");
         }
 
-        [Test]
-        public void can_read_testing_templates()
-        {
-            var library = TemplateLibrary.BuildClean("testing");
-            library.StartTemplate(TemplateType.Testing, "proj1");
-            library.StartTemplate(TemplateType.Testing, "proj2");
-            library.StartTemplate(TemplateType.Testing, "proj3");
 
-            library.All().Where(x => x.Type == TemplateType.Testing)
-                .Select(x => x.Name)
-                .ShouldHaveTheSameElementsAs("proj1", "proj2", "proj3");
-        }
 
         [Test]
         public void can_read_alteration_templates()
