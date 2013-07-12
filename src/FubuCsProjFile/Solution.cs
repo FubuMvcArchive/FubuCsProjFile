@@ -26,7 +26,7 @@ namespace FubuCsProjFile
                                .ReadAllText();
 
             var filename = directory.AppendPath(name);
-            if (!Path.HasExtension(filename))
+            if (Path.GetExtension(filename) != ".sln")
             {
                 filename = filename + ".sln";
             }
