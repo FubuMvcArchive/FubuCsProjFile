@@ -41,7 +41,17 @@ namespace FubuCsProjFile.Templating
         public void WriteTo(string file)
         {
             new FileSystem()
-                .WriteToFlatFile(file, writer => _values.Each(writer.WriteProperty));
+                .WriteToFlatFile(file, writer => _values.Each((key, value ) => {
+                    if (key != TemplatePlan.INSTRUCTIONS)
+                    {
+                        writer.WriteProperty(key, value);
+                    }
+                }));
+        }
+
+        public bool Has(string key)
+        {
+            return _values.Has(key);
         }
 
         public string ApplySubstitutions(string rawText, Action<StringBuilder> moreAlteration = null)

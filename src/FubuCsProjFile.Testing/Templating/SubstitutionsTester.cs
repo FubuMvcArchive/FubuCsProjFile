@@ -127,6 +127,22 @@ namespace FubuCsProjFile.Testing.Templating
             substitutions2.ValueFor("key").ShouldEqual("something");
             substitutions2.ValueFor("two").ShouldEqual("twenty");
         }
+
+        [Test]
+        public void substitutions_do_not_write_instructions()
+        {
+            var substitutions = new Substitutions();
+            substitutions.Set("key", "something");
+            substitutions.Set("two", "twenty");
+            substitutions.Set(TemplatePlan.INSTRUCTIONS, "something");
+
+            substitutions.WriteTo("fubu.template.config");
+
+            var substitutions2 = new Substitutions();
+            substitutions2.ReadFrom("fubu.template.config");
+
+            substitutions2.Has(TemplatePlan.INSTRUCTIONS).ShouldBeFalse();
+        }
     }
 
     [TestFixture]
