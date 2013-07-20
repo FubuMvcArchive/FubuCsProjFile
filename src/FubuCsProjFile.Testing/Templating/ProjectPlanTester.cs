@@ -26,6 +26,19 @@ namespace FubuCsProjFile.Testing.Templating
         }
 
         [Test]
+        public void project_folder_is_substituted()
+        {
+            thePlan = TemplatePlan.CreateClean("create-solutionProject");
+            thePlan.Add(new CreateSolution("MySolution"));
+            thePlan.Add(new ProjectPlan("MyProject"));
+
+            thePlan.Execute();
+
+            thePlan.CurrentProject.ApplySubstitutions("*%PROJECT_FOLDER%*")
+                   .ShouldEqual("*src/MyProject*");
+        }
+
+        [Test]
         public void short_name_is_set_automatically()
         {
             new ProjectPlan("FubuMVC.Diagnostics")

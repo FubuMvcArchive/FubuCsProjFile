@@ -16,7 +16,11 @@ namespace FubuCsProjFile.Templating
                 plan.Substitutions.ReadInputs(inputs, plan.MissingInputs.Add);
             };
 
-
+            ShallowMatch(TemplatePlan.InstructionsFile).Do = (file, plan) =>
+            {
+                var instructions = file.ReadAll();
+                plan.AddInstructions(instructions);
+            };
         }
 
         protected override void configurePlan(string directory, TemplatePlan plan)

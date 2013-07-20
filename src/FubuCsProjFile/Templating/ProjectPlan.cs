@@ -12,6 +12,7 @@ namespace FubuCsProjFile.Templating
         public const string ASSEMBLY_NAME = "%ASSEMBLY_NAME%";
         public const string SHORT_NAME = "%SHORT_NAME%";
         public const string PROJECT_PATH = "%PROJECT_PATH%";
+        public const string PROJECT_FOLDER = "%PROJECT_FOLDER%";
         public static readonly string TemplateFile = "csproj.xml";
 
         private readonly string _projectName;
@@ -41,6 +42,8 @@ namespace FubuCsProjFile.Templating
             _substitutions.Set(TemplatePlan.INSTRUCTIONS, plan.GetInstructions());
 
             plan.Logger.StartProject(_alterations.Count);
+            plan.StartProject(this);
+
             _substitutions.Trace(plan.Logger);
 
             var reference = plan.Solution.FindProject(_projectName);
@@ -65,6 +68,7 @@ namespace FubuCsProjFile.Templating
 
             _relativePath = reference.Project.FileName.PathRelativeTo(plan.Root).Replace("\\", "/");
             _substitutions.Set(PROJECT_PATH, _relativePath);
+            _substitutions.Set(PROJECT_FOLDER, _relativePath.Split('/').Reverse().Skip(1).Reverse().Join("/"));
 
             _alterations.Each(x => {
                 plan.Logger.TraceAlteration(ApplySubstitutions(x.ToString()));

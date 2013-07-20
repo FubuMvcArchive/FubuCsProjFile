@@ -18,10 +18,7 @@ namespace FubuCsProjFile.Templating
                 plan.Add(new RakeFileTransform(file.ReadAll()));
             };
 
-            ShallowMatch(TemplatePlan.InstructionsFile).Do = (file, plan) => {
-                var instructions = file.ReadAll();
-                plan.AddInstructions(instructions);
-            };
+
         }
 
         public void CreatePlan(Template template, TemplatePlan plan)

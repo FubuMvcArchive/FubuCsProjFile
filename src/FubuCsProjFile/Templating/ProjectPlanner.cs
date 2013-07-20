@@ -43,11 +43,18 @@ namespace FubuCsProjFile.Templating
                 var template = new CodeFileTemplate(file.RelativePath, file.ReadAll());
                 plan.CurrentProject.Add(template);
             };
+
+            ShallowMatch(TemplatePlan.InstructionsFile).Do = (file, plan) =>
+            {
+                var instructions = file.ReadAll();
+                plan.AddInstructions(plan.ApplySubstitutions(instructions));
+            };
         }
 
         protected override void configurePlan(string directory, TemplatePlan plan)
         {
-            ProjectDirectory.PlanForDirectory(directory).Each(plan.CurrentProject.Add);
+            var current = plan.Steps.OfType<ProjectPlan>().LastOrDefault();
+            ProjectDirectory.PlanForDirectory(directory).Each(x => current.Add(x));
         }
     }
 }

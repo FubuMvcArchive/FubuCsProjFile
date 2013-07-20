@@ -93,7 +93,10 @@ namespace FubuCsProjFile.Templating
         public void Trace(ITemplateLogger logger)
         {
             _values.Each((key, value) => {
-                logger.Trace("{0}={1}", key, value);
+                if (key != TemplatePlan.INSTRUCTIONS)
+                {
+                    logger.Trace("{0}={1}", key, value);
+                }
             });
         }
     }

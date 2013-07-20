@@ -79,7 +79,12 @@ namespace FubuCsProjFile.Templating
 
         public ProjectPlan CurrentProject
         {
-            get { return _currentProject; }
+            get
+            {
+                
+                // Hokey, but leave it
+                return _currentProject ?? _steps.OfType<ProjectPlan>().LastOrDefault();
+            }
         }
 
         public static TemplatePlan CreateClean(string directory)
@@ -109,12 +114,12 @@ namespace FubuCsProjFile.Templating
 
         public void Add(ITemplateStep step)
         {
-            if (step is ProjectPlan)
-            {
-                _currentProject = step.As<ProjectPlan>();
-            }
-
             _steps.Add(step);
+        }
+
+        public void StartProject(ProjectPlan project)
+        {
+            _currentProject = project;
         }
 
         public void Execute()
