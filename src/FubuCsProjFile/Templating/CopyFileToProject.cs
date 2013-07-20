@@ -1,3 +1,5 @@
+using FubuCore;
+
 namespace FubuCsProjFile.Templating
 {
     public class CopyFileToProject : IProjectAlteration
@@ -13,7 +15,15 @@ namespace FubuCsProjFile.Templating
 
         public void Alter(CsProjFile file, ProjectPlan plan)
         {
-            file.CopyFileTo(_source, _relativePath);
+            var fileSystem = new FileSystem();
+            var rawText = fileSystem.ReadStringFromFile(_source);
+
+            var templatedText = plan.
+                ApplySubstitutions(rawText, _relativePath);
+
+            var expectedPath = file.ProjectDirectory.AppendPath(_relativePath);
+
+            fileSystem.WriteStringToFile(expectedPath, templatedText);
         }
 
         public override string ToString()
