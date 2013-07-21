@@ -75,7 +75,7 @@ namespace TemplatedProject
         [Test]
         public void add_deeper_class_to_root_of_project()
         {
-            CodeFileTemplate.Class("Bar/Doer").Alter(theProject, thePlan);
+            CodeFileTemplate.Class("Bar\\Doer").Alter(theProject, thePlan);
 
             var file = "Templated".AppendPath("TemplatedProject", "Bar", "Doer.cs");
             File.Exists(file).ShouldBeTrue();
@@ -90,7 +90,7 @@ namespace TemplatedProject.Bar
 }
 ".Trim());
 
-            theProject.All<CodeFile>().Any(x => x.Include == "Bar/Doer.cs")
+            theProject.All<CodeFile>().Any(x => x.Include == "Bar\\Doer.cs")
                 .ShouldBeTrue();
         }
 

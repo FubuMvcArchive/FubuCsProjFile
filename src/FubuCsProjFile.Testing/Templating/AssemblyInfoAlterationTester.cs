@@ -49,7 +49,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void should_have_written_the_code_file_to_the_project()
         {
-            theProject.Find<CodeFile>("Properties/AssemblyInfo.cs")
+            theProject.Find<CodeFile>("Properties\\AssemblyInfo.cs")
                       .ShouldNotBeNull();
         }
     }
@@ -111,7 +111,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void should_have_written_the_code_file_to_the_project()
         {
-            theProject.Find<CodeFile>("Properties/AssemblyInfo.cs")
+            theProject.Find<CodeFile>("Properties\\AssemblyInfo.cs")
                       .ShouldNotBeNull();
         }
     }

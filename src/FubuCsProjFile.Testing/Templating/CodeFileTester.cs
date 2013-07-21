@@ -12,14 +12,14 @@ namespace FubuCsProjFile.Testing.Templating
         {
             var project = CsProjFile.CreateAtSolutionDirectory("Foo", Guid.NewGuid().ToString());
 
-            var file = new CodeFile("../CommonAssemblyInfo.cs") {Link = "CommonAssemblyInfo.cs"};
+            var file = new CodeFile("..\\CommonAssemblyInfo.cs") {Link = "CommonAssemblyInfo.cs"};
 
             project.Add(file);
 
             project.Save();
 
             var project2 = CsProjFile.LoadFrom(project.FileName);
-            project2.Find<CodeFile>("../CommonAssemblyInfo.cs")
+            project2.Find<CodeFile>("..\\CommonAssemblyInfo.cs")
                     .Link.ShouldEqual("CommonAssemblyInfo.cs");
         }
     }

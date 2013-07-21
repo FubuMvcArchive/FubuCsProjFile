@@ -8,6 +8,7 @@ namespace FubuCsProjFile
     public abstract class ProjectItem
     {
         private readonly string _name;
+        private string _include;
 
         protected ProjectItem(string name)
         {
@@ -25,7 +26,11 @@ namespace FubuCsProjFile
             get { return _name; }
         }
 
-        public string Include { get; set; }
+        public string Include
+        {
+            get { return _include; }
+            set { _include = value.Replace('/', '\\'); }
+        }
 
         internal bool Matches(MSBuildItem item)
         {
