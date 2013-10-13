@@ -43,6 +43,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AddConfigurationsModifier.cs" />
     <Compile Include="AddProjectsModifier.cs" />
     <Compile Include="AppendLineModifier.cs" />

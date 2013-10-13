@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuCsProjFile", "FubuCsPro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuCsProjFile.Testing", "FubuCsProjFile.Testing\FubuCsProjFile.Testing.csproj", "{38736114-0F05-4C8B-8183-E047654F44EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuCsProjFile.Docs", "FubuCsProjFile.Docs\FubuCsProjFile.Docs.csproj", "{952779C3-C86A-4CCB-8E6F-7AD53C40F406}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,10 @@ Global
 		{38736114-0F05-4C8B-8183-E047654F44EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38736114-0F05-4C8B-8183-E047654F44EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38736114-0F05-4C8B-8183-E047654F44EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{952779C3-C86A-4CCB-8E6F-7AD53C40F406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{952779C3-C86A-4CCB-8E6F-7AD53C40F406}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{952779C3-C86A-4CCB-8E6F-7AD53C40F406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{952779C3-C86A-4CCB-8E6F-7AD53C40F406}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
