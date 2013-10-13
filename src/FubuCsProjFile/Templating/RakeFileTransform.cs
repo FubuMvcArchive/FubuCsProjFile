@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FubuCore;
 using FubuCore.CommandLine;
@@ -17,31 +18,38 @@ namespace FubuCsProjFile.Templating
             _text = text;
         }
 
+        public static string FindFile(string directory)
+        {
+            if (File.Exists(directory.AppendPath("rakefile.rb")))
+            {
+                return directory.AppendPath("rakefile.rb").ToFullPath();
+            }
+
+            return directory.AppendPath(TargetFile).ToFullPath();
+        }
+
         public void Alter(TemplatePlan plan)
         {
             var lines = plan.ApplySubstitutions(_text).SplitOnNewLine();
 
-            var rakeFile = plan.Root.AppendPath(TargetFile);
+            var rakeFile = FindFile(plan.Root);
             var fileSystem = new FileSystem();
 
 
             var list =
                 fileSystem.FileExists(rakeFile)
-                    ? fileSystem.ReadStringFromFile(rakeFile)
-                                .ReadLines().ToList()
+                    ? fileSystem.ReadStringFromFile(rakeFile).ReadLines().ToList()
                     : new List<string>();
 
             if (list.ContainsSequence(lines))
             {
                 return;
             }
-            else
-            {
-                list.Add(string.Empty);
-                list.AddRange(lines);
 
-                fileSystem.WriteStringToFile(rakeFile, list.Join(Environment.NewLine));
-            }
+            list.Add(string.Empty);
+            list.AddRange(lines);
+
+            fileSystem.WriteStringToFile(rakeFile, list.Join(Environment.NewLine));
         }
 
         public override string ToString()

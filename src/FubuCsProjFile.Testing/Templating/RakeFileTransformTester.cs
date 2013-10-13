@@ -23,6 +23,44 @@ namespace FubuCsProjFile.Testing.Templating
             rakefilePath = "rake".AppendPath("rakefile");
         }
 
+        [Test]
+        public void find_file_with_rakefile_rb()
+        {
+            var fileSystem = new FileSystem();
+            fileSystem.DeleteDirectory("kc");
+            fileSystem.CreateDirectory("kc");
+
+            fileSystem.WriteStringToFile("kc".AppendPath("rakefile.rb"), "something");
+
+            RakeFileTransform.FindFile("kc").ToLower()
+                .ShouldEqual("kc".AppendPath("rakefile.rb").ToFullPath().ToLower());
+        }
+
+        [Test]
+        public void find_file_with_rakefile()
+        {
+            var fileSystem = new FileSystem();
+            fileSystem.DeleteDirectory("oak");
+            fileSystem.CreateDirectory("oak");
+
+            fileSystem.WriteStringToFile("oak".AppendPath("rakefile"), "something");
+
+            RakeFileTransform.FindFile("oak").ToLower()
+                .ShouldEqual("oak".AppendPath("rakefile").ToFullPath().ToLower());
+        }
+
+
+        [Test]
+        public void find_file_with_no_rakefile()
+        {
+            var fileSystem = new FileSystem();
+            fileSystem.DeleteDirectory("sd");
+            fileSystem.CreateDirectory("sd");
+
+            RakeFileTransform.FindFile("sd").ToLower()
+                .ShouldEqual("sd".AppendPath("rakefile").ToFullPath().ToLower());
+        }
+
         public IEnumerable<string> theResultingContents()
         {
             new RakeFileTransform(text).Alter(plan);
