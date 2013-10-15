@@ -17,6 +17,19 @@ namespace FubuCsProjFile
         private const string SolutionConfigurationPlatforms = "SolutionConfigurationPlatforms";
         private const string ProjectConfigurationPlatforms = "ProjectConfigurationPlatforms";
 
+        public static readonly string VS2010 = "VS2010";
+        public static readonly string VS2012 = "VS2012";
+        public static readonly string VS2013 = "VS2013";
+
+        private static readonly Cache<string, string[]> _versionLines = new Cache<string, string[]>();
+
+        static Solution()
+        {
+            _versionLines[VS2010] = new[] { "Microsoft Visual Studio Solution File, Format Version 11.00", "# Visual Studio 2010" };
+            _versionLines[VS2012] = new[] { "Microsoft Visual Studio Solution File, Format Version 12.00", "# Visual Studio 2012" };
+            _versionLines[VS2013] = new[] { "Microsoft Visual Studio Solution File, Format Version 13.00", "# Visual Studio 2013" };
+        }
+
         private readonly string _filename;
         private readonly IList<SolutionProject> _projects = new List<SolutionProject>(); 
 
@@ -31,7 +44,10 @@ namespace FubuCsProjFile
                 filename = filename + ".sln";
             }
 
-            return new Solution(filename, text);
+            return new Solution(filename, text)
+            {
+                Version = VS2010
+            };
         }
 
         public static Solution LoadFrom(string filename)
@@ -48,10 +64,10 @@ namespace FubuCsProjFile
             items.Each(reader.Read);
         }
 
-        private readonly IList<string> _preamble = new List<string>();
         private readonly IList<string> _globals = new List<string>(); 
-        private readonly IList<GlobalSection> _sections = new List<GlobalSection>(); 
-        
+        private readonly IList<GlobalSection> _sections = new List<GlobalSection>();
+
+        public string Version { get; set; }
 
         public string Filename
         {
@@ -61,11 +77,6 @@ namespace FubuCsProjFile
         public IList<GlobalSection> Sections
         {
             get { return _sections; }
-        }
-
-        public IEnumerable<string> Preamble
-        {
-            get { return _preamble; }
         }
 
         public IEnumerable<string> Globals
@@ -142,9 +153,15 @@ namespace FubuCsProjFile
                     _parent._projects.Add(_solutionProject);
                     _read = readProject;
                 }
-                else
+                else if (_parent.Version.IsEmpty())
                 {
-                    _parent._preamble.Add(text);
+                    foreach (var versionLine in _versionLines.ToDictionary())
+                    {
+                        if (text.Trim() == versionLine.Value.First())
+                        {
+                            _parent.Version = versionLine.Key;
+                        }
+                    }
                 }
             }
 
@@ -172,7 +189,7 @@ namespace FubuCsProjFile
 
             var writer = new StringWriter();
 
-            _preamble.Each(x => writer.WriteLine(x));
+            _versionLines[Version].Each(x => writer.WriteLine(x));
 
             _projects.Each(x => x.Write(writer));
 

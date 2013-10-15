@@ -13,10 +13,10 @@ namespace FubuCsProjFile.Testing
     public class SolutionTester
     {
         [Test]
-        public void create_new_and_read_preamble()
+        public void default_version_is_VS2010_for_now()
         {
-            var solution = Solution.CreateNew(".", "foo");
-            solution.Preamble.ShouldHaveTheSameElementsAs("Microsoft Visual Studio Solution File, Format Version 11.00", "# Visual Studio 2010");
+            Solution.CreateNew("foo", "Foo")
+                .Version.ShouldEqual(Solution.VS2010);
         }
 
         [Test]
