@@ -56,9 +56,12 @@ namespace FubuCsProjFile.Testing
                        .ParentDirectory()
                        .AppendPath("FubuCsProjFile", "Solution.txt")).SplitOnNewLine();
 
+
+
             var newContent = new FileSystem().ReadStringFromFile("foo.sln").SplitOnNewLine();
 
-            newContent.ShouldHaveTheSameElementsAs(original);
+            // skipping 2 is to ignore the version content
+            newContent.Skip(2).ShouldHaveTheSameElementsAs(original);
 
         }
 
