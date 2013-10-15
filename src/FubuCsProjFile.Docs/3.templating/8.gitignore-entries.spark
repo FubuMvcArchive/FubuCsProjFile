@@ -2,6 +2,47 @@
 <!--Url: gitignore-entries-->
 
 <markdown>
-TODO(Write some content!)
+You can direct git to ignore files like build products, test results, and generated code items by using the <code><a href="https://help.github.com/articles/ignoring-files">.gitignore</a></code> file.
+
+Adding entries to the <code>.gitignore</code> file of a target solution is accomplished by simply adding a file named <code>ignore.txt</code> with the entries that you'd like to have added to your <code>.gitignore</code>.  
+
+Each line is added separately to the <code>.gitignore</code> file and duplicates are ignored.
+
+The <code>ignore.txt</code> format is just a text pattern per line:
+
+<pre>
+push.bat
+TestResult.xml
+build
+build35
+artifacts
+obj
+bin
+deploy
+deploy/*
+src/CommonAssemblyInfo.cs
+_ReSharper.*
+*.csproj.user
+*.resharper.user
+*.ReSharper.user
+*.suo
+*.cache
+~$*
+*.userprefs
+*.pidb
+test-results
+src/packages
+*.dotCover
+src/*/repositories.config
+.bottle-alias
+results
+*.DotSettings.user
+Gemfile.lock
+logs
+pak*.zip
+</pre>
+
+This sample was taken for the template for a brand new solution in <code>fubu new</code> at [https://github.com/DarthFubuMVC/fubu/blob/master/templates/solution/baseline/ignore.txt](https://github.com/DarthFubuMVC/fubu/blob/master/templates/solution/baseline/ignore.txt).
+
 </markdown>
 
