@@ -1,0 +1,16 @@
+<!--Title: Project Templates-->
+<!--Url: project-templates-->
+
+<markdown>
+Templates for all new projects are in the <code>/projects</code> folder and enhancements to existing projects should be in the <code>/alterations</code> folder of your template library.
+
+Project templates can contain any possible type of transformation that FubuCsProjFile, including new gems or Nuget references and additions to the rakefile.
+
+<Section title="Custom Csproj Files" id="custom">
+To create a custom template for new csproj files, save your csproj file template to a file named <code>project.xml</code> in the project template folder.  Make sure that you follow the rules in <TopicLink name="csproj-files" /> for creating new csproj file templates.
+
+See [this template from fubu.exe](https://github.com/DarthFubuMVC/fubu/blob/master/templates/project/baseline/csproj.xml) for an example.
+</Section>
+
+</markdown>
+

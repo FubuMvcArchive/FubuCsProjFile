@@ -1,0 +1,18 @@
+<!--Title: Solution Templates-->
+<!--Url: solutions-->
+
+<markdown>
+Templates for new solutions are kept in the /solutions folder in your template library.
+
+Solution templates can contain:
+
+1. Instructions
+1. Rakefile transforms
+1. Gems requirements
+1. Nuget requirements
+1. Files and folders
+1. Gitignore entries
+
+Everything in a solution template will be applied to the root of the code repository.
+</markdown>
+
