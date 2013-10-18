@@ -3,9 +3,9 @@ using NUnit.Framework;
 
 namespace FubuCsProjFile.Testing.Templating
 {
+    [Explicit]
     public class Samples
     {
-        [Test]
         public void generate_a_simple_template()
         {
             // SAMPLE: generating-with-templates
