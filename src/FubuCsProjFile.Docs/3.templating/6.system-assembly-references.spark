@@ -2,6 +2,12 @@
 <!--Url: system-assembly-references-->
 
 <markdown>
-TODO(Write some content!)
+To add system references like "System.Web" to a csproj file in a project template, just add a file called <code>references.txt</code> to the template folder with the references listed in the file per line like this:
+
+<pre>
+System.Web
+System.Data
+System.Xml
+</pre>
 </markdown>
 

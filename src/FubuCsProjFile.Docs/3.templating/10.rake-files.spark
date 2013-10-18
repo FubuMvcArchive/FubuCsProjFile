@@ -2,6 +2,31 @@
 <!--Url: rake-files-->
 
 <markdown>
-TODO(Write some content!)
+The rake transform can either create a brand new <code>rakefile</code> in the root folder of a code repository or add new content to an existing <code>rakefile</code> or <code>rakefile.rb</code> file in the root directory.
+
+To add content to a rake build script, add a file named <code>rake.txt</code> to the template directory.
+
+The rake.txt just contains templated Ruby script to add to the code's build script.  As an example, this is the [rake.txt](https://github.com/DarthFubuMVC/fubu/blob/master/templates/solution/baseline/rake.txt) file from the basic "fubu new" solution:
+
+<pre>
+require 'fuburake'
+
+@solution = FubuRake::Solution.new do |sln|
+	sln.compile = {
+		:solutionfile => '%SOLUTION_PATH%'
+	}
+				 
+	sln.assembly_info = {
+		:product_name => "%SOLUTION_NAME%",
+		:copyright => 'Copyright 2013. All rights reserved.'
+	}
+	
+	sln.ripple_enabled = true
+	sln.fubudocs_enabled = true
+end
+</pre>
+
+The rake transform applies the substitutions from the template request and plan.  The rake transform attempts to be idempotent such that it will not duplicate text in the existing rakefile.
+
 </markdown>
 

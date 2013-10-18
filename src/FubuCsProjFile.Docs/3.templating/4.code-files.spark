@@ -1,0 +1,11 @@
+<!--Title: Code Files-->
+<!--Url: code-files-->
+
+<markdown>
+The templating engine will treat each file with the <code>.cs</code> extension as a code file that will be attached to the current csproj file.
+
+Substitutions are processed against code files in both the name of the file and the contents of the file.  Code files can be at the root namespace of the project or nested within child directories.  The built in %NAMESPACE% substitution uses any child folder nesting to determine the namespace.
+
+For an example, see [this file](https://github.com/DarthFubuMVC/fubu/blob/master/templates/alteration/fubumvc-empty/%25FUBU_REGISTRY%25.cs) from one of the fubu.exe templates.
+</markdown>
+

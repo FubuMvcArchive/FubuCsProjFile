@@ -2,6 +2,18 @@
 <!--Url: nuget-references-->
 
 <markdown>
-TODO(Write some content!)
+References to nuget dependencies are added via <ProjectLink name="Ripple" /> using Ripple's batch installation support.  If you're using Ripple for nuget management, a call to <code>ripple restore</code> will pull down any new nugets from the templating.  
+
+To declare nuget dependencies in project templates, add a file called <code>nuget.txt</code> to the template folder.  List nuget dependencies by name on each line.  If you need to specify a specific nuget version, use a slash then the version number after the name.
+
+Here is an example of a <code>nuget.txt</code> file from the [FubuMVC.RavenDb](https://github.com/DarthFubuMVC/fubu/blob/master/templates/alteration/raven/nuget.txt) template in fubu.exe:
+
+<pre>
+StructureMap/2.6.3
+FubuMVC.RavenDb/0.9.5.85
+</pre>
+
 </markdown>
+
+<Info>The version number is optional.  If no version number is given, Ripple will use the latest version that it can find.</Info>
 

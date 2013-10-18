@@ -2,6 +2,33 @@
 <!--Url: files-and-folders-->
 
 <markdown>
-TODO(Write some content!)
+Any file that does not match one of the known templating transforms ('rakefile', 'instructions.txt', '*.cs', etc.) inside a template folder will simply be copied to either the solution folder for solution templates or the project folder for project templates.  
+Nesting inside of child folders is respected when the templating copies files.  The templating engine will create new child folders mimicing any child folders in a template.
+
+For an example, the asset pipeline feature in FubuMVC really wants you to have a folder structure under the main application folder like so:
+
+<pre>
+/application
+  /content
+    /scripts
+	/styles
+	/images
+</pre>
+
+To create a new template for the FubuMVC asset pipeline, we would create the same structure underneath the template folder but with some explanatory text files about each folder:
+
+<pre>
+/template
+  /content
+    /scripts
+	  /readme.txt
+	/styles
+	  /readme.txt
+	/images
+	  /readme.txt
+</pre>
+
+<Info>The templating engine will happily create a child folder for an empty folder in a template library, but git will not commit an empty folder.  Watch out for that if you're storing your own template library in a git repository</Info>
+
 </markdown>
 

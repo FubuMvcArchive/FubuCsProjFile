@@ -2,6 +2,15 @@
 <!--Url: assemblyinfo-alterations-->
 
 <markdown>
-TODO(Write some content!)
+To add assembly level attributes to a project's AssemblyInfo.cs file, place a file named <code>assembly-info.txt</code> in a template folder.
+
+The main use case for this transform was to add the <code>[FubuModule]</code> attribute in fubu.exe's <ProjectLink name="Bottles" /> template in [this file](https://github.com/DarthFubuMVC/fubu/blob/master/templates/alteration/fubu-bottle/assembly-info.txt).
+
+<pre>
+using FubuMVC.Core;
+
+[assembly: FubuModule]
+</pre>
+
 </markdown>
 

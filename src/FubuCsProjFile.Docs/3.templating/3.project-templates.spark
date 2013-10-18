@@ -12,5 +12,9 @@ To create a custom template for new csproj files, save your csproj file template
 See [this template from fubu.exe](https://github.com/DarthFubuMVC/fubu/blob/master/templates/project/baseline/csproj.xml) for an example.
 </Section>
 
+<Section title="Testing Projects" id="testing">
+As far as templates go, there is no difference for _testing_ projects versus other projects.  The only thing that is different is that the templating engine will make a project reference from the testing project to the project that's being tested and copy all the system and nuget references from the original project to the new testing project.
+</Section>
+
 </markdown>
 

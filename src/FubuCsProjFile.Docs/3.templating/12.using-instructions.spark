@@ -2,6 +2,10 @@
 <!--Url: using-instructions-->
 
 <markdown>
-TODO(Write some content!)
+So now we've learned how to generate new solutions, projects, add rake files, and add new code files to our heart's content in the templating.  As a last step, you can provide user instructions about what to do next with the generated files, or just explain what was done, by adding a file called <code>instructions.txt</code> to the root of a template.
+
+As templates are executed, all the <code>instructions.txt</code> files will be read with substitutions applied and combined into a single file written to the root of the targeted code repository.
+
+See the [instructions.txt](https://github.com/DarthFubuMVC/fubu/blob/master/templates/alteration/fubumvc-empty/instructions.txt) file from fubu.exe's FubuMVC template for an example.
 </markdown>
 
