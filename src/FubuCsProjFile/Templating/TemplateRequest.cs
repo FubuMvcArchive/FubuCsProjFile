@@ -57,6 +57,14 @@ namespace FubuCsProjFile.Templating
             _projects.Add(request);
         }
 
+        public void AddProjectRequest(string name, string template, Action<ProjectRequest> configuration = null)
+        {
+            var request = new ProjectRequest(name, template);
+            if (configuration != null) configuration(request);
+
+            _projects.Add(request);
+        }
+
         public IEnumerable<TestProjectRequest> TestingProjects
         {
             get { return _testingProjects; }

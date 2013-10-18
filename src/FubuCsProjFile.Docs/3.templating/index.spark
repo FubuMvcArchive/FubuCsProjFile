@@ -1,7 +1,42 @@
 <!--Title: Templating-->
 <!--Url: templating-->
 
+FubuCsProjFile is the templating engine used by <ProjectLink name="fubu" /> to generate new code trees, new projects, and enhance existing projects.  
+
+FubuCsProjFile's templating capabilities differ from other .Net solutions by allowing for the combination of templates at one time and reentrant modifications to existing code trees and projects.  FubuCsProjFile was built for the Fubu suite of tools and includes many Fubu-specific features like <ProjectLink name="ripple"/> and <ProjectLink name="FubuRake" /> generation.
+
+<Section title="Creating a Template Library" id="creating">
 <markdown>
-TODO(Write some content!)
+To setup your own custom library of templates, create a single folder with three child folders:
+
+1. **solution** -- template folders that would apply to the root of your code repository
+1. **project** -- template folders that act as a recipe for an all new VS.Net project
+1. **alteration** -- template folders that act as an enhancement to an existing VS.Net project
+
+To see a working example of a template library, check out the templates behind <ProjectLink name="fubu" /> in [GitHub](https://github.com/DarthFubuMVC/fubu/tree/master/templates).
 </markdown>
+</Section>
+
+<Section title="Invoking a Template" id="invoking">
+After you build your library of solution, project, and alteration templates, you can invoke the templates by first creating a template request defining what you want to have happen like so:
+
+<Snippet name="building-template-request" />
+
+Next, we invoke our templating request by generating and executing a <code>TemplatePlan</code> using our template library like this code below:
+
+<Snippet name="generating-with-templates" />
+
+</Section>
+
+The following topics will explain how to use the various possibilities for building your own templates.
+
+<br />
+<br />
+<TableOfContents />
+
+<markdown>
+
+</markdown>
+
+
 

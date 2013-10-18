@@ -1,0 +1,65 @@
+<!--Title: Template Inputs-->
+<!--Url: template-inputs-->
+
+<markdown>
+Some of the template options like code files allow you to express substitutions in text that will be replaced by a value supplied by the template request.  
+
+For an example, look at this sample taken from the fubu templates for a file named <code>%FUBU_REGISTRY%.cs</code>:
+
+<pre>
+using FubuMVC.Core;
+
+namespace %NAMESPACE%
+{
+	public class %FUBU_REGISTRY% : FubuRegistry
+	{
+		public %FUBU_REGISTRY%()
+		{
+			// Register any custom FubuMVC policies, inclusions, or 
+			// other FubuMVC configuration here
+			// Or leave as is to use the default conventions unchanged
+		}
+	}
+}
+</pre>
+
+When the template containing this file is executed, the text items %NAMESPACE% and %FUBU_REGISTRY% will be replaced in both the resulting text and the file name with the values of those substitutions in the template request.
+
+<Info>The usage of '%' and all caps in the substitution names is simply an idiom and not a requirement</Info>
+
+<Section title="Built in Substitutions" id="built-in">
+FubuCsProjFile has a couple special substitutions whose values are supplied by the templating engine based off the initial <code>TemplateRequest</code> itself:
+
+1. **%SOLUTION_NAME%** -- the name of a new solution without a file extension
+1. **%SOLUTION_PATH%** -- the relative path to the solution file from the root of the code repository
+1. **%INSTRUCTIONS%** -- the generated instructions to the user describing the template operation
+1. **%NAMESPACE%** -- only valid inside of code files to a project, the current namespace based on project name and current folder
+1. **%ASSEMBLY_NAME%** -- only valid inside of code files to a project, the assembly name of the current project
+1. **%SHORT_NAME%** -- generally meant to be a prefix for other classes.  If not specified, FubuCsProjFile determines this by trying to turn "MyCompany.SuperProject" into "SuperProject."
+1. **%PROJECT_PATH%** -- the relative path from the code repository to the current csproj file 
+1. **%PROJECT_FOLDER%** -- the relative path from the code repository to the folder containing the current csproj file
+</Section>
+
+<Section title="Defining template specific inputs" id="specific">
+You can specify requirements for custom inputs to new templates by adding a file called <code>inputs.txt</code> to a template folder.  That file is a flat file that follows this format:
+
+<pre>
+%INPUT_NAME1%=some default value,some description about what %INPUT_NAME% means
+%INPUT_NAME2%=some default value,some description about what %INPUT_NAME% means
+%INPUT_NAME3%=some default value,some description about what %INPUT_NAME% means
+</pre>
+
+Default values can be built using other substitutions like this example from the FubuMVC project generation:
+
+<pre>
+%FUBU_REGISTRY%=%SHORT_NAME%FubuRegistry,The name of the FubuRegistry class for the application
+</pre>
+
+You can see an example of using <code>inputs.txt</code> in the [empty FubuMVC template from fubu.exe](https://github.com/DarthFubuMVC/fubu/tree/master/templates/alteration/fubumvc-empty).
+
+</Section>
+
+</markdown>
+
+
+
