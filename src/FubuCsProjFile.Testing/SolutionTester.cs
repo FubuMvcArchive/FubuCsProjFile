@@ -68,6 +68,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void read_a_solution_with_projects()
         {
+            
             var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
             solution.Projects.Select(x => x.ProjectName)
                 .ShouldHaveTheSameElementsAs("Solution Items", "FubuMVC.SlickGrid", "FubuMVC.SlickGrid.Testing", "SlickGridHarness", "FubuMVC.SlickGrid.Serenity", "FubuMVC.SlickGrid.Docs");
@@ -76,8 +77,10 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void read_and_write_a_solution_with_projects()
         {
+            // SAMPLE: Loading-and-Saving
             var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
             solution.Save("fake.sln");
+            // ENDSAMPLE
 
             var original =
                 new FileSystem().ReadStringFromFile("FubuMVC.SlickGrid.sln").Trim().SplitOnNewLine()
@@ -110,8 +113,10 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void add_a_project_from_template()
         {
+            // SAMPLE: create-project-by-template
             var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
             var reference = solution.AddProjectFromTemplate("MyNewProject", Path.Combine("..", "..", "Project.txt"));
+            // ENDSAMPLE
 
             reference.Project.Find<AssemblyReference>("System.Data")
                      .ShouldNotBeNull();

@@ -22,16 +22,28 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void adding_projects()
+        {
+            // SAMPLE: adding-project
+            var solution = Solution.CreateNew("TestSolution", "TestSolution");
+            var reference = solution.AddProject("TestProject");
+            // ENDSAMPLE
+        }
+
+        [Test]
         public void create_solution_add_project_save_and_reload()
         {
             // Yeah, this is a big bang test.  Just go with it.
 
+            // SAMPLE: create-new-solution
             var solution = Solution.CreateNew("TestSolution", "TestSolution");
+            // ENDSAMPLE
 
             var reference = solution.AddProject("TestProject");
             reference.ProjectGuid.ShouldNotEqual(Guid.Empty);
             reference.ProjectName.ShouldEqual("TestProject");
             reference.RelativePath.ShouldEqual("TestProject".AppendPath("TestProject.csproj"));
+            
 
             var plan = new ProjectPlan(reference.ProjectName);
 

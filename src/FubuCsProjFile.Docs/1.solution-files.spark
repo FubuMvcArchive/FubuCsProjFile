@@ -2,6 +2,69 @@
 <!--Url: solution-files-->
 
 <markdown>
-TODO(Write some content!)
+<Section title="Creating, Loading, and Saving Solution Files" id="solutions">
+
+Loading an existing VS.Net .sln file into a Solution object and saving changes is just this:
+
+<Snippet name="Loading-and-Saving" />
+
+If you want to create a new Solution file from scratch, use this:
+
+<Snippet name="create-new-solution" />
+
+</Section>
+
+
+<Section title="Visual Studio Versions" id="versions">
+
+You can change the targeted version of Visual Studio.Net by using the <code>Version</code> property like this:
+
+<Snippet name="setting-version" />
+</Section>
+
+<Section title="Adding and Removing Projects" id="projects">
+
+An empty solution file isn't very useful to anybody, so let's add some project files to our new solution.
+<Snippet name="adding-project" />
+
+In the code above, the call to <code>AddProject</code> will either attach an existing project named _TestProject_ to the solution or create a new project using the default class library template with that name.
+
+If you want to start from an existing project template, use this method instead:
+
+<Snippet name="create-project-by-template" />
+
+To make a new project template, just use VS.Net to build the csproj file you want, save it to a file, then open up the raw text file and make these minor alterations:
+
+1. Set the inner text of the <code>&lt;ProjectGuid&gt;</code> element to _{GUID}_
+1. Set the inner text of the <code>&lt;RootNamespace&gt;</code> element to _FUBUPROJECTNAME_
+1. Set the inner text of the <code>&lt;AssemblyName&gt;</code> element to _FUBUPROJECTNAME_
+
+The result should look like this:
+
+<pre>
+  &lt;PropertyGroup&gt;
+    &lt;Configuration Condition=" '$(Configuration)' == '' "&gt;Debug&lt;/Configuration&gt;
+    &lt;Platform Condition=" '$(Platform)' == '' "&gt;AnyCPU&lt;/Platform&gt;
+    &lt;ProductVersion&gt;8.0.30703&lt;/ProductVersion&gt;
+    &lt;SchemaVersion&gt;2.0&lt;/SchemaVersion&gt;
+    &lt;ProjectGuid&gt;{GUID}&lt;/ProjectGuid&gt;
+    &lt;OutputType&gt;Library&lt;/OutputType&gt;
+    &lt;RootNamespace&gt;FUBUPROJECTNAME&lt;/RootNamespace&gt;
+    &lt;AssemblyName&gt;FUBUPROJECTNAME&lt;/AssemblyName&gt;
+    &lt;TargetFrameworkVersion&gt;v4.0&lt;/TargetFrameworkVersion&gt;
+    &lt;FileAlignment&gt;512&lt;/FileAlignment&gt;
+  &lt;/PropertyGroup&gt;
+</pre>
+
+
+
+</Section>
+
+<Section title="Working with GlobalSection's" id="globals">
+
+If you need to, you can work directly with the GlobalSection's within the <a href="http://msdn.microsoft.com/en-us/library/bb165067(v=vs.90).aspx">Sln file format</a> by using the <code>GlobalSection</code> model on the <code>Solution</code> class.  FubuCsProjFile treats these declarations as pure text with no parsing or validation.  In other words, you are completely on your own.
+
+</Section>
+
 </markdown>
 

@@ -33,6 +33,13 @@ namespace FubuCsProjFile
         private readonly string _filename;
         private readonly IList<SolutionProject> _projects = new List<SolutionProject>(); 
 
+        /// <summary>
+        /// Creates a new empty Solution file with the supplied name that
+        /// will be written to the directory given upon calling Save()
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static Solution CreateNew(string directory, string name)
         {
             var text = Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof (Solution), "Solution.txt")
@@ -50,6 +57,11 @@ namespace FubuCsProjFile
             };
         }
 
+        /// <summary>
+        /// Loads an existing solution from a file
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public static Solution LoadFrom(string filename)
         {
             var text = new FileSystem().ReadStringFromFile(filename);
@@ -67,6 +79,10 @@ namespace FubuCsProjFile
         private readonly IList<string> _globals = new List<string>(); 
         private readonly IList<GlobalSection> _sections = new List<GlobalSection>();
 
+        /// <summary>
+        /// Specify the VS.Net version.  At this time, the valid options are
+        /// "VS2010" or "VS2012" or "VS2013"
+        /// </summary>
         public string Version { get; set; }
 
         public string Filename
@@ -178,11 +194,18 @@ namespace FubuCsProjFile
             return _sections.FirstOrDefault(x => x.SectionName == name);
         }
 
+        /// <summary>
+        /// Save the solution to the known file location
+        /// </summary>
         public void Save()
         {
             Save(_filename);
         }
 
+        /// <summary>
+        /// Save the solution to a different file
+        /// </summary>
+        /// <param name="filename"></param>
         public void Save(string filename)
         {
             calculateProjectConfigurationPlatforms();
@@ -229,6 +252,13 @@ namespace FubuCsProjFile
             get { return _projects; }
         }
 
+        /// <summary>
+        /// Attaches an existing project of this name to the solution or 
+        /// creates a new project based on a Class Library and attaches
+        /// to the solution
+        /// </summary>
+        /// <param name="projectName"></param>
+        /// <returns></returns>
         public SolutionProject AddProject( string projectName)
         {
             var existing = FindProject(projectName);
@@ -243,6 +273,12 @@ namespace FubuCsProjFile
             return reference;
         }
 
+        /// <summary>
+        /// Adds a new project based on the supplied template file
+        /// </summary>
+        /// <param name="projectName"></param>
+        /// <param name="templateFile"></param>
+        /// <returns></returns>
         public SolutionProject AddProjectFromTemplate(string projectName, string templateFile)
         {
             var existing = FindProject(projectName);
@@ -271,6 +307,11 @@ namespace FubuCsProjFile
             get { return Path.GetFileNameWithoutExtension(_filename); }
         }
 
+        /// <summary>
+        /// Access an attached project by name
+        /// </summary>
+        /// <param name="projectName"></param>
+        /// <returns></returns>
         public SolutionProject FindProject(string projectName)
         {
             return _projects.FirstOrDefault(x => x.ProjectName == projectName);

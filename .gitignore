@@ -28,3 +28,5 @@ Gemfile.lock
 logs
 pak*.zip
 fubumvc.slickgrid.docs.nuspec
+src/FubuCsProjFile/snippets
+src/FubuCsProjFile.Docs/snippets/
