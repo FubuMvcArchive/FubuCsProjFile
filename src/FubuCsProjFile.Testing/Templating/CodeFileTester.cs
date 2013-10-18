@@ -7,6 +7,7 @@ namespace FubuCsProjFile.Testing.Templating
     [TestFixture]
     public class CodeFileTester
     {
+        // SAMPLE: link-code-file
         [Test]
         public void read_and_write_with_a_link()
         {
@@ -22,5 +23,6 @@ namespace FubuCsProjFile.Testing.Templating
             project2.Find<CodeFile>("..\\CommonAssemblyInfo.cs")
                     .Link.ShouldEqual("CommonAssemblyInfo.cs");
         }
+        // ENDSAMPLE
     }
 }

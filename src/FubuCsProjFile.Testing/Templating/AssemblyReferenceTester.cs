@@ -1,8 +1,11 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using FubuCsProjFile.Templating;
 using NUnit.Framework;
 using FubuCore;
 using FubuTestingSupport;
+using Rhino.Mocks.Constraints;
 
 namespace FubuCsProjFile.Testing.Templating
 {
@@ -27,6 +30,37 @@ namespace FubuCsProjFile.Testing.Templating
 
             project.Find<AssemblyReference>("System.Configuration")
                    .ShouldNotBeNull();
+        }
+
+        [Test]
+        public void adding_an_assembly_reference()
+        {
+            // SAMPLE: assembly-reference
+            var project = CsProjFile.CreateAtLocation("MyProject.csproj", "MyProject");
+            project.Add(new AssemblyReference("MyOtherLibrary")
+            {
+                HintPath = "../packages/MyOtherLibrary/lib/MyOtherLibrary.dll",
+                SpecificVersion = false
+            });
+
+            // Find an existing reference by assembly name
+            var reference = project.Find<AssemblyReference>("MyOtherLibrary");
+            
+            // Remove a reference by assembly name
+            project.Remove<AssemblyReference>("ObsoleteLibrary");
+
+            // or remove by the object
+            project.Remove(reference);
+
+            // Access all the references to the project.
+            // This structure closely mimics the MsBuild schema, so the assembly name
+            // is "Include"
+            project.All<AssemblyReference>().Each(x => Debug.WriteLine(x.Include));
+            // ENDSAMPLE
+
+            
+            reference.HintPath.ShouldEqual("../packages/MyOtherLibrary/lib/MyOtherLibrary.dll");
+
         }
 
         [Test]

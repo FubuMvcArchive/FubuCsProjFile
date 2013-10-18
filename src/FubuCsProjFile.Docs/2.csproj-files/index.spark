@@ -2,6 +2,18 @@
 <!--Url: csproj-files-->
 
 <markdown>
-TODO(Write some content!)
+
+<Info>FubuCsProjFile's functionality for manipulating *.csproj files is largely taken from the <a href="http://monodevelop.com">MonoDevelop</a> codebase.</Info>
+
+The key class for manipulating *.csproj files is unsurprisingly called <code>CsProjFile</code>.
+
+<Snippet name="loading-existing-file" />
+
+As of now, the <code>CsProjFile</code> class allows you to create, load, and save *.csproj files while editing basic properties and managing code items and assembly references.
+
+<TableOfContents />
+
+
+
 </markdown>
 

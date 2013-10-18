@@ -2,6 +2,13 @@
 <!--Url: assembly-references-->
 
 <markdown>
-TODO(Write some content!)
+
+Assembly references can be added, removed, or changed using the <code>AssemblyReference</code> class as shown in the following sample.
+
+In this case, FubuCsProjFile supports all of the [MSBuild specification](http://msdn.microsoft.com/en-us/library/vstudio/bb629388.aspx) for assembly references.
+
+<Snippet name="assembly-reference" />
+
+
 </markdown>
 

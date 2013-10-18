@@ -2,6 +2,10 @@
 <!--Url: embedded-resources-->
 
 <markdown>
-TODO(Write some content!)
+
+Embedded resources can be added or removed from a csproj file by using the <code>EmbeddedResource</code> class.
+
+<Snippet name="embedded-resources" />
+
 </markdown>
 

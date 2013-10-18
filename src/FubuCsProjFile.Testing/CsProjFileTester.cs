@@ -83,6 +83,55 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void remove_code_file()
+        {
+            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            project.Add<CodeFile>("foo.cs");
+            project.Add<CodeFile>("bar.cs");
+
+            project.Save();
+
+            var project2 = CsProjFile.LoadFrom(project.FileName);
+            project2.All<CodeFile>().Select(x => x.Include)
+                .ShouldHaveTheSameElementsAs("bar.cs", "foo.cs");
+
+            project2.Remove<CodeFile>("bar.cs");
+            project2.All<CodeFile>().Select(x => x.Include)
+                .ShouldHaveTheSameElementsAs("foo.cs");
+
+            project2.Save();
+
+            var project3 = CsProjFile.LoadFrom(project.FileName);
+            project3.All<CodeFile>().Select(x => x.Include)
+                .ShouldHaveTheSameElementsAs("foo.cs");
+        }
+
+        [Test]
+        public void remove_code_file_2()
+        {
+            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            project.Add<CodeFile>("foo.cs");
+            project.Add<CodeFile>("bar.cs");
+
+            project.Save();
+
+            var project2 = CsProjFile.LoadFrom(project.FileName);
+            project2.All<CodeFile>().Select(x => x.Include)
+                .ShouldHaveTheSameElementsAs("bar.cs", "foo.cs");
+
+            project2.Remove<CodeFile>(project2.Find<CodeFile>("bar.cs"));
+            project2.All<CodeFile>().Select(x => x.Include)
+                .ShouldHaveTheSameElementsAs("foo.cs");
+
+            project2.Save();
+
+            var project3 = CsProjFile.LoadFrom(project.FileName);
+            project3.All<CodeFile>().Select(x => x.Include)
+                .ShouldHaveTheSameElementsAs("foo.cs");
+        }
+
+        // SAMPLE: code-files
+        [Test]
         public void add_code_files()
         {
             fileSystem.WriteStringToFile("myproj".AppendPath("foo.cs"), "using System.Web;");
@@ -107,8 +156,8 @@ namespace FubuCsProjFile.Testing
             project3.All<CodeFile>().Select(x => x.Include)
                 .ShouldHaveTheSameElementsAs("aaa.cs", "bar.cs", "foo.cs", "ten.cs");
 
-
         }
+        // ENDSAMPLE
 
         [Test]
         public void adding_items_is_idempotent()
@@ -134,8 +183,13 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void can_read_embedded_resources()
         {
+            // SAMPLE: loading-existing-file
             var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
+            
+            // Add new references, code items, etc.
+            
             project.Save();
+            // ENDSAMPLE
 
             project = CsProjFile.LoadFrom(project.FileName);
 
@@ -143,6 +197,7 @@ namespace FubuCsProjFile.Testing
                 .ShouldHaveTheSameElementsAs("pak-Config.zip", "pak-Data.zip", "pak-WebContent.zip");
         }
 
+        // SAMPLE: embedded-resources
         [Test]
         public void can_write_embedded_resources()
         {
@@ -170,6 +225,7 @@ namespace FubuCsProjFile.Testing
 
 
         }
+        // ENDSAMPLE
 
 
         [Test]

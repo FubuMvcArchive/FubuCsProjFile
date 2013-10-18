@@ -64,17 +64,6 @@ namespace FubuCsProjFile
             return item;
         }
 
-        /*
-
-
-Aliases
-
-Optional string. Any aliases for the reference.
-
-Private
-
-Optional boolean. Specifies whether the reference should be copied to the output folder. This attribute matches the Copy Local property of the reference that's in the Visual Studio IDE.
-         */
 
         internal override void Read(MSBuildItem item)
         {

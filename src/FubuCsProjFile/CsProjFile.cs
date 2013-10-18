@@ -115,6 +115,12 @@ namespace FubuCsProjFile
             return item;
         }
 
+        /// <summary>
+        /// Creates a new CsProjFile in a folder relative to the solution folder
+        /// </summary>
+        /// <param name="assemblyName"></param>
+        /// <param name="directory"></param>
+        /// <returns></returns>
         public static CsProjFile CreateAtSolutionDirectory(string assemblyName, string directory)
         {
             var fileName = directory.AppendPath(assemblyName).AppendPath(assemblyName) + ".csproj";
@@ -131,12 +137,24 @@ namespace FubuCsProjFile
 
         }
 
+        /// <summary>
+        /// Load an existing CsProjFile from the filename given
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public static CsProjFile LoadFrom(string filename)
         {
             var project = MSBuildProject.LoadFrom(filename);
             return new CsProjFile(filename, project);
         }
 
+        /// <summary>
+        /// Creates a new class library project at the given filename
+        /// and assembly name
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="assemblyName"></param>
+        /// <returns></returns>
         public static CsProjFile CreateAtLocation(string filename, string assemblyName)
         {
             var project = MSBuildProject.Create(assemblyName);
@@ -202,6 +220,25 @@ namespace FubuCsProjFile
         }
 
 
+        public void Remove<T>(string include) where T : ProjectItem, new()
+        {
+            var name = new T().Name;
+
+            var element = _project.GetAllItems(name).FirstOrDefault(x => x.Include == include);
+            if (element != null)
+            {
+                element.Remove();
+            }
+        }
+
+        public void Remove<T>(T item) where T : ProjectItem, new()
+        {
+            var element = _project.GetAllItems(item.Name).FirstOrDefault(x => x.Include == item.Include);
+            if (element != null)
+            {
+                element.Remove();
+            }
+        }
     }
 }
 

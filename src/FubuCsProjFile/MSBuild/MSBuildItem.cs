@@ -75,5 +75,10 @@ namespace FubuCsProjFile.MSBuild
                     SetMetadata(node.LocalName, node.InnerXml);
             }
         }
+
+        public void Remove()
+        {
+            if (Element.ParentNode != null) Element.ParentNode.RemoveChild(Element);
+        }
     }
 }

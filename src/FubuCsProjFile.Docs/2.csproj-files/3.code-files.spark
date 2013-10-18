@@ -1,0 +1,15 @@
+<!--Title: Code Files-->
+<!--Url: code-files-->
+
+
+Code files (*.cs) can be added or removed to csproj files with the <code>CodeFile</code> class.
+
+<Snippet name="code-files" />
+
+<Section title="Linking to an existing file" id="linking">
+You also have the ability to add a link to an existing code file instead of the direct inclusion.  We do this inside of the fubu projects for our generated CommonAssemblyInfo.cs file:
+<Snippet name="link-code-file" />
+
+</Section>
+
+
