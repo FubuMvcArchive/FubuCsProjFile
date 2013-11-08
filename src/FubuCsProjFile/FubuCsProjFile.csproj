@@ -76,6 +76,7 @@
     <Compile Include="Solution.cs" />
     <Compile Include="SolutionFileService.cs" />
     <Compile Include="SolutionLoading.cs" />
+    <Compile Include="Templating\Graph\GraphClasses.cs" />
     <Compile Include="Templating\Runtime\AssemblyInfoAlteration.cs" />
     <Compile Include="Templating\Runtime\CopyFileToProject.cs" />
     <Compile Include="Templating\Runtime\CopyFileToSolution.cs" />

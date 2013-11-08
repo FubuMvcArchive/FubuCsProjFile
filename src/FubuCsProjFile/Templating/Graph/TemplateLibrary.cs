@@ -9,6 +9,7 @@ namespace FubuCsProjFile.Templating.Graph
 {
     public class TemplateLibrary : ITemplateLibrary
     {
+        public readonly static IFileSystem FileSystem = new FileSystem();
         public static readonly string Solution = "solution";
         public static readonly string Project = "project";
         public static readonly string Testing = "testing";
@@ -16,10 +17,8 @@ namespace FubuCsProjFile.Templating.Graph
 
         private readonly Cache<TemplateType, string> _templateDirectories;
 
-
         public static readonly string DescriptionFile = "description.txt";
-        public readonly static IFileSystem FileSystem = new FileSystem();
-
+        
         public static TemplateLibrary BuildClean(string root)
         {
             FileSystem.DeleteDirectory(root);
