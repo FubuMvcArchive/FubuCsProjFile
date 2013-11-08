@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Xml;
 using FubuCore;
@@ -40,6 +41,11 @@ namespace FubuCsProjFile.MSBuild
         public static MSBuildProject CreateFromFile(string assemblyName, string file)
         {
             var text = TextFile.FileSystem.ReadStringFromFile(file);
+            return create(assemblyName, text);
+        }
+
+        public static MSBuildProject Parse(string assemblyName, string text)
+        {
             return create(assemblyName, text);
         }
 
@@ -90,6 +96,8 @@ namespace FubuCsProjFile.MSBuild
                     doc.DocumentElement.RemoveAttribute("ToolsVersion");
             }
         }
+
+        public FrameworkName FrameworkName { get { return FrameworkNameDetector.Detect(this); } }
 
         public MSBuildItemGroup FindGroup(Func<MSBuildItem, bool> itemTest)
         {

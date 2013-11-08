@@ -54,6 +54,7 @@
     <Compile Include="CodeFile.cs" />
     <Compile Include="CsProjFile.cs" />
     <Compile Include="EmbeddedResource.cs" />
+    <Compile Include="FrameworkNameDetector.cs" />
     <Compile Include="ProjectReference.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="GlobalSection.cs" />

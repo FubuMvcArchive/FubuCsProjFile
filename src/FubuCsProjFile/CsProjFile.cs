@@ -1,9 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
+using System.Runtime.Versioning;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
 using System.Linq;
@@ -174,6 +172,11 @@ namespace FubuCsProjFile
         public string ProjectDirectory
         {
             get { return _fileName.ParentDirectory(); }
+        }
+
+        public FrameworkName FrameworkName
+        {
+            get { return _project.FrameworkName; }
         }
 
         public void Save()
