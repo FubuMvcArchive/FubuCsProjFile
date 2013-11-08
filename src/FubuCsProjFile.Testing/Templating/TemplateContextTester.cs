@@ -1,4 +1,6 @@
 ﻿using FubuCsProjFile.Templating;
+using FubuCsProjFile.Templating.Planning;
+using FubuCsProjFile.Templating.Runtime;
 using NUnit.Framework;
 using FubuTestingSupport;
 

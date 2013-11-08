@@ -1,5 +1,8 @@
 ﻿using FubuCore;
 using FubuCsProjFile.Templating;
+using FubuCsProjFile.Templating.Graph;
+using FubuCsProjFile.Templating.Planning;
+using FubuCsProjFile.Templating.Runtime;
 
 namespace FubuCsProjFile.Testing
 {

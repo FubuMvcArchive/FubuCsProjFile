@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using FubuCore;
 using FubuCsProjFile.Templating;
+using FubuCsProjFile.Templating.Planning;
+using FubuCsProjFile.Templating.Runtime;
 using NUnit.Framework;
 using System.Linq;
 using FubuTestingSupport;

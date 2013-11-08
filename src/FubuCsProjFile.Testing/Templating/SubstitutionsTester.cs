@@ -1,5 +1,7 @@
 ﻿using System;
 using FubuCsProjFile.Templating;
+using FubuCsProjFile.Templating.Graph;
+using FubuCsProjFile.Templating.Planning;
 using FubuTestingSupport;
 using NUnit.Framework;
 using Rhino.Mocks;

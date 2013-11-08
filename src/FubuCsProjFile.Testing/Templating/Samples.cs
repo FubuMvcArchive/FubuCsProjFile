@@ -1,4 +1,6 @@
 ﻿using FubuCsProjFile.Templating;
+using FubuCsProjFile.Templating.Graph;
+using FubuCsProjFile.Templating.Planning;
 using NUnit.Framework;
 
 namespace FubuCsProjFile.Testing.Templating

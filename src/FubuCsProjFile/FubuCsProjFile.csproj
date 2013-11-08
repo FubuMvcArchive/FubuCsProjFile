@@ -76,43 +76,43 @@
     <Compile Include="Solution.cs" />
     <Compile Include="SolutionFileService.cs" />
     <Compile Include="SolutionLoading.cs" />
-    <Compile Include="Templating\AssemblyInfoAlteration.cs" />
-    <Compile Include="Templating\CopyFileToProject.cs" />
-    <Compile Include="Templating\CopyFileToSolution.cs" />
-    <Compile Include="Templating\CreateSolution.cs" />
-    <Compile Include="Templating\FilesTemplatePlanner.cs" />
-    <Compile Include="Templating\GemReference.cs" />
-    <Compile Include="Templating\GitIgnoreStep.cs" />
-    <Compile Include="Templating\Input.cs" />
-    <Compile Include="Templating\IProjectAlteration.cs" />
-    <Compile Include="Templating\CodeFileTemplate.cs" />
-    <Compile Include="Templating\ITemplateLibrary.cs" />
-    <Compile Include="Templating\ITemplateLogger.cs" />
-    <Compile Include="Templating\ITemplatePlanner.cs" />
-    <Compile Include="Templating\ITemplatePlannerAction.cs" />
-    <Compile Include="Templating\ITemplateStep.cs" />
-    <Compile Include="Templating\MissingInputException.cs" />
-    <Compile Include="Templating\ProjectDirectory.cs" />
-    <Compile Include="Templating\ProjectPlan.cs" />
-    <Compile Include="Templating\ProjectPlanner.cs" />
-    <Compile Include="Templating\ProjectRequest.cs" />
-    <Compile Include="Templating\RakeFileTransform.cs" />
-    <Compile Include="Templating\ReadSolution.cs" />
-    <Compile Include="Templating\SolutionDirectory.cs" />
-    <Compile Include="Templating\SolutionPlanner.cs" />
-    <Compile Include="Templating\Substitutions.cs" />
-    <Compile Include="Templating\SystemReference.cs" />
-    <Compile Include="Templating\Template.cs" />
-    <Compile Include="Templating\TemplateBuilder.cs" />
-    <Compile Include="Templating\CopyProjectReferences.cs" />
-    <Compile Include="Templating\TemplateLibrary.cs" />
-    <Compile Include="Templating\TemplateLogger.cs" />
-    <Compile Include="Templating\TemplatePlan.cs" />
-    <Compile Include="Templating\TemplatePlanBuilder.cs" />
-    <Compile Include="Templating\TemplatePlanner.cs" />
-    <Compile Include="Templating\TemplateRequest.cs" />
+    <Compile Include="Templating\Runtime\AssemblyInfoAlteration.cs" />
+    <Compile Include="Templating\Runtime\CopyFileToProject.cs" />
+    <Compile Include="Templating\Runtime\CopyFileToSolution.cs" />
+    <Compile Include="Templating\Runtime\CreateSolution.cs" />
+    <Compile Include="Templating\Planning\FilesTemplatePlanner.cs" />
+    <Compile Include="Templating\Runtime\GemReference.cs" />
+    <Compile Include="Templating\Runtime\GitIgnoreStep.cs" />
+    <Compile Include="Templating\Graph\Input.cs" />
+    <Compile Include="Templating\Runtime\IProjectAlteration.cs" />
+    <Compile Include="Templating\Runtime\CodeFileTemplate.cs" />
+    <Compile Include="Templating\Graph\ITemplateLibrary.cs" />
+    <Compile Include="Templating\Runtime\ITemplateLogger.cs" />
+    <Compile Include="Templating\Planning\ITemplatePlanner.cs" />
+    <Compile Include="Templating\Planning\ITemplatePlannerAction.cs" />
+    <Compile Include="Templating\Runtime\ITemplateStep.cs" />
+    <Compile Include="Templating\Planning\MissingInputException.cs" />
+    <Compile Include="Templating\Runtime\ProjectDirectory.cs" />
+    <Compile Include="Templating\Runtime\ProjectPlan.cs" />
+    <Compile Include="Templating\Planning\ProjectPlanner.cs" />
+    <Compile Include="Templating\Graph\ProjectRequest.cs" />
+    <Compile Include="Templating\Runtime\RakeFileTransform.cs" />
+    <Compile Include="Templating\Runtime\ReadSolution.cs" />
+    <Compile Include="Templating\Runtime\SolutionDirectory.cs" />
+    <Compile Include="Templating\Planning\SolutionPlanner.cs" />
+    <Compile Include="Templating\Graph\Substitutions.cs" />
+    <Compile Include="Templating\Runtime\SystemReference.cs" />
+    <Compile Include="Templating\Graph\Template.cs" />
+    <Compile Include="Templating\Graph\TemplateBuilder.cs" />
+    <Compile Include="Templating\Runtime\CopyProjectReferences.cs" />
+    <Compile Include="Templating\Graph\TemplateLibrary.cs" />
+    <Compile Include="Templating\Runtime\TemplateLogger.cs" />
+    <Compile Include="Templating\Planning\TemplatePlan.cs" />
+    <Compile Include="Templating\Planning\TemplatePlanBuilder.cs" />
+    <Compile Include="Templating\Planning\TemplatePlanner.cs" />
+    <Compile Include="Templating\Graph\TemplateRequest.cs" />
     <Compile Include="Templating\TemplateType.cs" />
-    <Compile Include="Templating\TestProjectRequest.cs" />
+    <Compile Include="Templating\Graph\TestProjectRequest.cs" />
     <Compile Include="Templating\TextFile.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -122,8 +122,9 @@
     <EmbeddedResource Include="Solution.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Templating\Class.txt" />
+    <EmbeddedResource Include="Templating\Runtime\Class.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
