@@ -14,7 +14,7 @@ namespace FubuCsProjFile.Templating.Graph
         public static readonly string Project = "project";
         public static readonly string Testing = "testing";
         public static readonly string Alteration = "alteration";
-
+        
         private readonly Cache<TemplateType, string> _templateDirectories;
 
         public static readonly string DescriptionFile = "description.txt";
@@ -35,6 +35,7 @@ namespace FubuCsProjFile.Templating.Graph
 
         private readonly string _templatesRoot;
 
+        public TemplateGraph Graph = new TemplateGraph();
 
         public TemplateLibrary(string templatesRoot)
         {
@@ -49,6 +50,12 @@ namespace FubuCsProjFile.Templating.Graph
 
             Enum.GetValues(typeof (TemplateType)).OfType<TemplateType>()
                 .Each(x => _templateDirectories.FillDefault(x));
+
+            var graphFile = templatesRoot.AppendPath(TemplateGraph.FILE);
+            if (File.Exists(graphFile))
+            {
+                Graph = TemplateGraph.Read(graphFile);
+            }
         }
 
         public IEnumerable<Template> All()

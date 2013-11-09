@@ -9,6 +9,8 @@ namespace FubuCsProjFile.Templating.Graph
 {
     public class TemplateGraph
     {
+        public static readonly string FILE = "Templates.xml";
+
         public static TemplateGraph Read(string file)
         {
             var document = new XmlDocument();
