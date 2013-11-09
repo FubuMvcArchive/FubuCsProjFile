@@ -36,10 +36,10 @@ namespace FubuCsProjFile.Testing.Templating.Graph
         [Test]
         public void can_find_generation_types_by_tag()
         {
-            theGraph.GenerationTypesForTag("x").Select(x => x.Name)
+            theGraph.TemplateSetsForTag("x").Select(x => x.Name)
                 .ShouldHaveTheSameElementsAs("G1", "Complex");
 
-            theGraph.GenerationTypesForTag("X").Select(x => x.Name)
+            theGraph.TemplateSetsForTag("X").Select(x => x.Name)
                 .ShouldHaveTheSameElementsAs("G1", "Complex");
 
         }
@@ -47,7 +47,7 @@ namespace FubuCsProjFile.Testing.Templating.Graph
         [Test]
         public void can_load_a_single_generation_type_without_options()
         {
-            var generationType = theGraph.GenerationTypeFor("G1");
+            var generationType = theGraph.TemplateSetFor("G1");
             generationType.ShouldNotBeNull();
             generationType.Name.ShouldEqual("G1");
             generationType.Template.ShouldEqual("g1_template");
@@ -58,14 +58,14 @@ namespace FubuCsProjFile.Testing.Templating.Graph
         [Test]
         public void can_load_tags_for_a_generation()
         {
-            var generationType = theGraph.GenerationTypeFor("G1");
+            var generationType = theGraph.TemplateSetFor("G1");
             generationType.Tags.ShouldHaveTheSameElementsAs("x", "y", "z");
         }
 
         [Test]
         public void can_load_a_generation_type_without_template()
         {
-            var g = theGraph.GenerationTypeFor("G2");
+            var g = theGraph.TemplateSetFor("G2");
             g.Template.ShouldBeEmpty();
             g.Alterations.ShouldHaveTheSameElementsAs("a", "b", "c");
         }
@@ -73,7 +73,7 @@ namespace FubuCsProjFile.Testing.Templating.Graph
         [Test]
         public void can_associate_options_with_a_generation()
         {
-            var generationType = theGraph.GenerationTypeFor("G1");
+            var generationType = theGraph.TemplateSetFor("G1");
             generationType.Options.Select(x => x.Name)
                 .ShouldHaveTheSameElementsAs("Foo", "Bar");
         }
@@ -83,7 +83,7 @@ namespace FubuCsProjFile.Testing.Templating.Graph
         [Test]
         public void can_read_all_the_properties_of_an_option()
         {
-            var generationType = theGraph.GenerationTypeFor("G1");
+            var generationType = theGraph.TemplateSetFor("G1");
             var fooOption = generationType.Options.First();
 
             fooOption.Description.ShouldEqual("the Foo");
@@ -106,7 +106,7 @@ namespace FubuCsProjFile.Testing.Templating.Graph
         [Test]
         public void can_read_an_option_selection()
         {
-            var g = theGraph.GenerationTypeFor("Complex");
+            var g = theGraph.TemplateSetFor("Complex");
             g.Selections.Select(x => x.Name)
                 .ShouldHaveTheSameElementsAs("Select1", "Select2");
         }
@@ -114,7 +114,7 @@ namespace FubuCsProjFile.Testing.Templating.Graph
         [Test]
         public void can_read_the_description_for_a_selection()
         {
-            var g = theGraph.GenerationTypeFor("Complex");
+            var g = theGraph.TemplateSetFor("Complex");
             var select1 = g.Selections.First();
 
             select1.Description.ShouldEqual("the selection");
@@ -124,7 +124,7 @@ namespace FubuCsProjFile.Testing.Templating.Graph
         [Test]
         public void can_read_the_options_for_a_selection()
         {
-            var g = theGraph.GenerationTypeFor("Complex");
+            var g = theGraph.TemplateSetFor("Complex");
             var select1 = g.Selections.First();
             select1.Options.Select(x => x.Name).ShouldHaveTheSameElementsAs("Chiefs", "Broncos");
         }

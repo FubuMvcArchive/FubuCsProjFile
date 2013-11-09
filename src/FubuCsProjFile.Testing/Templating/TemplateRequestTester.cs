@@ -35,9 +35,9 @@ namespace FubuCsProjFile.Testing.Templating
 
             request.Validate(theTemplates).Any().ShouldBeFalse();
 
-            request.Projects.Single().AddAlteration("Assets");
+            request.Projects.Single().Alterations.Add("Assets");
 
-            request.AddTestingRequest(new TestProjectRequest("foo", "MvcApp", "original"));
+            request.AddTestingRequest(new ProjectRequest("foo", "MvcApp", "original"));
 
             request.Validate(theTemplates).Any().ShouldBeFalse();
 
@@ -75,7 +75,7 @@ namespace FubuCsProjFile.Testing.Templating
             var request = new TemplateRequest();
             request.AddTemplate("Simple");
             request.AddProjectRequest(new ProjectRequest("foo", "MvcApp" ));
-            request.Projects.Last().AddAlteration("NonExistent");
+            request.Projects.Last().Alterations.Add("NonExistent");
 
             var missing = request.Validate(theTemplates).Single();
             missing.Name.ShouldEqual("NonExistent");
@@ -89,7 +89,7 @@ namespace FubuCsProjFile.Testing.Templating
             var request = new TemplateRequest();
             request.AddTemplate("Simple");
             request.AddProjectRequest(new ProjectRequest("foo", "MvcApp"));
-            request.AddTestingRequest(new TestProjectRequest("foo", "NonExistent", "original"));
+            request.AddTestingRequest(new ProjectRequest("foo", "NonExistent", "original"));
 
             var missing = request.Validate(theTemplates).Single();
             missing.Name.ShouldEqual("NonExistent");

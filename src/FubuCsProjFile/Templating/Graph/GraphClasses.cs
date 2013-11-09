@@ -4,7 +4,6 @@ using System.Linq;
 using System.Xml;
 using FubuCore;
 using FubuCore.Configuration;
-using FubuCore.Util;
 
 namespace FubuCsProjFile.Templating.Graph
 {
@@ -23,7 +22,7 @@ namespace FubuCsProjFile.Templating.Graph
             {
                 var generation = element.BuildGenerationType(options);
 
-                graph._generationTypes.Add(generation);
+                graph._templateSets.Add(generation);
             }
 
 
@@ -32,16 +31,50 @@ namespace FubuCsProjFile.Templating.Graph
 
 
 
-        private readonly IList<GenerationType> _generationTypes = new List<GenerationType>(); 
+        private readonly IList<TemplateSet> _templateSets = new List<TemplateSet>();
 
-        public IEnumerable<GenerationType> GenerationTypesForTag(string tag)
+        public void Add(TemplateSet templateSet)
         {
-            return _generationTypes.Where(x => x.Tags.Any(t => t.EqualsIgnoreCase(tag)));
+            _templateSets.Add(templateSet);
         }
 
-        public GenerationType GenerationTypeFor(string name)
+        public IEnumerable<TemplateSet> TemplateSetsForTag(string tag)
         {
-            return _generationTypes.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
+            return _templateSets.Where(x => x.MatchesTag(tag));
+        }
+
+        public TemplateSet TemplateSetFor(string name)
+        {
+            return _templateSets.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
+        }
+
+        public ProjectRequest Configure(TemplateChoices choices)
+        {
+            if (choices.SetName.IsEmpty()) throw new Exception("SetName is required");
+            if (choices.ProjectName.IsEmpty()) throw new Exception("ProjectName is required");
+
+            var templateSet = TemplateSetFor(choices.SetName);
+            if (templateSet == null)
+            {
+                throw new Exception("TemplateSet '{0}' is unknown".ToFormat(choices.SetName));
+            }
+
+            if (choices.Tag.IsNotEmpty() && !templateSet.MatchesTag(choices.Tag))
+            {
+                throw new Exception("TemplateSet '{0}' is not tagged as a valid '{1}'".ToFormat(choices.SetName, choices.Tag));
+            }
+
+            var request = new ProjectRequest(choices.ProjectName, templateSet.Template);
+            request.Alterations.AddRange(templateSet.Alterations);
+
+            /*
+             * 
+             * 
+             * 
+             * 
+             */
+
+            return request;
         }
     }
 
@@ -59,7 +92,7 @@ namespace FubuCsProjFile.Templating.Graph
         public IList<Option> Options = new List<Option>();
     }
 
-    public class GenerationType
+    public class TemplateSet
     {
         // If this is null, it's not a "new" project
         public string Template;
@@ -71,10 +104,10 @@ namespace FubuCsProjFile.Templating.Graph
 
         public IList<Option> Options = new List<Option>();
         public IList<OptionSelection> Selections = new List<OptionSelection>();
-    }
 
-    public class TemplateChoices
-    {
-        //public string 
+        public bool MatchesTag(string tag)
+        {
+            return Tags.Any(t => t.EqualsIgnoreCase(tag));
+        }
     }
 }

@@ -86,7 +86,7 @@ namespace FubuCsProjFile.Testing
                 x.AddTemplate("Simple");
 
                 var projectRequest = new ProjectRequest("MyProject", "Simple");
-                projectRequest.AddAlteration("Assets");
+                projectRequest.Alterations.Add("Assets");
 
                 x.AddProjectRequest(projectRequest);
             });
@@ -317,7 +317,7 @@ namespace FubuCsProjFile.Testing
                 x.AddTemplate("Simple");
 
                 var projectRequest = new ProjectRequest("MyProject", "Simple");
-                projectRequest.AddAlteration("Assets");
+                projectRequest.Alterations.Add("Assets");
 
                 x.AddProjectRequest(projectRequest);
             });
@@ -336,7 +336,7 @@ namespace FubuCsProjFile.Testing
                 x.AddTemplate("Simple");
 
                 var projectRequest = new ProjectRequest("MyProject", "Simple");
-                projectRequest.AddAlteration("Assets");
+                projectRequest.Alterations.Add("Assets");
 
                 x.AddProjectRequest(projectRequest);
             });
@@ -365,7 +365,7 @@ namespace FubuCsProjFile.Testing
                 x.AddTemplate("Simple");
 
                 var projectRequest = new ProjectRequest("MyProject", "Simple");
-                projectRequest.AddAlteration("FubuBottle");
+                projectRequest.Alterations.Add("FubuBottle");
 
                 x.AddProjectRequest(projectRequest);
             });
@@ -383,7 +383,7 @@ namespace FubuCsProjFile.Testing
                 x.AddTemplate("Simple");
 
                 var projectRequest = new ProjectRequest("MyProject", "Simple");
-                projectRequest.AddAlteration("FubuBottle");
+                projectRequest.Alterations.Add("FubuBottle");
 
                 x.AddProjectRequest(projectRequest);
             });
@@ -453,7 +453,7 @@ namespace FubuCsProjFile.Testing
 
                 x.AddProjectRequest(projectRequest);
 
-                x.AddTestingRequest(new TestProjectRequest("MyProject.Testing", "unit-testing", "MyProject"));
+                x.AddTestingRequest(new ProjectRequest("MyProject.Testing", "unit-testing", "MyProject"));
             });
 
             var csProjFile = CsProjFile.LoadFrom("integrated".AppendPath("src", "MyProject.Testing", "MyProject.Testing.csproj"));
@@ -475,7 +475,7 @@ namespace FubuCsProjFile.Testing
 
                 x.AddProjectRequest(projectRequest);
 
-                x.AddTestingRequest(new TestProjectRequest("MyProject.Testing",  "unit-testing", "MyProject"));
+                x.AddTestingRequest(new ProjectRequest("MyProject.Testing",  "unit-testing", "MyProject"));
             });
 
             var step = thePlan.Steps.OfType<CopyProjectReferences>().Single();

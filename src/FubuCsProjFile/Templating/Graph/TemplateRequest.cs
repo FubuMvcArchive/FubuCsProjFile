@@ -8,7 +8,7 @@ namespace FubuCsProjFile.Templating.Graph
     {
         private readonly IList<string> _templates = new List<string>();
         private readonly IList<ProjectRequest> _projects = new List<ProjectRequest>();
-        private readonly IList<TestProjectRequest> _testingProjects = new List<TestProjectRequest>();
+        private readonly IList<ProjectRequest> _testingProjects = new List<ProjectRequest>();
         private readonly Substitutions _substitutions = new Substitutions();
 
         public IEnumerable<string> Validate()
@@ -65,7 +65,7 @@ namespace FubuCsProjFile.Templating.Graph
             _projects.Add(request);
         }
 
-        public IEnumerable<TestProjectRequest> TestingProjects
+        public IEnumerable<ProjectRequest> TestingProjects
         {
             get { return _testingProjects; }
             set
@@ -75,7 +75,7 @@ namespace FubuCsProjFile.Templating.Graph
             }
         }
 
-        public void AddTestingRequest(TestProjectRequest request)
+        public void AddTestingRequest(ProjectRequest request)
         {
             _testingProjects.Add(request);
         }

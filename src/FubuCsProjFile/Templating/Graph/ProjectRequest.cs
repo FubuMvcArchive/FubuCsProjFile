@@ -5,7 +5,7 @@ namespace FubuCsProjFile.Templating.Graph
 {
     public class ProjectRequest
     {
-        private readonly IList<string> _alterations = new List<string>(); 
+        public readonly IList<string> Alterations = new List<string>(); 
         private readonly Substitutions _substitutions = new Substitutions();
 
         public ProjectRequest(string name, string template)
@@ -17,27 +17,24 @@ namespace FubuCsProjFile.Templating.Graph
             Template = template;
         }
 
+        public ProjectRequest(string name, string template, string originalProject)
+            : this(name, template)
+        {
+            OriginalProject = originalProject;
+        }
+
         public string Name { get; private set; }
         public string Template { get; private set; }
+
+        /// <summary>
+        /// For testing and extension projects
+        /// </summary>
+        public string OriginalProject;
 
         public Substitutions Substitutions
         {
             get { return _substitutions; }
         }
 
-        public IEnumerable<string> Alterations
-        {
-            get { return _alterations; }
-            set
-            {
-                _alterations.Clear();
-                _alterations.AddRange(value);
-            }
-        } 
-
-        public void AddAlteration(string alteration)
-        {
-            _alterations.Add(alteration);
-        }
     }
 }

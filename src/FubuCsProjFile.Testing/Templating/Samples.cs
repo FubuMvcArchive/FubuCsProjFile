@@ -33,8 +33,8 @@ namespace FubuCsProjFile.Testing.Templating
             // Add a project named "MyProject" using a project template named "basic-new-project"
             request.AddProjectRequest("MyProject", "basic-new-project", project => {
                 // Add some extra templates from the /alterations folder
-                project.AddAlteration("raven");
-                project.AddAlteration("spark");
+                project.Alterations.Add("raven");
+                project.Alterations.Add("spark");
 
                 // Add some substitution values for the templating if desired
                 // See the topic page for subsitutions and inputs
@@ -43,7 +43,7 @@ namespace FubuCsProjFile.Testing.Templating
 
             // Add a testing project related to our first project using the "unit-testing" project template
             // See the topic about testing projects
-            request.AddTestingRequest(new TestProjectRequest("MyProject.Testing", "unit-testing", "MyProject"));
+            request.AddTestingRequest(new ProjectRequest("MyProject.Testing", "unit-testing", "MyProject"));
 
             return request;
         }

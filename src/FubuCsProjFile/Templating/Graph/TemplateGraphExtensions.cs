@@ -30,7 +30,7 @@ namespace FubuCsProjFile.Templating.Graph
             return options;
         } 
 
-        public static void BuildSelectionsForGenerationType(this XmlElement element, IList<Option> options, GenerationType generation)
+        public static void BuildSelectionsForGenerationType(this XmlElement element, IList<Option> options, TemplateSet generation)
         {
             foreach (XmlElement selectionElement in element.SelectNodes("selection"))
             {
@@ -48,9 +48,9 @@ namespace FubuCsProjFile.Templating.Graph
             }
         }
 
-        public static GenerationType BuildGenerationType(this XmlElement element, IList<Option> options)
+        public static TemplateSet BuildGenerationType(this XmlElement element, IList<Option> options)
         {
-            var generation = new GenerationType();
+            var generation = new TemplateSet();
             generation.Name = element.GetAttribute("name");
             generation.Description = element.GetAttribute("description");
             generation.Template = element.GetAttribute("template");
