@@ -13,7 +13,7 @@ namespace FubuCsProjFile.Testing.Templating.Graph
 <graph>
     <generation name='G1' description='the G1' template='g1_template' alterations='g1a, g1b' tags='x, y, z' options='Foo, Bar'></generation>
     <generation name='G2' description='the G2' alterations='a, b, c' ></generation>
-    <generation name='Complex' description='the Complicated one' alterations='a, b, c' >
+    <generation name='Complex' description='the Complicated one' alterations='a, b, c' tags='x' >
        <selection name='Select1' description='the selection' options='Chiefs, Broncos' />
        <selection name='Select2' description='the 2nd selection' options='Foo, Bar' />
     </generation>
@@ -33,6 +33,16 @@ namespace FubuCsProjFile.Testing.Templating.Graph
             theGraph = TemplateGraph.Read("graph.xml");
         }
 
+        [Test]
+        public void can_find_generation_types_by_tag()
+        {
+            theGraph.GenerationTypesForTag("x").Select(x => x.Name)
+                .ShouldHaveTheSameElementsAs("G1", "Complex");
+
+            theGraph.GenerationTypesForTag("X").Select(x => x.Name)
+                .ShouldHaveTheSameElementsAs("G1", "Complex");
+
+        }
 
         [Test]
         public void can_load_a_single_generation_type_without_options()
