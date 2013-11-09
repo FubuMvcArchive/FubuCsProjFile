@@ -15,6 +15,6 @@ namespace FubuCsProjFile.Templating.Graph
         public IEnumerable<string> Options;
         public Cache<string, string> Selections = new Cache<string, string>(); 
 
-        public readonly Substitutions Substitutions = new Substitutions();
+        public readonly Cache<string, string> Inputs = new Cache<string, string>(); 
     }
 }

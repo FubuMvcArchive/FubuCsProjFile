@@ -67,47 +67,24 @@ namespace FubuCsProjFile.Templating.Graph
             var request = new ProjectRequest(choices.ProjectName, templateSet.Template);
             request.Alterations.AddRange(templateSet.Alterations);
 
-            /*
-             * 
-             * 
-             * 
-             * 
-             */
+            if (choices.Options != null)
+            {
+                choices.Options.Each(o => {
+                    var opt = templateSet.FindOption(o);
+                    if (opt == null) throw new Exception("Unknown option '{0}'".ToFormat(o));
+
+                    request.Alterations.AddRange(opt.Alterations);
+                });
+            }
+
+            if (templateSet.Selections != null)
+            {
+                templateSet.Selections.Each(selection => selection.Configure(choices, request));
+            }
+
+            choices.Inputs.Each((key, value) => request.Substitutions.Set(key, value));
 
             return request;
-        }
-    }
-
-    public class Option
-    {
-        public string Description;
-        public string Name;
-        public IList<string> Alterations = new List<string>();
-    }
-
-    public class OptionSelection
-    {
-        public string Description;
-        public string Name;
-        public IList<Option> Options = new List<Option>();
-    }
-
-    public class TemplateSet
-    {
-        // If this is null, it's not a "new" project
-        public string Template;
-        public IList<string> Tags = new List<string>();
-
-        public IList<string> Alterations = new List<string>();
-        public string Description;
-        public string Name;
-
-        public IList<Option> Options = new List<Option>();
-        public IList<OptionSelection> Selections = new List<OptionSelection>();
-
-        public bool MatchesTag(string tag)
-        {
-            return Tags.Any(t => t.EqualsIgnoreCase(tag));
         }
     }
 }
