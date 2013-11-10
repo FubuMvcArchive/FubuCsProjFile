@@ -28,7 +28,7 @@ namespace FubuCsProjFile
                     var projectGuid = "{" + project.ProjectGuid + "}";
                     
                     
-//                    //var projectType = "Project(\"{" + project.ProjectType + "}\")";
+//                    //var projectType = "Project(\"{" + project.Category + "}\")";
 //                    builder.AppendLine("{0} = \"{1}\", \"{2}\", \"{3}\"".ToFormat(projectType,
 //                                                                                  project.Name,
 //                                                                                  project.RelativePath,

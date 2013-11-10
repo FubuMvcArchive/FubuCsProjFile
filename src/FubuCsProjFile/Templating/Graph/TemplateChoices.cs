@@ -8,8 +8,8 @@ namespace FubuCsProjFile.Templating.Graph
     /// </summary>
     public class TemplateChoices
     {
-        public string Tag;
-        public string SetName;
+        public string ProjectType;
+        public string Category;
         public string ProjectName;
         
         public IEnumerable<string> Options;

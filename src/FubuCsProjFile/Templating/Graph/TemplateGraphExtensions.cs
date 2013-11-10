@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Xml;
 using FubuCore;
@@ -12,10 +13,10 @@ namespace FubuCsProjFile.Templating.Graph
             return list.FirstOrDefault(x => FubuCore.StringExtensions.EqualsIgnoreCase(x.Name, name));
         }
 
-        public static IList<Option> ReadOptions(this XmlDocument document)
+        public static IList<Option> ReadOptions(this XmlElement parentElement)
         {
             var options = new List<Option>();
-            foreach (XmlElement element in document.DocumentElement.SelectNodes("option"))
+            foreach (XmlElement element in parentElement.SelectNodes("option"))
             {
                 var option = new Option
                 {
@@ -30,51 +31,46 @@ namespace FubuCsProjFile.Templating.Graph
             return options;
         } 
 
-        public static void BuildSelectionsForGenerationType(this XmlElement element, IList<Option> options, TemplateSet generation)
+        public static IEnumerable<OptionSelection> BuildSelections(this XmlElement element)
         {
             foreach (XmlElement selectionElement in element.SelectNodes("selection"))
             {
-                var selection = new OptionSelection
-                {
-                    Name = selectionElement.GetAttribute("name"),
-                    Description = selectionElement.GetAttribute("description")
-                };
-
-                selectionElement.GetAttribute("options").ToDelimitedArray()
-                    .Select(x => options.Find(x))
-                    .Each(x => selection.Options.Add(x));
-
-                generation.Selections.Add(selection);
+                yield return selectionElement.BuildSelection();
             }
         }
 
-        public static TemplateSet BuildGenerationType(this XmlElement element, IList<Option> options)
+        public static OptionSelection BuildSelection(this XmlElement selectionElement)
         {
-            var generation = new TemplateSet();
-            generation.Name = element.GetAttribute("name");
-            generation.Description = element.GetAttribute("description");
-            generation.Template = element.GetAttribute("template");
+            var selection = new OptionSelection
+            {
+                Name = selectionElement.GetAttribute("name"),
+                Description = selectionElement.GetAttribute("description")
+            };
+
+            selection.Options = selectionElement.ReadOptions();
+
+            return selection;
+        }
+
+        public static ProjectTemplate BuildProjectTemplate(this XmlElement element)
+        {
+            var projectTemplate = new ProjectTemplate
+            {
+                Name = element.GetAttribute("name"),
+                Description = element.GetAttribute("description"),
+                Template = element.GetAttribute("template")
+            };
 
             if (element.HasAttribute("alterations"))
             {
-                generation.Alterations.AddRange(element.GetAttribute("alterations").ToDelimitedArray());
+                projectTemplate.Alterations.AddRange(element.GetAttribute("alterations").ToDelimitedArray());
             }
 
-            if (element.HasAttribute("tags"))
-            {
-                generation.Tags.AddRange(element.GetAttribute("tags").ToDelimitedArray());
-            }
+            projectTemplate.Options = element.ReadOptions();
 
-            if (element.HasAttribute("options"))
-            {
-                element.GetAttribute("options").ToDelimitedArray()
-                    .Select(x => options.Find(x))
-                    .Each(x => generation.Options.Add(x));
-            }
+            projectTemplate.Selections.AddRange(element.BuildSelections());
 
-            element.BuildSelectionsForGenerationType(options, generation);
-
-            return generation;
+            return projectTemplate;
         }
 
     }

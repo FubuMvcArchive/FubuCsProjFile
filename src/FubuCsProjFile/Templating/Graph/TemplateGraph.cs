@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Xml;
 using FubuCore;
 using FubuCore.Configuration;
@@ -18,13 +19,15 @@ namespace FubuCsProjFile.Templating.Graph
 
             var graph = new TemplateGraph();
 
-            var options = document.ReadOptions();
-
-            foreach (XmlElement element in document.DocumentElement.SelectNodes("generation"))
+            foreach (XmlElement element in document.DocumentElement.SelectNodes("category"))
             {
-                var generation = element.BuildGenerationType(options);
+                var category = new ProjectCategory {Type = element.GetAttribute("type")};
+                foreach (XmlElement projectElement in element.SelectNodes("project"))
+                {
+                    category.Templates.Add(projectElement.BuildProjectTemplate());
+                }
 
-                graph._templateSets.Add(generation);
+                graph._categories.Add(category);
             }
 
 
@@ -33,60 +36,46 @@ namespace FubuCsProjFile.Templating.Graph
 
 
 
-        private readonly IList<TemplateSet> _templateSets = new List<TemplateSet>();
+        private readonly IList<ProjectCategory> _categories = new List<ProjectCategory>();
 
-        public void Add(TemplateSet templateSet)
+        public void AddCategory(ProjectCategory category)
         {
-            _templateSets.Add(templateSet);
+            _categories.Add(category);
         }
 
-        public IEnumerable<TemplateSet> TemplateSetsForTag(string tag)
+        public ProjectCategory FindCategory(string category)
         {
-            return _templateSets.Where(x => x.MatchesTag(tag));
+            return _categories.FirstOrDefault(x => x.Type.EqualsIgnoreCase(category));
         }
 
-        public TemplateSet TemplateSetFor(string name)
-        {
-            return _templateSets.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
-        }
 
-        public ProjectRequest Configure(TemplateChoices choices)
+        public ProjectRequest BuildProjectRequest(TemplateChoices choices)
         {
-            if (choices.SetName.IsEmpty()) throw new Exception("SetName is required");
+            if (choices.Category.IsEmpty()) throw new Exception("Category is required");
             if (choices.ProjectName.IsEmpty()) throw new Exception("ProjectName is required");
 
-            var templateSet = TemplateSetFor(choices.SetName);
-            if (templateSet == null)
+            var category = FindCategory(choices.Category);
+            if (category == null)
             {
-                throw new Exception("TemplateSet '{0}' is unknown".ToFormat(choices.SetName));
+                throw new Exception("Category '{0}' is unknown".ToFormat(choices.Category));
             }
 
-            if (choices.Tag.IsNotEmpty() && !templateSet.MatchesTag(choices.Tag))
+            var project = category.FindTemplate(choices.ProjectType);
+            if (project == null)
             {
-                throw new Exception("TemplateSet '{0}' is not tagged as a valid '{1}'".ToFormat(choices.SetName, choices.Tag));
+                throw new Exception("ProjectTemplate '{0}' is unknown".ToFormat(choices.Category));
             }
 
-            var request = new ProjectRequest(choices.ProjectName, templateSet.Template);
-            request.Alterations.AddRange(templateSet.Alterations);
+            return project.BuildProjectRequest(choices);
+        }
 
-            if (choices.Options != null)
-            {
-                choices.Options.Each(o => {
-                    var opt = templateSet.FindOption(o);
-                    if (opt == null) throw new Exception("Unknown option '{0}'".ToFormat(o));
+        public ProjectCategory AddCategory(string categoryName)
+        {
+            var category = new ProjectCategory {Type = categoryName};
 
-                    request.Alterations.AddRange(opt.Alterations);
-                });
-            }
+            _categories.Add(category);
 
-            if (templateSet.Selections != null)
-            {
-                templateSet.Selections.Each(selection => selection.Configure(choices, request));
-            }
-
-            choices.Inputs.Each((key, value) => request.Substitutions.Set(key, value));
-
-            return request;
+            return category;
         }
     }
 }
