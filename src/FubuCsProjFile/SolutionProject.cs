@@ -30,7 +30,7 @@ namespace FubuCsProjFile
             _project = new Lazy<CsProjFile>(() => csProjFile);
             _projectName = csProjFile.ProjectName;
             _relativePath = csProjFile.FileName.PathRelativeTo(solutionDirectory);
-            _projectType = csProjFile.ProjectTypes().FirstOrDefault();
+            _projectType = csProjFile.ProjectTypes().LastOrDefault();
             _projectGuid = csProjFile.ProjectGuid;
         }
 
