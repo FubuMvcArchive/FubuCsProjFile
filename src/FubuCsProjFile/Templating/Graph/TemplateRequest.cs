@@ -11,13 +11,6 @@ namespace FubuCsProjFile.Templating.Graph
         private readonly IList<ProjectRequest> _testingProjects = new List<ProjectRequest>();
         private readonly Substitutions _substitutions = new Substitutions();
 
-        public IEnumerable<string> Validate()
-        {
-
-
-            throw new NotImplementedException();
-        } 
-
         public Substitutions Substitutions
         {
             get { return _substitutions; }
@@ -41,6 +34,7 @@ namespace FubuCsProjFile.Templating.Graph
 
         // at the solution level
         public string SolutionName { get; set; }
+        public string Version { get; set; }
 
         public IEnumerable<ProjectRequest> Projects
         {

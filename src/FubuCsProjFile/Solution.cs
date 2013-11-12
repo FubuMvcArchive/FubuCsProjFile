@@ -212,7 +212,7 @@ namespace FubuCsProjFile
 
             var writer = new StringWriter();
 
-            _versionLines[Version].Each(x => writer.WriteLine(x));
+            _versionLines[Version ?? VS2012].Each(x => writer.WriteLine(x));
 
             _projects.Each(x => x.Write(writer));
 

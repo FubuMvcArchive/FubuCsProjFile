@@ -57,6 +57,24 @@ namespace FubuCsProjFile.Testing.Templating
         }
 
         [Test]
+        public void respects_version_number_for_VS()
+        {
+            var request = new TemplateRequest
+            {
+                SolutionName = "MySolution",
+                RootDirectory = "root",
+                Version = Solution.VS2010
+            };
+
+            var plan = new TemplatePlanBuilder(new TemplateLibrary("."))
+                .BuildPlan(request);
+
+            var create = plan.Steps.First().ShouldBeOfType<CreateSolution>();
+            create.SolutionName.ShouldEqual("MySolution");
+            create.Version.ShouldEqual(request.Version);
+        }
+
+        [Test]
         public void build_with_existing_solution_should_just_read_the_current_one()
         {
             var original = Solution.CreateNew("root".AppendPath("src"), "MySolution");

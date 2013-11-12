@@ -28,5 +28,11 @@ namespace FubuCsProjFile.Testing.Templating
             var solution = Solution.LoadFrom(file);
             solution.ShouldNotBeNull(); // really just a smoke test that we can parse it back out
         }
+
+        [Test]
+        public void default_is_vs2012()
+        {
+            new CreateSolution("foo").Version.ShouldEqual(Solution.VS2012);
+        }
     }
 }

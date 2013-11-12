@@ -86,7 +86,10 @@ namespace FubuCsProjFile.Templating.Planning
             }
             else
             {
-                plan.Add(new CreateSolution(request.SolutionName));
+                plan.Add(new CreateSolution(request.SolutionName)
+                {
+                    Version = request.Version
+                });
             }
         }
     }

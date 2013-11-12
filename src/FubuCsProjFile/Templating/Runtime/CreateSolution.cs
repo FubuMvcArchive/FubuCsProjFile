@@ -9,6 +9,7 @@ namespace FubuCsProjFile.Templating.Runtime
         public CreateSolution(string solutionName)
         {
             _solutionName = solutionName;
+            Version = Solution.VS2012;
         }
 
         public string SolutionName
@@ -16,9 +17,13 @@ namespace FubuCsProjFile.Templating.Runtime
             get { return _solutionName; }
         }
 
+        public string Version { get; set; }
+
         public void Alter(TemplatePlan plan)
         {
             var solution = Solution.CreateNew(plan.SourceDirectory, _solutionName);
+            solution.Version = Version;
+
             plan.Solution = solution;
         }
 
