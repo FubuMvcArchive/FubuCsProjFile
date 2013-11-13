@@ -290,6 +290,7 @@ namespace FubuCsProjFile
 
             var project = MSBuildProject.CreateFromFile(projectName, templateFile);
             var csProjFile = new CsProjFile(ParentDirectory.AppendPath(projectName, projectName + ".csproj"), project);
+            csProjFile.ProjectGuid = Guid.NewGuid();
 
             var reference = new SolutionProject(csProjFile, ParentDirectory);
             _projects.Add(reference);

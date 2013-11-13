@@ -23,8 +23,7 @@ namespace FubuCsProjFile.MSBuild
         private static MSBuildProject create(string assemblyName, string text)
         {
             text = text
-                .Replace("FUBUPROJECTNAME", assemblyName)
-                .Replace("GUID", Guid.NewGuid().ToString());
+                .Replace("FUBUPROJECTNAME", assemblyName);
 
 
             var project = new MSBuildProject();
