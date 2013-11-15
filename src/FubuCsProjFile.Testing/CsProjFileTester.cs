@@ -37,6 +37,25 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void read_the_dot_net_version_from_csprojfile()
+        {
+            var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
+            project.DotNetVersion.ShouldEqual(DotNetVersion.V40);
+        }
+
+        [Test]
+        public void write_and_then_read_the_dot_net_version_from_csprojfile()
+        {
+            var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
+            project.DotNetVersion = DotNetVersion.V45;
+
+            project.Save("45Version.xml");
+
+            var copy = CsProjFile.LoadFrom("45Version.xml");
+            copy.DotNetVersion.ShouldEqual(DotNetVersion.V45);
+        }
+
+        [Test]
         public void creating_a_new_csprojfile_class_library_is_default()
         {
             var project = CsProjFile.CreateAtSolutionDirectory("Foo", "myproj");

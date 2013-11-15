@@ -8,6 +8,12 @@ using System.Linq;
 
 namespace FubuCsProjFile
 {
+    public static class DotNetVersion
+    {
+        public static readonly string V40 = "v4.0";
+        public static readonly string V45 = "v4.5";
+    }
+
     public class CsProjFile
     {
         /*
@@ -179,9 +185,31 @@ namespace FubuCsProjFile
             get { return _project.FrameworkName; }
         }
 
+        public string DotNetVersion
+        {
+            get
+            {
+                return _project.PropertyGroups.Select(x => x.GetPropertyValue("TargetFrameworkVersion"))
+                                  .FirstOrDefault(x => x.IsNotEmpty());
+
+            }
+            set
+            {
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == "TargetFrameworkVersion"))
+                            ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
+
+                group.SetPropertyValue("TargetFrameworkVersion", value, true);
+            }
+        }
+
         public void Save()
         {
             _project.Save(_fileName);
+        }
+
+        public void Save(string file)
+        {
+            _project.Save(file);
         }
 
         public IEnumerable<Guid> ProjectTypes()
