@@ -38,7 +38,7 @@ namespace FubuCsProjFile.Templating.Graph
                 choices.Options.Each(o =>
                 {
                     var opt = FindOption(o);
-                    if (opt == null) throw new Exception("Unknown option '{0}'".ToFormat(o));
+                    if (opt == null) throw new Exception("Unknown option '{0}' for project type {1}".ToFormat(o, Name));
 
                     request.Alterations.AddRange(opt.Alterations);
                 });

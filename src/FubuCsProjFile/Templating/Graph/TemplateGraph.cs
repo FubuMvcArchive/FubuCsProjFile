@@ -63,7 +63,7 @@ namespace FubuCsProjFile.Templating.Graph
             var project = category.FindTemplate(choices.ProjectType);
             if (project == null)
             {
-                throw new Exception("ProjectTemplate '{0}' is unknown".ToFormat(choices.Category));
+                throw new Exception("ProjectTemplate '{0}' for category {1} is unknown".ToFormat(choices.ProjectType, choices.Category));
             }
 
             return project.BuildProjectRequest(choices);
