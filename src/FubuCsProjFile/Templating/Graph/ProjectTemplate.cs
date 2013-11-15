@@ -25,6 +25,7 @@ namespace FubuCsProjFile.Templating.Graph
 
         public IList<Option> Options;
         public IList<OptionSelection> Selections;
+        public string Url;
 
         public Option FindOption(string optionName)
         {
@@ -61,6 +62,10 @@ namespace FubuCsProjFile.Templating.Graph
         {
             description.Title = Name;
             description.ShortDescription = Description;
+            if (Url.IsNotEmpty())
+            {
+                description.Properties["Url"] = Url;
+            }
             description.AddList("Selections", Selections);
             description.AddList("Options", Options);
         }

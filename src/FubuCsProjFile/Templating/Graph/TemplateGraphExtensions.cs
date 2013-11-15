@@ -22,7 +22,9 @@ namespace FubuCsProjFile.Templating.Graph
                 {
                     Name = element.GetAttribute("name"),
                     Description = element.GetAttribute("description"),
-                    Alterations = element.GetAttribute("alterations").ToDelimitedArray().ToList()
+                    Alterations = element.GetAttribute("alterations").ToDelimitedArray().ToList(),
+                    Url = element.GetAttribute("url")
+                    
                 };
 
                 options.Add(option);
@@ -66,6 +68,7 @@ namespace FubuCsProjFile.Templating.Graph
                 projectTemplate.Alterations.AddRange(element.GetAttribute("alterations").ToDelimitedArray());
             }
 
+            projectTemplate.Url = element.GetAttribute("url");
             projectTemplate.Options = element.ReadOptions();
 
             projectTemplate.Selections.AddRange(element.BuildSelections());

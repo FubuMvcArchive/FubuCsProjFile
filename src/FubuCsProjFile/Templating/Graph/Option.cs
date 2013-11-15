@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FubuCore;
 using FubuCore.Descriptions;
 
 namespace FubuCsProjFile.Templating.Graph
@@ -18,6 +19,7 @@ namespace FubuCsProjFile.Templating.Graph
         public string Description;
         public string Name;
         public IList<string> Alterations = new List<string>();
+        public string Url;
 
         public Option DescribedAs(string description)
         {
@@ -29,6 +31,11 @@ namespace FubuCsProjFile.Templating.Graph
         {
             description.Title = Name;
             description.ShortDescription = Description;
+
+            if (Url.IsNotEmpty())
+            {
+                description.Properties["Url"] = Url;
+            }
         }
     }
 }

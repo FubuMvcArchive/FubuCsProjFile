@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using FubuCore;
 using FubuCsProjFile.Templating.Graph;
 using FubuTestingSupport;
@@ -9,17 +10,24 @@ namespace FubuCsProjFile.Testing.Templating.Graph
     [TestFixture]
     public class TemplateGraphLoadingTester
     {
+        [SetUp]
+        public void SetUp()
+        {
+            new FileSystem().WriteStringToFile("graph.xml", xml.Replace("'", "\""));
+            theGraph = TemplateGraph.Read("graph.xml");
+        }
+
         private string xml = @"
 <graph>
 <category type='new'>
-    <project name='G1' description='the G1' template='g1_template' alterations='g1a, g1b' >
-        <option name='Foo' description='the Foo' alterations='e, f, g' />
+    <project name='G1' url='http://somewhere.com' description='the G1' template='g1_template' alterations='g1a, g1b' >
+        <option name='Foo' description='the Foo' alterations='e, f, g' url='http://else.com'/>
         <option name='Bar' description='the Bar' alterations='h, i, j' />
     </project>
     <project name='G2' description='the G2' alterations='a, b, c' ></project>
     <project name='Complex' description='the Complicated one' alterations='a, b, c'  >
        <selection name='Select1' description='the selection'>
-           <option name='Chiefs' description='the Chiefs' alterations='k, l' />
+           <option name='Chiefs' description='the Chiefs' alterations='k, l' url='http://something.com' />
            <option name='Broncos' description='the Broncos' alterations='m, n' />
        </selection>
        <selection name='Select2' description='the 2nd selection'>
@@ -36,25 +44,41 @@ namespace FubuCsProjFile.Testing.Templating.Graph
 ";
         private TemplateGraph theGraph;
 
-        [SetUp]
-        public void SetUp()
+        [Test]
+        public void can_associate_options_with_a_generation()
         {
-            new FileSystem().WriteStringToFile("graph.xml", xml.Replace("'", "\""));
-            theGraph = TemplateGraph.Read("graph.xml");
+            ProjectTemplate generationType = theGraph.FindCategory("new").FindTemplate("G1");
+            generationType.Options.Select(x => x.Name)
+                .ShouldHaveTheSameElementsAs("Foo", "Bar");
         }
 
         [Test]
         public void can_find_project_templates_by_category()
         {
-            var projectTemplates = theGraph.FindCategory("new").Templates;
+            IList<ProjectTemplate> projectTemplates = theGraph.FindCategory("new").Templates;
             projectTemplates.Select(x => x.Name)
                 .ShouldHaveTheSameElementsAs("G1", "G2", "Complex");
         }
 
         [Test]
+        public void can_load_a_generation_type_without_template()
+        {
+            ProjectTemplate g = theGraph.FindCategory("new").FindTemplate("G2");
+            g.Template.ShouldBeEmpty();
+            g.Alterations.ShouldHaveTheSameElementsAs("a", "b", "c");
+        }
+
+        [Test]
+        public void can_read_the_url_of_a_project()
+        {
+            ProjectTemplate g = theGraph.FindCategory("new").FindTemplate("G1");
+            g.Url.ShouldEqual("http://somewhere.com");
+        }
+
+        [Test]
         public void can_load_a_single_project_template_without_options()
         {
-            var generationType = theGraph.FindCategory("new").FindTemplate("G1");
+            ProjectTemplate generationType = theGraph.FindCategory("new").FindTemplate("G1");
             generationType.ShouldNotBeNull();
             generationType.Name.ShouldEqual("G1");
             generationType.Template.ShouldEqual("g1_template");
@@ -62,29 +86,13 @@ namespace FubuCsProjFile.Testing.Templating.Graph
             generationType.Alterations.ShouldHaveTheSameElementsAs("g1a", "g1b");
         }
 
-        [Test]
-        public void can_load_a_generation_type_without_template()
-        {
-            var g = theGraph.FindCategory("new").FindTemplate("G2");
-            g.Template.ShouldBeEmpty();
-            g.Alterations.ShouldHaveTheSameElementsAs("a", "b", "c");
-        }
-
-        [Test]
-        public void can_associate_options_with_a_generation()
-        {
-            var generationType = theGraph.FindCategory("new").FindTemplate("G1");
-            generationType.Options.Select(x => x.Name)
-                .ShouldHaveTheSameElementsAs("Foo", "Bar");
-        }
-
         // <option name='Foo' description='the Foo' alterations='e, f, g' />
 
         [Test]
         public void can_read_all_the_properties_of_an_option()
         {
-            var generationType = theGraph.FindCategory("new").FindTemplate("G1");
-            var fooOption = generationType.Options.First();
+            ProjectTemplate generationType = theGraph.FindCategory("new").FindTemplate("G1");
+            Option fooOption = generationType.Options.First();
 
             fooOption.Description.ShouldEqual("the Foo");
             fooOption.Alterations.ShouldHaveTheSameElementsAs("e", "f", "g");
@@ -106,7 +114,7 @@ namespace FubuCsProjFile.Testing.Templating.Graph
         [Test]
         public void can_read_an_option_selection()
         {
-            var g = theGraph.FindCategory("new").FindTemplate("Complex");
+            ProjectTemplate g = theGraph.FindCategory("new").FindTemplate("Complex");
             g.Selections.Select(x => x.Name)
                 .ShouldHaveTheSameElementsAs("Select1", "Select2");
         }
@@ -114,19 +122,27 @@ namespace FubuCsProjFile.Testing.Templating.Graph
         [Test]
         public void can_read_the_description_for_a_selection()
         {
-            var g = theGraph.FindCategory("new").FindTemplate("Complex");
-            var select1 = g.Selections.First();
+            ProjectTemplate g = theGraph.FindCategory("new").FindTemplate("Complex");
+            OptionSelection select1 = g.Selections.First();
 
             select1.Description.ShouldEqual("the selection");
-
         }
 
         [Test]
         public void can_read_the_options_for_a_selection()
         {
-            var g = theGraph.FindCategory("new").FindTemplate("Complex");
-            var select1 = g.Selections.First();
+            ProjectTemplate g = theGraph.FindCategory("new").FindTemplate("Complex");
+            OptionSelection select1 = g.Selections.First();
             select1.Options.Select(x => x.Name).ShouldHaveTheSameElementsAs("Chiefs", "Broncos");
+        }
+
+        [Test]
+        public void can_read_the_url_of_an_option()
+        {
+            ProjectTemplate generationType = theGraph.FindCategory("new").FindTemplate("G1");
+            Option fooOption = generationType.Options.First();
+            fooOption.Url.ShouldEqual(
+                "http://else.com");
         }
     }
 }
