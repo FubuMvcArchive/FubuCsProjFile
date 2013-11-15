@@ -29,7 +29,8 @@ namespace FubuCsProjFile.Templating.Runtime
 
             _substitutions.Set(ASSEMBLY_NAME, projectName);
             _substitutions.Set(SHORT_NAME, projectName.Split('.').Last());
-            
+
+            DotNetVersion = FubuCsProjFile.DotNetVersion.V40;
         }
 
         public Substitutions Substitutions
@@ -62,6 +63,7 @@ namespace FubuCsProjFile.Templating.Runtime
                 }
 
                 reference.Project.AssemblyName = reference.Project.RootNamespace = ProjectName;
+                if (DotNetVersion != null) reference.Project.DotNetVersion = DotNetVersion;
             }
 
             var projectDirectory = reference.Project.ProjectDirectory;
@@ -103,6 +105,8 @@ namespace FubuCsProjFile.Templating.Runtime
         {
             get { return _alterations; }
         }
+
+        public string DotNetVersion { get; set; }
 
         public string ToNugetImportStatement()
         {

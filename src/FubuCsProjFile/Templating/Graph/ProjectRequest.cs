@@ -23,6 +23,7 @@ namespace FubuCsProjFile.Templating.Graph
             OriginalProject = originalProject;
         }
 
+        public string Version = DotNetVersion.V40;
         public string Name { get; private set; }
         public string Template { get; private set; }
 

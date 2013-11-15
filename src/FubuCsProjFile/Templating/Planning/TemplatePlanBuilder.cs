@@ -49,7 +49,7 @@ namespace FubuCsProjFile.Templating.Planning
 
         private void buildProjectPlan(TemplatePlan plan, ProjectRequest proj)
         {
-            var projectPlan = new ProjectPlan(proj.Name);
+            var projectPlan = new ProjectPlan(proj.Name) {DotNetVersion = proj.Version ?? DotNetVersion.V40};
             plan.Add(projectPlan);
 
             proj.Substitutions.CopyTo(projectPlan.Substitutions);

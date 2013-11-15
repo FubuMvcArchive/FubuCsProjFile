@@ -112,5 +112,48 @@ namespace FubuCsProjFile.Testing.Templating
             ProjectPlan.GetNamespace("Sub/Other/Foo", "Lib1").ShouldEqual("Lib1.Sub.Other");
             ProjectPlan.GetNamespace("Sub/Other/Foo.cs", "Lib1").ShouldEqual("Lib1.Sub.Other");
         }
+
+        [Test]
+        public void default_dot_net_version_is_40()
+        {
+            new ProjectPlan("SomeProject")
+                .DotNetVersion.ShouldEqual(DotNetVersion.V40);
+        }
+
+        [Test]
+        public void project_plan_applies_the_dot_net_version()
+        {
+            thePlan = TemplatePlan.CreateClean("create-solutionProject");
+            thePlan.Add(new CreateSolution("MySolution"));
+            var projectPlan = new ProjectPlan("MyProject");
+            thePlan.Add(projectPlan);
+
+            thePlan.Execute();
+
+            var file = thePlan.SourceDirectory.AppendPath("MyProject", "MyProject.csproj");
+            File.Exists(file).ShouldBeTrue();
+
+            var project = CsProjFile.LoadFrom(file);
+            project.DotNetVersion.ShouldEqual(DotNetVersion.V40);
+        }
+
+        [Test]
+        public void project_plan_applies_the_dot_net_version_2()
+        {
+            thePlan = TemplatePlan.CreateClean("create-solutionProject");
+            thePlan.Add(new CreateSolution("MySolution"));
+            var projectPlan = new ProjectPlan("MyProject");
+            projectPlan.DotNetVersion = DotNetVersion.V45;
+
+            thePlan.Add(projectPlan);
+
+            thePlan.Execute();
+
+            var file = thePlan.SourceDirectory.AppendPath("MyProject", "MyProject.csproj");
+            File.Exists(file).ShouldBeTrue();
+
+            var project = CsProjFile.LoadFrom(file);
+            project.DotNetVersion.ShouldEqual(DotNetVersion.V45);
+        }
     }
 }
