@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using FubuCore.Descriptions;
 
 namespace FubuCsProjFile.Templating.Graph
 {
-    public class Option
+    public class Option : DescribesItself
     {
         public Option()
         {
@@ -17,5 +18,17 @@ namespace FubuCsProjFile.Templating.Graph
         public string Description;
         public string Name;
         public IList<string> Alterations = new List<string>();
+
+        public Option DescribedAs(string description)
+        {
+            Description = description;
+            return this;
+        }
+
+        public void Describe(Description description)
+        {
+            description.Title = Name;
+            description.ShortDescription = Description;
+        }
     }
 }

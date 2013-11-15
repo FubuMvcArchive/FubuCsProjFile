@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using FubuCore.Descriptions;
 
 namespace FubuCsProjFile.Templating.Graph
 {
-    public class ProjectCategory
+    public class ProjectCategory : DescribesItself
     {
         public ProjectCategory()
         {
@@ -16,6 +18,13 @@ namespace FubuCsProjFile.Templating.Graph
         public ProjectTemplate FindTemplate(string name)
         {
             return Templates.FirstOrDefault(x => FubuCore.StringExtensions.EqualsIgnoreCase(x.Name, name));
+        }
+
+        public void Describe(Description description)
+        {
+            description.Title = Type + " projects";
+            description.ShortDescription = "Project templating options";
+            description.AddList("Project Types", Templates);
         }
     }
 }

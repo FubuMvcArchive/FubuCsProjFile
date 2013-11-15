@@ -87,6 +87,7 @@
     <Compile Include="Templating\CreateSolutionTester.cs" />
     <Compile Include="Templating\GemReferenceTester.cs" />
     <Compile Include="Templating\Graph\OptionSelectionTester.cs" />
+    <Compile Include="Templating\Graph\ProjectCategory_description_writing.cs" />
     <Compile Include="Templating\Graph\TemplateGraphLoadingTester.cs" />
     <Compile Include="Templating\Graph\TemplateGraph_building_project_request_from_TemplateChoices.cs" />
     <Compile Include="Templating\InputTester.cs" />

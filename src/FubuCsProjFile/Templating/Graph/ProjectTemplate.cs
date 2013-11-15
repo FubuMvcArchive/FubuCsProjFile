@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using FubuCore;
+using FubuCore.Descriptions;
 
 namespace FubuCsProjFile.Templating.Graph
 {
-    public class ProjectTemplate
+    public class ProjectTemplate : DescribesItself
     {
         public ProjectTemplate()
         {
             Options = new List<Option>();
             Selections = new List<OptionSelection>();
         }
+
+
 
         // If this is null, it's not a "new" project
         public string Template;
@@ -52,6 +55,14 @@ namespace FubuCsProjFile.Templating.Graph
             choices.Inputs.Each((key, value) => request.Substitutions.Set(key, value));
 
             return request;
+        }
+
+        public void Describe(Description description)
+        {
+            description.Title = Name;
+            description.ShortDescription = Description;
+            description.AddList("Selections", Selections);
+            description.AddList("Options", Options);
         }
     }
 }

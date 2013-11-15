@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FubuCore;
+using FubuCore.Descriptions;
 
 namespace FubuCsProjFile.Templating.Graph
 {
-    public class OptionSelection
+    public class OptionSelection : DescribesItself
     {
         public string Description;
         public string Name;
@@ -24,6 +25,13 @@ namespace FubuCsProjFile.Templating.Graph
         public Option FindOption(string name)
         {
             return Options.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
+        }
+
+        public void Describe(Description description)
+        {
+            description.Title = Name;
+            description.ShortDescription = Description + " (default is '{0}')".ToFormat(Options.First().Name);
+            description.AddList("Options", Options);
         }
     }
 }
