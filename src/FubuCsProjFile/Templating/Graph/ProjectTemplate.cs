@@ -66,8 +66,16 @@ namespace FubuCsProjFile.Templating.Graph
             {
                 description.Properties["Url"] = Url;
             }
-            description.AddList("Selections", Selections);
-            description.AddList("Options", Options);
+
+            if (Selections != null && Selections.Any())
+            {
+                description.AddList("Selections", Selections);
+            }
+
+            if (Options != null && Options.Any())
+            {
+                description.AddList("Options", Options);
+            }
         }
     }
 }
