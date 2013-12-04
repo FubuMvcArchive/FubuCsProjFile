@@ -23,6 +23,8 @@ namespace FubuCsProjFile.Templating.Graph
         public string Description;
         public string Name;
 
+        public string DotNetVersion { get; set; }
+
         public IList<Option> Options;
         public IList<OptionSelection> Selections;
         public string Url;
@@ -36,6 +38,11 @@ namespace FubuCsProjFile.Templating.Graph
         {
             var request = new ProjectRequest(choices.ProjectName, Template);
             request.Alterations.AddRange(Alterations);
+
+            if (DotNetVersion.IsNotEmpty())
+            {
+                request.Version = DotNetVersion;
+            }
 
             if (choices.Options != null)
             {

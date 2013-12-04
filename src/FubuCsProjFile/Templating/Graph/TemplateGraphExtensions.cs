@@ -60,7 +60,8 @@ namespace FubuCsProjFile.Templating.Graph
             {
                 Name = element.GetAttribute("name"),
                 Description = element.GetAttribute("description"),
-                Template = element.GetAttribute("template")
+                Template = element.GetAttribute("template"),
+                DotNetVersion = element.GetAttribute("dotnet")
             };
 
             if (element.HasAttribute("alterations"))

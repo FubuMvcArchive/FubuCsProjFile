@@ -20,7 +20,7 @@ namespace FubuCsProjFile.Testing.Templating.Graph
         private string xml = @"
 <graph>
 <category type='new'>
-    <project name='G1' url='http://somewhere.com' description='the G1' template='g1_template' alterations='g1a, g1b' >
+    <project name='G1' url='http://somewhere.com' description='the G1' template='g1_template' alterations='g1a, g1b' dotnet='v4.5' >
         <option name='Foo' description='the Foo' alterations='e, f, g' url='http://else.com'/>
         <option name='Bar' description='the Bar' alterations='h, i, j' />
     </project>
@@ -50,6 +50,13 @@ namespace FubuCsProjFile.Testing.Templating.Graph
             ProjectTemplate generationType = theGraph.FindCategory("new").FindTemplate("G1");
             generationType.Options.Select(x => x.Name)
                 .ShouldHaveTheSameElementsAs("Foo", "Bar");
+        }
+
+        [Test]
+        public void reads_dot_net_version_if_attribute_exists()
+        {
+            var template = theGraph.FindCategory("new").FindTemplate("G1");
+            template.DotNetVersion.ShouldEqual(DotNetVersion.V45);
         }
 
         [Test]

@@ -17,7 +17,8 @@ namespace FubuCsProjFile.Testing.Templating.Graph
             {
                 Name = "Foo",
                 Template = "FooProj",
-                Alterations = new List<string> {"Foo1", "Foo2"}
+                Alterations = new List<string> {"Foo1", "Foo2"},
+                DotNetVersion = DotNetVersion.V45
             };
             graph.AddCategory("new").Templates.Add(projectTemplate);
 
@@ -43,6 +44,8 @@ namespace FubuCsProjFile.Testing.Templating.Graph
             var choices = new TemplateChoices {Category = "new", ProjectType = "Foo", ProjectName = "MyFoo"};
 
             ProjectRequest request = graph.BuildProjectRequest(choices);
+            request.Version.ShouldEqual(DotNetVersion.V45);
+
             request.Alterations.ShouldHaveTheSameElementsAs("Foo1", "Foo2", "C", "D");
         }
 
