@@ -87,6 +87,44 @@ namespace FubuCsProjFile.Testing.Templating.Graph
             request.Alterations.ShouldHaveTheSameElementsAs("Foo1", "Foo2", "E", "F");
         }
 
+
+        [Test]
+        public void build_request_with_named_value_for_a_selection_in_the_options()
+        {
+            var graph = new TemplateGraph();
+            var templateSet = new ProjectTemplate
+            {
+                Name = "Foo",
+                Template = "FooProj",
+                Alterations = new List<string> { "Foo1", "Foo2" }
+            };
+            graph.AddCategory("new").Templates.Add(templateSet);
+
+            templateSet.Selections.Add(new OptionSelection
+            {
+                Name = "FooSelection",
+                Options = new List<Option>
+                {
+                    new Option
+                    {
+                        Name = "FooOpt1",
+                        Alterations = new List<string> {"C", "D"}
+                    },
+                    new Option
+                    {
+                        Name = "FooOpt2",
+                        Alterations = new List<string> {"E", "F"}
+                    }
+                }
+            });
+
+
+            var choices = new TemplateChoices { Category = "new", ProjectType = "Foo", ProjectName = "MyFoo", Options = new string[]{"fooopt2"}};
+
+            ProjectRequest request = graph.BuildProjectRequest(choices);
+            request.Alterations.ShouldHaveTheSameElementsAs("Foo1", "Foo2", "E", "F");
+        }
+
         [Test]
         public void build_request_with_matching_template_and_options()
         {
