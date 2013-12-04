@@ -14,6 +14,8 @@ namespace FubuCsProjFile.Templating.Runtime
         public const string SHORT_NAME = "%SHORT_NAME%";
         public const string PROJECT_PATH = "%PROJECT_PATH%";
         public const string PROJECT_FOLDER = "%PROJECT_FOLDER%";
+        public const string RAKE_TASK_PREFIX = "%RAKE_TASK_PREFIX%";
+
         public static readonly string TemplateFile = "csproj.xml";
 
         private readonly string _projectName;
@@ -28,7 +30,11 @@ namespace FubuCsProjFile.Templating.Runtime
             _projectName = projectName;
 
             _substitutions.Set(ASSEMBLY_NAME, projectName);
-            _substitutions.Set(SHORT_NAME, projectName.Split('.').Last());
+            var shortName = projectName.Split('.').Last();
+            _substitutions.Set(SHORT_NAME, shortName);
+
+            _substitutions.Set(RAKE_TASK_PREFIX, shortName.ToLower());
+            
 
             DotNetVersion = FubuCsProjFile.DotNetVersion.V40;
         }

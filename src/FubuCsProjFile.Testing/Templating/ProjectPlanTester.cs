@@ -49,6 +49,14 @@ namespace FubuCsProjFile.Testing.Templating
         }
 
         [Test]
+        public void rake_task_prefix_is_set_by_short_name()
+        {
+            new ProjectPlan("FubuMVC.Diagnostics")
+                .Substitutions.ValueFor(ProjectPlan.RAKE_TASK_PREFIX)
+                .ShouldEqual("diagnostics");
+        }
+
+        [Test]
         public void short_name_is_set_automatically_2()
         {
             new ProjectPlan("FubuMVC.Authentication.Twitter")
