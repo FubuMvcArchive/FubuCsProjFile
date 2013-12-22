@@ -247,7 +247,11 @@ namespace FubuCsProjFile
 
         public string PathTo(CodeFile codeFile)
         {
-            return _fileName.ParentDirectory().AppendPath(codeFile.Include);
+            var path = codeFile.Include;
+            if (Platform.IsUnix ()) {
+                path = path.Replace ('\\', Path.DirectorySeparatorChar);
+            }
+            return _fileName.ParentDirectory().AppendPath(path);
         }
 
 
