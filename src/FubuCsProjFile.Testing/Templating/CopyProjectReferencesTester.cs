@@ -74,7 +74,8 @@ FubuMVC.Core
         {
             var reference = theTestingProject.All<ProjectReference>().Single();
             reference.ShouldNotBeNull();
-            reference.Include.ShouldEqual(Path.Combine("..", "References", "References.csproj"));
+
+            reference.Include.ShouldEqual(@"..\References\References.csproj");
             reference.ProjectName.ShouldEqual("References");
             reference.ProjectGuid.ShouldEqual(theOriginalProject.ProjectGuid);
         }

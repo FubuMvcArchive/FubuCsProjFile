@@ -8,7 +8,7 @@ namespace FubuCsProjFile.Templating.Runtime
     public class AssemblyInfoAlteration : IProjectAlteration
     {
         public const string SourceFile = "assembly-info.txt";
-        public const string AssemblyInfoPath = "Properties/AssemblyInfo.cs";
+        public readonly string[] AssemblyInfoPath = new [] { "Properties", "AssemblyInfo.cs"};
         private readonly IEnumerable<string> _additions;
 
         public AssemblyInfoAlteration(params string[] additions)
@@ -18,7 +18,8 @@ namespace FubuCsProjFile.Templating.Runtime
 
         public void Alter(CsProjFile file, ProjectPlan plan)
         {
-            var codeFile = file.Find<CodeFile>(AssemblyInfoPath) ?? file.Add<CodeFile>(AssemblyInfoPath);
+            var assemblyInfoPath = Path.Combine (AssemblyInfoPath);
+            var codeFile = file.Find<CodeFile>(assemblyInfoPath) ?? file.Add<CodeFile>(assemblyInfoPath);
 
             var path = file.PathTo(codeFile);
             var parentDirectory = path.ParentDirectory();
