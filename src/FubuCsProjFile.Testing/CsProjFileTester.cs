@@ -330,5 +330,8 @@ namespace FubuCsProjFile.Testing
             reference2.ProjectName.ShouldEqual(reference1.ProjectName);
             reference2.ProjectGuid.ShouldEqual(reference1.ProjectGuid);
         }
+
+
+
     }
 }

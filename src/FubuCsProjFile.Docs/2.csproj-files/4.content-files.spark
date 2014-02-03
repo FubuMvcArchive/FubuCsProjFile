@@ -1,0 +1,11 @@
+<!--Title: Content Files-->
+<!--Url: content-files-->
+
+<markdown>
+
+Purely _Content_ files like text files, xml files and Spark or Razor files can be added to a csproj file with the <code>Content</code> class shown in this usage below: 
+
+<Snippet name="adding-content-to-csprojfile" />
+
+</markdown>
+
