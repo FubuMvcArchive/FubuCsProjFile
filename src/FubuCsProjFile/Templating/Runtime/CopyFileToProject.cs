@@ -24,6 +24,8 @@ namespace FubuCsProjFile.Templating.Runtime
             var expectedPath = file.ProjectDirectory.AppendPath(_relativePath);
 
             fileSystem.WriteStringToFile(expectedPath, templatedText);
+
+            file.Add(new Content(_relativePath));
         }
 
         public override string ToString()

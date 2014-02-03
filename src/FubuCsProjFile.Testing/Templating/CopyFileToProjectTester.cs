@@ -33,6 +33,24 @@ namespace FubuCsProjFile.Testing.Templating
 
 
         [Test]
+        public void adds_the_project_file_to_the_csproj_file_as_Content()
+        {
+            thePlan = TemplatePlan.CreateClean("copy-file-to-project");
+
+            thePlan.Add(new CreateSolution("MySolution"));
+            var projectPlan = new ProjectPlan("MyProject");
+            thePlan.Add(projectPlan);
+
+            thePlan.FileSystem.WriteStringToFile("foo.txt", "some text");
+            projectPlan.Add(new CopyFileToProject("foo.txt", "foo.txt"));
+
+            thePlan.Execute();
+
+            var project = CsProjFile.LoadFrom("copy-file-to-project".AppendPath("src", "MyProject", "MyProject.csproj"));
+            project.Find<Content>("foo.txt").ShouldNotBeNull();
+        }
+
+        [Test]
         public void applies_substitutions   ()
         {
             thePlan = TemplatePlan.CreateClean("copy-file-to-project");
