@@ -76,6 +76,7 @@
     <Compile Include="GlobalSectionTester.cs" />
     <Compile Include="IntegrationTester.cs" />
     <Compile Include="MSBuildProjectTester.cs" />
+    <Compile Include="NoneTester.cs" />
     <Compile Include="ProjectReferenceTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolutionTester.cs" />

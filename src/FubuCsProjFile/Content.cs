@@ -16,6 +16,11 @@ namespace FubuCsProjFile
             CopyToOutputDirectory = ContentCopy.Never;
         }
 
+        protected Content(string buildAction, string include) : base(buildAction, include)
+        {
+            CopyToOutputDirectory = ContentCopy.Never;
+        }
+
         public ContentCopy CopyToOutputDirectory { get; set; }
 
         internal override MSBuildItem Configure(MSBuildItemGroup @group)

@@ -7,7 +7,7 @@ namespace FubuCsProjFile
 
     public abstract class ProjectItem
     {
-        private readonly string _name;
+        private string _name;
         private string _include;
 
         protected ProjectItem(string name)
@@ -24,6 +24,7 @@ namespace FubuCsProjFile
         public string Name
         {
             get { return _name; }
+            protected set { _name = value; }
         }
 
         public string Include
