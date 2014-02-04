@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace FubuCsProjFile
 {
-    
+
 
     public abstract class ProjectItem
     {
@@ -33,6 +33,8 @@ namespace FubuCsProjFile
             set { _include = value.Replace('/', '\\'); }
         }
 
+        protected MSBuildItem BuildItem { get; set; }
+
         internal bool Matches(MSBuildItem item)
         {
             return item.Name == Name && item.Include == Include;
@@ -43,12 +45,19 @@ namespace FubuCsProjFile
             var item = @group.Items.FirstOrDefault(Matches)
                        ?? @group.AddNewItem(Name, Include);
 
+            this.BuildItem = item;
             return item;
         }
 
         internal virtual void Read(MSBuildItem item)
         {
+            this.BuildItem = item;
             Include = item.Include;
+        }
+
+        internal virtual void Save()
+        {
+            this.BuildItem.Include = this.Include;
         }
 
         protected bool Equals(ProjectItem other)
@@ -61,14 +70,14 @@ namespace FubuCsProjFile
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((ProjectItem) obj);
+            return Equals((ProjectItem)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_name != null ? _name.GetHashCode() : 0)*397) ^ (Include != null ? Include.GetHashCode() : 0);
+                return ((_name != null ? _name.GetHashCode() : 0) * 397) ^ (Include != null ? Include.GetHashCode() : 0);
             }
         }
 

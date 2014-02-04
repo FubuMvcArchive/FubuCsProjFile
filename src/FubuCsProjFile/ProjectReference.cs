@@ -32,9 +32,7 @@ namespace FubuCsProjFile
         {
             var item = base.Configure(@group);
 
-            item.SetMetadata("Project", "{{{0}}}".ToFormat(ProjectGuid));
-            if (ProjectName != null) item.SetMetadata("Name", ProjectName);
-            
+            this.UpdateMetadata();
 
             return item;
         }
@@ -46,6 +44,21 @@ namespace FubuCsProjFile
             ProjectName = item.GetMetadata("Name");
             var raw = item.GetMetadata("Project").TrimStart('{').TrimEnd('}');
             ProjectGuid = Guid.Parse(raw);
+        }
+
+        internal override void Save()
+        {
+            base.Save();
+            this.UpdateMetadata();
+        }
+
+        private void UpdateMetadata()
+        {
+            this.BuildItem.SetMetadata("Project", "{{{0}}}".ToFormat(ProjectGuid));
+            if (ProjectName != null)
+            {
+                this.BuildItem.SetMetadata("Name", ProjectName);
+            }
         }
     }
 }

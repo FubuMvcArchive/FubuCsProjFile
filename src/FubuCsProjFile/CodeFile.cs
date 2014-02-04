@@ -20,10 +20,7 @@ namespace FubuCsProjFile
         internal override MSBuildItem Configure(MSBuildItemGroup @group)
         {
             var item = base.Configure(@group);
-            if (Link.IsNotEmpty())
-            {
-                item.SetMetadata(LinkAtt, Link);
-            }
+            this.UpdateMetadata();
 
             return item;
         }
@@ -34,6 +31,20 @@ namespace FubuCsProjFile
 
 
             Link = item.HasMetadata(LinkAtt) ? item.GetMetadata(LinkAtt) : null;
+        }
+
+        internal override void Save()
+        {
+            base.Save();
+            this.UpdateMetadata();
+        }
+
+        private void UpdateMetadata()
+        {
+            if (Link.IsNotEmpty())
+            {
+                this.BuildItem.SetMetadata(LinkAtt, Link);
+            }
         }
     }
 }

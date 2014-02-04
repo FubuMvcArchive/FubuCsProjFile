@@ -27,18 +27,9 @@ namespace FubuCsProjFile
         {
             var item = base.Configure(@group);
 
-            switch (CopyToOutputDirectory)
-            {
-                case ContentCopy.Always:
-                    item.SetMetadata(CopyToOutputDirectoryAtt, "Always");
-                    break;
+            this.UpdateMetadata();
 
-                case ContentCopy.IfNewer:
-                    item.SetMetadata(CopyToOutputDirectoryAtt, "PreserveNewest");
-                    break;
-            }
-
-            return base.Configure(@group);
+            return item;
         }
 
         internal override void Read(MSBuildItem item)
@@ -61,6 +52,26 @@ namespace FubuCsProjFile
 
                 case "PreserveNewest":
                     CopyToOutputDirectory = ContentCopy.IfNewer;
+                    break;
+            }
+        }
+
+        internal override void Save()
+        {
+            base.Save();
+            this.UpdateMetadata();
+        }
+
+        private void UpdateMetadata()
+        {
+            switch (CopyToOutputDirectory)
+            {
+                case ContentCopy.Always:
+                    this.BuildItem.SetMetadata(CopyToOutputDirectoryAtt, "Always");
+                    break;
+
+                case ContentCopy.IfNewer:
+                    this.BuildItem.SetMetadata(CopyToOutputDirectoryAtt, "PreserveNewest");
                     break;
             }
         }

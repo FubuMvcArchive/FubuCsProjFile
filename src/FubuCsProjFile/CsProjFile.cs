@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Xml;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
 using System.Linq;
@@ -26,6 +28,7 @@ namespace FubuCsProjFile
 
         private readonly string _fileName;
         private readonly MSBuildProject _project;
+        private readonly HashSet<ProjectItem> _projectItemCache = new HashSet<ProjectItem>();
         public static readonly Guid ClassLibraryType = Guid.Parse("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC");
 
         public CsProjFile(string fileName) : this(fileName, MSBuildProject.LoadFrom(fileName))
@@ -98,6 +101,15 @@ namespace FubuCsProjFile
             item.Configure(group);
         }
 
+        public T Add<T>(string include) where T : ProjectItem, new()
+        {
+            var item = new T {Include = include};
+            _projectItemCache.Add(item);
+            Add(item);
+
+            return item;
+        }
+        
         public IEnumerable<T> All<T>() where T : ProjectItem, new()
         {
             var name = new T().Name;
@@ -105,18 +117,11 @@ namespace FubuCsProjFile
             return _project.GetAllItems(name).OrderBy(x => x.Include)
                            .Select(item => {
                                var projectItem = new T();
+                               _projectItemCache.Add(projectItem);
                                projectItem.Read(item);
 
                                return projectItem;
                            });
-        }
-
-        public T Add<T>(string include) where T : ProjectItem, new()
-        {
-            var item = new T {Include = include};
-            Add(item);
-
-            return item;
         }
 
         /// <summary>
@@ -209,6 +214,11 @@ namespace FubuCsProjFile
 
         public void Save(string file)
         {
+            foreach (var item in this._projectItemCache)
+            {
+                item.Save();
+            }
+
             _project.Save(file);
         }
 
@@ -258,6 +268,12 @@ namespace FubuCsProjFile
         public void Remove<T>(string include) where T : ProjectItem, new()
         {
             var name = new T().Name;
+            var cachedItem = _projectItemCache.FirstOrDefault(x => x.Include == include);
+
+            if (cachedItem != null)
+            {
+                _projectItemCache.Remove(cachedItem);
+            }
 
             var element = _project.GetAllItems(name).FirstOrDefault(x => x.Include == include);
             if (element != null)
@@ -268,6 +284,8 @@ namespace FubuCsProjFile
 
         public void Remove<T>(T item) where T : ProjectItem, new()
         {
+            _projectItemCache.Remove(item);
+                
             var element = _project.GetAllItems(item.Name).FirstOrDefault(x => x.Include == item.Include);
             if (element != null)
             {

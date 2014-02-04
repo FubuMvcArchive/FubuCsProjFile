@@ -270,6 +270,91 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void can_read_then_save_a_change_to_the_include_attribute()
+        {
+            var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+
+            var contentFile = project.Find<Content>(@"content\scripts\json2.js");
+            contentFile.CopyToOutputDirectory.ShouldEqual(ContentCopy.Never);
+
+            // modify
+            contentFile.Include = @"content\scripts\json3.js";            
+            project.Save("MyProj.csproj");
+
+            project = CsProjFile.LoadFrom("MyProj.csproj");
+            project.Find<Content>(@"content\scripts\json3.js").ShouldNotBeNull();
+        }
+
+        [Test]
+        public void can_read_then_change_and_save_a_reference()
+        {
+            var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
+
+            var reference = project.Find<AssemblyReference>("Rhino.Mocks");
+            reference.HintPath.ShouldEqual(@"..\packages\RhinoMocks\lib\net\Rhino.Mocks.dll");
+
+            // modify
+            reference.HintPath = @"..\Modified\RhinoMocks\lib\net\Rhino.Mocks.dll";
+            project.Save("MyProj.csproj");
+
+            project = CsProjFile.LoadFrom("MyProj.csproj");
+            project.Find<AssemblyReference>("Rhino.Mocks").HintPath.ShouldEqual(@"..\Modified\RhinoMocks\lib\net\Rhino.Mocks.dll");
+        }
+
+        [Test]
+        public void can_read_then_change_and_save_a_code_file()
+        {
+            var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+
+            var codeFile = project.Find<CodeFile>(@"Simple\SimpleEndpoint.cs");
+            codeFile.Link.ShouldBeNull();
+
+            // modify
+            codeFile.Link = "SimpleEndpoint.cs";
+            project.Save("MyProj.csproj");
+
+            project = CsProjFile.LoadFrom("MyProj.csproj");
+            project.Find<CodeFile>(@"Simple\SimpleEndpoint.cs").Link.ShouldEqual(@"SimpleEndpoint.cs");
+        }
+
+        [Test]
+        public void can_read_then_change_and_save_a_content_item()
+        {
+            var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+
+            var contentFile = project.Find<Content>(@"content\scripts\json2.js");
+            contentFile.CopyToOutputDirectory.ShouldEqual(ContentCopy.Never);
+
+            // modify
+            contentFile.CopyToOutputDirectory = ContentCopy.Always;            
+            project.Save("MyProj.csproj");
+
+            project = CsProjFile.LoadFrom("MyProj.csproj");
+            project.Find<Content>(@"content\scripts\json2.js").CopyToOutputDirectory.ShouldEqual(ContentCopy.Always);
+        }
+
+        [Test]
+        public void can_read_then_change_and_save_a_projecet_reference_item()
+        {
+            var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+
+            var projectReference = project.Find<ProjectReference>(@"..\FubuMVC.SlickGrid\FubuMVC.SlickGrid.csproj");
+            projectReference.ProjectName.ShouldEqual("FubuMVC.SlickGrid");
+            projectReference.ProjectGuid.ShouldEqual(new Guid("{A67A0CE1-E4C2-45FC-9019-829D434B2CC4}"));
+
+            // modify
+            var newProjectGuid = Guid.NewGuid();
+            projectReference.ProjectName = "Bob";            
+            projectReference.ProjectGuid= newProjectGuid;            
+            project.Save("MyProj.csproj");
+
+            project = CsProjFile.LoadFrom("MyProj.csproj");
+            projectReference = project.Find<ProjectReference>(@"..\FubuMVC.SlickGrid\FubuMVC.SlickGrid.csproj");
+            projectReference.ProjectName.ShouldEqual("Bob");
+            projectReference.ProjectGuid.ShouldEqual(newProjectGuid);
+        }
+
+        [Test]
         public void can_write_system_assemblies()
         {
             var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
