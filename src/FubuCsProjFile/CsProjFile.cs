@@ -186,6 +186,11 @@ namespace FubuCsProjFile
             get { return Path.GetFileNameWithoutExtension(_fileName); }
         }
 
+        public MSBuildProject BuildProject
+        {
+            get { return this._project; }
+        }
+
         public string FileName
         {
             get { return _fileName; }
