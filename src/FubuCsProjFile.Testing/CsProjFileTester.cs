@@ -302,6 +302,22 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void can_read_then_change_a_reference_and_retrieve_the_modified_item_again()
+        {
+            var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
+
+            var reference = project.Find<AssemblyReference>("Rhino.Mocks");
+            reference.HintPath.ShouldEqual(@"..\packages\RhinoMocks\lib\net\Rhino.Mocks.dll");
+
+            // modify
+            reference.HintPath = @"..\Modified\RhinoMocks\lib\net\Rhino.Mocks.dll";
+
+            // retrieve again
+            reference = project.Find<AssemblyReference>("Rhino.Mocks");
+            reference.HintPath.ShouldEqual(@"..\Modified\RhinoMocks\lib\net\Rhino.Mocks.dll");
+        }
+
+        [Test]
         public void can_read_then_change_and_save_a_code_file()
         {
             var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
