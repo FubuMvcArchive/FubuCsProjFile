@@ -54,12 +54,12 @@ namespace FubuCsProjFile.MSBuild
         private Dictionary<string, MSBuildItemGroup> bestGroups;
         private ByteOrderMark bom;
         public XmlDocument doc;
-
         private bool endsWithEmptyLine;
         private string newLine = Environment.NewLine;
 
         public MSBuildProject()
         {
+            Settings = MSBuildProjectSettings.DefaultSettings;
             doc = new XmlDocument();
             doc.PreserveWhitespace = false;
             doc.AppendChild(doc.CreateElement(null, "Project", Schema));
@@ -134,6 +134,8 @@ namespace FubuCsProjFile.MSBuild
             }
         }
 
+        public MSBuildProjectSettings Settings { get; set; }
+
         public void Load(string file)
         {
             using (FileStream fs = File.OpenRead(file))
@@ -200,8 +202,13 @@ namespace FubuCsProjFile.MSBuild
             // StringWriter.Encoding always returns UTF16. We need it to return UTF8, so the
             // XmlDocument will write the UTF8 header.
 
-            ItemGroups.Each(group => {
-                var elements = group.Items.Select(x => x.Element).OrderBy(x => x.GetAttribute("Include")).ToArray();
+            ItemGroups.Each(group =>
+            {
+                XmlElement[] elements = null;
+                elements = this.Settings.MaintainOriginalItemOrder ? 
+                    @group.Items.Select(x => x.Element).ToArray() :
+                    @group.Items.Select(x => x.Element).OrderBy(x => x.GetAttribute("Include")).ToArray();
+                             
                 group.Element.RemoveAll();
 
                 elements.Each(x => group.Element.AppendChild(x));

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using FubuCore;
+using FubuCsProjFile.MSBuild;
 using NUnit.Framework;
 using System.Linq;
 using FubuTestingSupport;
@@ -331,6 +333,35 @@ namespace FubuCsProjFile.Testing
 
             project = CsProjFile.LoadFrom("MyProj.csproj");
             project.Find<CodeFile>(@"Simple\SimpleEndpoint.cs").Link.ShouldEqual(@"SimpleEndpoint.cs");
+        }
+
+        [Test]
+        public void can_read_then_save_maintains_orginal_node_order()
+        {
+            // Can be important to maintain orginal node order to minimize merge conflicts checking in
+            // changes to a proj file
+            var origProj = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+
+            origProj.BuildProject.Settings = MSBuildProjectSettings.MinimizeChanges;
+            origProj.Save("MyProj.csproj");
+
+            origProj = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+            var newProj = CsProjFile.LoadFrom("MyProj.csproj");
+
+            for (int i = 0; i < origProj.BuildProject.ItemGroups.Count(); i++)
+            {
+                var origGroup = origProj.BuildProject.ItemGroups.ElementAt(i);
+                var newGroup = newProj.BuildProject.ItemGroups.ElementAt(i);
+
+                for (int j = 0; j < origGroup.Items.Count(); j++)
+                {
+                    var origItem = origGroup.Items.ElementAt(j);
+                    var newItem = newGroup.Items.ElementAt(j);
+
+                    origItem.Include.ShouldEqual(newItem.Include);
+                }
+            }
+            
         }
 
         [Test]
