@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Xml;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
 using System.Linq;
@@ -26,6 +28,7 @@ namespace FubuCsProjFile
 
         private readonly string _fileName;
         private readonly MSBuildProject _project;
+        private readonly Dictionary<string, ProjectItem> _projectItemCache = new Dictionary<string, ProjectItem>();
         public static readonly Guid ClassLibraryType = Guid.Parse("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC");
 
         public CsProjFile(string fileName) : this(fileName, MSBuildProject.LoadFrom(fileName))
@@ -98,25 +101,38 @@ namespace FubuCsProjFile
             item.Configure(group);
         }
 
+        public T Add<T>(string include) where T : ProjectItem, new()
+        {
+            var item = new T {Include = include};
+
+            _projectItemCache.Remove(item.Include);            
+            _projectItemCache.Add(include, item);
+            Add(item);
+
+            return item;
+        }
+        
         public IEnumerable<T> All<T>() where T : ProjectItem, new()
         {
             var name = new T().Name;
 
             return _project.GetAllItems(name).OrderBy(x => x.Include)
-                           .Select(item => {
-                               var projectItem = new T();
-                               projectItem.Read(item);
+                           .Select(item =>
+                           {
+                               T projectItem;
+                               if (_projectItemCache.ContainsKey(item.Include))
+                               {
+                                   projectItem = (T) _projectItemCache[item.Include];
+                               }
+                               else
+                               {
+                                   projectItem = new T();
+                                   projectItem.Read(item);                               
+                                   _projectItemCache.Add(item.Include, projectItem);
+                               }
 
                                return projectItem;
                            });
-        }
-
-        public T Add<T>(string include) where T : ProjectItem, new()
-        {
-            var item = new T {Include = include};
-            Add(item);
-
-            return item;
         }
 
         /// <summary>
@@ -170,6 +186,11 @@ namespace FubuCsProjFile
             get { return Path.GetFileNameWithoutExtension(_fileName); }
         }
 
+        public MSBuildProject BuildProject
+        {
+            get { return this._project; }
+        }
+
         public string FileName
         {
             get { return _fileName; }
@@ -209,6 +230,11 @@ namespace FubuCsProjFile
 
         public void Save(string file)
         {
+            foreach (var item in this._projectItemCache)
+            {
+                item.Value.Save();
+            }
+
             _project.Save(file);
         }
 
@@ -258,7 +284,9 @@ namespace FubuCsProjFile
         public void Remove<T>(string include) where T : ProjectItem, new()
         {
             var name = new T().Name;
-
+            
+            _projectItemCache.Remove(include);
+            
             var element = _project.GetAllItems(name).FirstOrDefault(x => x.Include == include);
             if (element != null)
             {
@@ -268,6 +296,8 @@ namespace FubuCsProjFile
 
         public void Remove<T>(T item) where T : ProjectItem, new()
         {
+            _projectItemCache.Remove(item.Include);
+                
             var element = _project.GetAllItems(item.Name).FirstOrDefault(x => x.Include == item.Include);
             if (element != null)
             {

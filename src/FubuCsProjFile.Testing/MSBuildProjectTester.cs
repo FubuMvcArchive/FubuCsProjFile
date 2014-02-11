@@ -38,5 +38,21 @@ namespace FubuCsProjFile.Testing
             file.Find<AssemblyReference>("System.Data")
                 .ShouldNotBeNull(); // this is in the csproj template in the testing project, but not the embedded one
         }
+
+        [Test]
+        public void saving_an_unmodified_project_with_minimize_changes_settings_does_not_update_original_project_file()
+        {
+            const string fileName = "SlickGridHarness.csproj";
+            File.Copy("SlickGridHarness.csproj.fake", "SlickGridHarness.csproj", true);
+            MSBuildProject.LoadFrom(fileName).Save(fileName);
+
+            var lastWriteTime = File.GetLastWriteTimeUtc(fileName);
+            var project = MSBuildProject.LoadFrom(fileName);
+
+            project.Settings = MSBuildProjectSettings.MinimizeChanges;
+            project.Save(fileName);
+
+            lastWriteTime.ShouldEqual(File.GetLastWriteTimeUtc(fileName));
+        }
     }
 }

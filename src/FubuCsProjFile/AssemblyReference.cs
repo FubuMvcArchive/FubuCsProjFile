@@ -31,39 +31,16 @@ namespace FubuCsProjFile
         internal override MSBuildItem Configure(MSBuildItemGroup @group)
         {
             var item = base.Configure(@group);
-            if (HintPath.IsNotEmpty())
-            {
-                item.SetMetadata(HintPathAtt, HintPath);
-            }
-
-            if (FusionName.IsNotEmpty())
-            {
-                item.SetMetadata("FusionName", FusionName);
-            }
-
-            if (Aliases.IsNotEmpty())
-            {
-                item.SetMetadata("Aliases", Aliases);
-            }
-
-            if (DisplayName.IsNotEmpty())
-            {
-                item.SetMetadata("Name", DisplayName);
-            }
-
-            if (SpecificVersion.HasValue)
-            {
-                item.SetMetadata("SpecificVersion", SpecificVersion.Value.ToString().ToLower());
-            }
-
-            if (Private.HasValue)
-            {
-                item.SetMetadata("Private", Private.Value.ToString().ToLower());
-            }
+            this.UpdateMetaData();
 
             return item;
         }
 
+        internal override void Save()
+        {
+            base.Save();
+            this.UpdateMetaData();
+        }
 
         internal override void Read(MSBuildItem item)
         {
@@ -83,6 +60,39 @@ namespace FubuCsProjFile
             if (item.HasMetadata("Private"))
             {
                 Private = bool.Parse(item.GetMetadata("Private"));
+            }
+        }
+
+        private void UpdateMetaData()
+        {
+            if (HintPath.IsNotEmpty())
+            {
+                this.BuildItem.SetMetadata(HintPathAtt, HintPath);
+            }
+
+            if (FusionName.IsNotEmpty())
+            {
+                this.BuildItem.SetMetadata("FusionName", FusionName);
+            }
+
+            if (Aliases.IsNotEmpty())
+            {
+                this.BuildItem.SetMetadata("Aliases", Aliases);
+            }
+
+            if (DisplayName.IsNotEmpty())
+            {
+                this.BuildItem.SetMetadata("Name", DisplayName);
+            }
+
+            if (SpecificVersion.HasValue)
+            {
+                this.BuildItem.SetMetadata("SpecificVersion", SpecificVersion.Value.ToString().ToLower());
+            }
+
+            if (Private.HasValue)
+            {
+                this.BuildItem.SetMetadata("Private", Private.Value.ToString().ToLower());
             }
         }
     }
