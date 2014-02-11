@@ -8,6 +8,12 @@
         /// </summary>
         public bool MaintainOriginalItemOrder { get; set; }
 
+        /// <summary>
+        /// When calls are made to <see cref="CsProjFile.Save()"/>, only
+        /// save the file if the project differs from the one on disk.
+        /// </summary>
+        public bool OnlySaveIfChanged { get; set; }
+
         public static MSBuildProjectSettings DefaultSettings
         {
             get
@@ -25,7 +31,8 @@
             {
                 return new MSBuildProjectSettings
                 {
-                    MaintainOriginalItemOrder = true
+                    MaintainOriginalItemOrder = true,
+                    OnlySaveIfChanged = true
                 };
             }
         }

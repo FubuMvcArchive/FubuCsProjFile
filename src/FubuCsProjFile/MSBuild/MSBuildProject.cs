@@ -202,18 +202,19 @@ namespace FubuCsProjFile.MSBuild
             // StringWriter.Encoding always returns UTF16. We need it to return UTF8, so the
             // XmlDocument will write the UTF8 header.
 
-            ItemGroups.Each(group =>
+            if (!this.Settings.MaintainOriginalItemOrder)
             {
-                XmlElement[] elements = null;
-                elements = this.Settings.MaintainOriginalItemOrder ? 
-                    @group.Items.Select(x => x.Element).ToArray() :
-                    @group.Items.Select(x => x.Element).OrderBy(x => x.GetAttribute("Include")).ToArray();
+                ItemGroups.Each(group =>
+                {
+                    XmlElement[] elements = null;
+                    elements =  @group.Items.Select(x => x.Element).OrderBy(x => x.GetAttribute("Include")).ToArray();
                              
-                group.Element.RemoveAll();
+                    group.Element.RemoveAll();
 
-                elements.Each(x => group.Element.AppendChild(x));
+                    elements.Each(x => group.Element.AppendChild(x));
 
-            });
+                });
+            }
 
 
             var sw = new ProjectWriter(bom);
@@ -224,7 +225,11 @@ namespace FubuCsProjFile.MSBuild
             if (endsWithEmptyLine && !content.EndsWith(newLine))
                 content += newLine;
 
-            new FileSystem().WriteStringToFile(fileName, content);
+            var shouldSave =  !this.Settings.OnlySaveIfChanged ||
+                             (File.Exists(fileName) && !File.ReadAllText(fileName).Equals(content));
+
+            if (shouldSave)
+                new FileSystem().WriteStringToFile(fileName, content);
         }
 
         public void AddNewImport(string name, string condition)
