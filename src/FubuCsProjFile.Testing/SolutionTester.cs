@@ -129,6 +129,17 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
+        public void add_an_existing_project_to_a_new_solution()
+        {
+            var solution = Solution.CreateNew(@"solutions\sillydir", "newsolution");
+            File.Copy("FubuMVC.SlickGrid.Docs.csproj.fake", "FubuMVC.SlickGrid.Docs.csproj", true);
+
+            solution.AddProject(CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj"));
+
+            solution.FindProject("FubuMVC.SlickGrid.Docs").ShouldNotBeNull();
+        }
+
+        [Test]
         public void trying_to_add_a_project_from_template_that_already_exists_should_throw()
         {
             var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
