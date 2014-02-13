@@ -103,6 +103,11 @@ namespace FubuCsProjFile.MSBuild
             return ItemGroups.FirstOrDefault(x => x.Items.Any(itemTest));
         }
 
+        public MSBuildImport FindImport(Func<MSBuildImport, bool> itemTest)
+        {
+            return this.ImportsItems.FirstOrDefault(itemTest);
+        }
+
         public List<string> Imports
         {
             get
@@ -131,6 +136,15 @@ namespace FubuCsProjFile.MSBuild
             {
                 foreach (XmlElement elem in doc.DocumentElement.SelectNodes("tns:ItemGroup", XmlNamespaceManager))
                     yield return GetItemGroup(elem);
+            }
+        }
+
+        public IEnumerable<MSBuildImport> ImportsItems
+        {
+            get
+            {
+                foreach (XmlElement elem in doc.DocumentElement.SelectNodes("tns:Import", XmlNamespaceManager))
+                    yield return GetImport(elem);
             }
         }
 
@@ -266,7 +280,7 @@ namespace FubuCsProjFile.MSBuild
             }
             return res.GroupCount > 0 ? res : null;
         }
-
+        
         public MSBuildPropertyGroup AddNewPropertyGroup(bool insertAtEnd)
         {
             XmlElement elem = doc.CreateElement(null, "PropertyGroup", Schema);
@@ -293,6 +307,14 @@ namespace FubuCsProjFile.MSBuild
                 else
                     doc.DocumentElement.AppendChild(elem);
             }
+
+            return GetGroup(elem);
+        }
+
+        public MSBuildPropertyGroup AddNewPropertyGroup(MSBuildObject insertAfter)
+        {
+            XmlElement elem = doc.CreateElement(null, "PropertyGroup", Schema);
+            doc.DocumentElement.InsertAfter(elem, insertAfter.Element);
 
             return GetGroup(elem);
         }
@@ -441,6 +463,16 @@ namespace FubuCsProjFile.MSBuild
             return it;
         }
 
+        private MSBuildImport GetImport(XmlElement elem)
+        {
+            MSBuildObject ob;
+            if (elemCache.TryGetValue(elem, out ob))
+                return (MSBuildImport)ob;
+            var it = new MSBuildImport(elem);
+            elemCache[elem] = it;
+            return it;
+        }
+
         public void RemoveGroup(MSBuildPropertyGroup grp)
         {
             elemCache.Remove(grp.Element);
@@ -471,6 +503,6 @@ namespace FubuCsProjFile.MSBuild
             project.Load(fileName);
 
             return project;
-        }
+        }       
     }
 }
