@@ -274,6 +274,23 @@ namespace FubuCsProjFile
         }
 
         /// <summary>
+        /// Adds an existing project
+        /// </summary>
+        /// <param name="project"></param>
+        public void AddProject(CsProjFile project)
+        {
+            var existing = FindProject(project.ProjectName);
+            if (existing != null)
+            {
+                return;
+            }
+            
+            var reference = new SolutionProject(project, this.ParentDirectory);
+            this._projects.Add(reference);
+
+        }
+
+        /// <summary>
         /// Adds a new project based on the supplied template file
         /// </summary>
         /// <param name="projectName"></param>
