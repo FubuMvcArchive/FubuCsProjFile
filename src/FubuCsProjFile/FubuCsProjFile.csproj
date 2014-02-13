@@ -53,6 +53,7 @@
     <Compile Include="CsProjFile.cs" />
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="FrameworkNameDetector.cs" />
+    <Compile Include="MSBuild\MSBuildImport.cs" />
     <Compile Include="MSBuild\MSBuildProjectSettings.cs" />
     <Compile Include="None.cs" />
     <Compile Include="ProjectReference.cs" />
