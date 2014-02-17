@@ -87,7 +87,7 @@ namespace FubuCsProjFile
 
             if (SpecificVersion.HasValue)
             {
-                this.BuildItem.SetMetadata("SpecificVersion", SpecificVersion.Value.ToString().ToLower());
+                this.BuildItem.SetMetadata("SpecificVersion", SpecificVersion.Value.ToString());
             }
 
             if (Private.HasValue)

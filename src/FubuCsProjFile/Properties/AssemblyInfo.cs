@@ -7,3 +7,4 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("FubuCsProjFile")]
 
+[assembly: InternalsVisibleTo("FubuCsProjFile.Testing")]
