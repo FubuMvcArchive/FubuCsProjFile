@@ -225,7 +225,7 @@ namespace FubuCsProjFile
 
         public void Save()
         {
-            _project.Save(_fileName);
+            this.Save(_fileName);
         }
 
         public void Save(string file)
