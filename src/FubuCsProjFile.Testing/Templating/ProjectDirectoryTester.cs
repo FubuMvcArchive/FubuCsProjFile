@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using FubuCore;
+using FubuCsProjFile.ProjectFiles.CsProj;
 using FubuCsProjFile.Templating;
 using FubuCsProjFile.Templating.Graph;
 using FubuCsProjFile.Templating.Runtime;

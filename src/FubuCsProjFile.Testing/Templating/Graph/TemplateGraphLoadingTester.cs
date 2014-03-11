@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FubuCore;
+using FubuCsProjFile.ProjectFiles.CsProj;
 using FubuCsProjFile.Templating.Graph;
 using FubuTestingSupport;
 using NUnit.Framework;

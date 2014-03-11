@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Linq;
 using System.Runtime.Versioning;
-using System.Xml;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
-using System.Linq;
-using FubuCsProjFile.ProjectFiles;
 
-namespace FubuCsProjFile
+namespace FubuCsProjFile.ProjectFiles.CsProj
 {
     public static class DotNetVersion
     {

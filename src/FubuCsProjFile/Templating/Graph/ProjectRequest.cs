@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FubuCsProjFile.ProjectFiles.CsProj;
 
 namespace FubuCsProjFile.Templating.Graph
 {

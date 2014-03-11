@@ -36,7 +36,7 @@ namespace FubuCsProjFile.Templating.Runtime
             _substitutions.Set(RAKE_TASK_PREFIX, shortName.ToLower());
             
 
-            DotNetVersion = FubuCsProjFile.DotNetVersion.V40;
+            DotNetVersion = ProjectFiles.CsProj.DotNetVersion.V40;
         }
 
         public Substitutions Substitutions

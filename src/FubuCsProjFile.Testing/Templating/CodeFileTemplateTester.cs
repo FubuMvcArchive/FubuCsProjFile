@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using FubuCore;
+using FubuCsProjFile.ProjectFiles.CsProj;
 using FubuCsProjFile.Templating;
 using FubuCsProjFile.Templating.Runtime;
 using NUnit.Framework;

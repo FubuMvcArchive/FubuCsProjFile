@@ -1,4 +1,5 @@
 using FubuCore;
+using FubuCsProjFile.ProjectFiles.CsProj;
 
 namespace FubuCsProjFile.Templating.Runtime
 {

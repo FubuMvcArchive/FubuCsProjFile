@@ -1,4 +1,5 @@
-﻿using FubuCsProjFile.Templating.Graph;
+﻿using FubuCsProjFile.ProjectFiles.CsProj;
+using FubuCsProjFile.Templating.Graph;
 using FubuTestingSupport;
 using NUnit.Framework;
 

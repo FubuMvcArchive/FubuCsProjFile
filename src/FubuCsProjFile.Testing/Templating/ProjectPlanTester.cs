@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using FubuCsProjFile.ProjectFiles.CsProj;
 using FubuCsProjFile.Templating;
 using FubuCsProjFile.Templating.Planning;
 using FubuCsProjFile.Templating.Runtime;

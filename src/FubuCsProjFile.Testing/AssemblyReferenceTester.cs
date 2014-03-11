@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using System.Xml;
 using FubuCore;
-using FubuCore.Configuration;
 using FubuCsProjFile.MSBuild;
+using FubuCsProjFile.ProjectFiles.CsProj;
 using FubuTestingSupport;
 using NUnit.Framework;
-using StructureMap.Configuration;
 
 namespace FubuCsProjFile.Testing
 {

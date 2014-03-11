@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using FubuCore;
+using FubuCsProjFile.ProjectFiles.CsProj;
 
 namespace FubuCsProjFile.Templating.Runtime
 {

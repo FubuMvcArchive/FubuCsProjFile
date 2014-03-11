@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
+using FubuCsProjFile.ProjectFiles.CsProj;
 using NUnit.Framework;
 using System.Linq;
 using FubuTestingSupport;

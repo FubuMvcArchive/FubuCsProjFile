@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using FubuCsProjFile.ProjectFiles.CsProj;
 using FubuCsProjFile.Templating;
 using FubuCsProjFile.Templating.Graph;
 using FubuCsProjFile.Templating.Planning;

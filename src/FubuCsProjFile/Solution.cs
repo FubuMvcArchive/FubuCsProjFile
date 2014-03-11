@@ -6,6 +6,7 @@ using FubuCore;
 using System.Linq;
 using FubuCore.Util;
 using FubuCsProjFile.MSBuild;
+using FubuCsProjFile.ProjectFiles.CsProj;
 
 namespace FubuCsProjFile
 {

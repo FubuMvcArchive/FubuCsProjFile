@@ -50,7 +50,7 @@
     <Compile Include="BuildConfiguration.cs" />
     <Compile Include="CodeFile.cs" />
     <Compile Include="Content.cs" />
-    <Compile Include="CsProjFile.cs" />
+    <Compile Include="ProjectFiles\CsProj\CsProjFile.cs" />
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="FrameworkNameDetector.cs" />
     <Compile Include="MSBuild\MSBuildImport.cs" />

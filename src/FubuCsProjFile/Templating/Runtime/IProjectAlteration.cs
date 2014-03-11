@@ -1,4 +1,6 @@
-﻿namespace FubuCsProjFile.Templating.Runtime
+﻿using FubuCsProjFile.ProjectFiles.CsProj;
+
+namespace FubuCsProjFile.Templating.Runtime
 {
     public interface IProjectAlteration
     {

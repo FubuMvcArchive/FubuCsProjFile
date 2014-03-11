@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using FubuCore;
+using FubuCsProjFile.ProjectFiles.CsProj;
 using NUnit.Framework;
 using FubuTestingSupport;
 using System.Collections.Generic;

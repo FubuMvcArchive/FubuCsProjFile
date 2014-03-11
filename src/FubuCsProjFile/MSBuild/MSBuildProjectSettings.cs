@@ -1,4 +1,6 @@
-﻿namespace FubuCsProjFile.MSBuild
+﻿using FubuCsProjFile.ProjectFiles.CsProj;
+
+namespace FubuCsProjFile.MSBuild
 {
     public class MSBuildProjectSettings
     {

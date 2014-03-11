@@ -1,4 +1,5 @@
 ﻿using System;
+using FubuCsProjFile.ProjectFiles.CsProj;
 using NUnit.Framework;
 using FubuTestingSupport;
 
