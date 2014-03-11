@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
-using FubuCsProjFile.Templating;
 using FubuCsProjFile.Templating.Planning;
 using FubuCsProjFile.Templating.Runtime;
 using NUnit.Framework;
 using FubuCore;
 using FubuTestingSupport;
-using Rhino.Mocks.Constraints;
 
 namespace FubuCsProjFile.Testing.Templating
 {
