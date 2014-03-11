@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.IO;
+using System.Xml;
 using FubuCsProjFile.MSBuild;
 using FubuCore;
 
@@ -27,6 +28,14 @@ namespace FubuCsProjFile
         public bool? SpecificVersion { get; set; }
         public bool? Private { get; set; }
         public string Aliases { get; set; }
+
+        public string AssemblyName
+        {
+            get
+            {
+                return Path.GetFileName(this.HintPath) ?? string.Empty;
+            }
+        }
 
         internal override MSBuildItem Configure(MSBuildItemGroup @group)
         {
