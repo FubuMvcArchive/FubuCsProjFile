@@ -56,8 +56,13 @@
     <Compile Include="MSBuild\MSBuildImport.cs" />
     <Compile Include="MSBuild\MSBuildProjectSettings.cs" />
     <Compile Include="None.cs" />
+    <Compile Include="ProjectFiles\CsProj\CsProjCreator.cs" />
+    <Compile Include="ProjectFiles\IPojectCreatorForType.cs" />
+    <Compile Include="ProjectFiles\IProjectFile.cs" />
+    <Compile Include="ProjectFiles\ProjectCreator.cs" />
     <Compile Include="ProjectReference.cs" />
     <Compile Include="SourceControlInformation.cs" />
+    <Compile Include="ProjectFiles\ProjectTypes.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="GlobalSection.cs" />
     <Compile Include="ProjectItem.cs" />

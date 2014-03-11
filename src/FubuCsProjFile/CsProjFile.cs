@@ -7,6 +7,7 @@ using System.Xml;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
 using System.Linq;
+using FubuCsProjFile.ProjectFiles;
 
 namespace FubuCsProjFile
 {
@@ -16,15 +17,15 @@ namespace FubuCsProjFile
         public static readonly string V45 = "v4.5";
     }
 
-    public class CsProjFile
+    public class CsProjFile : IProjectFile
     {
         /*
              <RootNamespace>MyProject</RootNamespace>
     <AssemblyName>MyProject</AssemblyName>
          */
-        private const string PROJECTGUID = "ProjectGuid";
-        private const string ROOT_NAMESPACE = "RootNamespace";
-        private const string ASSEMBLY_NAME = "AssemblyName";
+        public const string PROJECTGUID = "ProjectGuid";
+        public const string ROOT_NAMESPACE = "RootNamespace";
+        public const string ASSEMBLY_NAME = "AssemblyName";
 
         private readonly string _fileName;
         private readonly MSBuildProject _project;
@@ -141,35 +142,10 @@ namespace FubuCsProjFile
         /// <param name="assemblyName"></param>
         /// <param name="directory"></param>
         /// <returns></returns>
+        [Obsolete("Use FubuCsProj.ProjectFiles.ProjectCreator.CreateAtSolutionDirectory instead")]
         public static CsProjFile CreateAtSolutionDirectory(string assemblyName, string directory)
         {
-            var fileName = directory.AppendPath(assemblyName).AppendPath(assemblyName) + ".csproj";
-            var project = MSBuildProject.Create(assemblyName);
-            return CreateCore(project, fileName);
-        }
-
-        /// <summary>
-        /// Creates a new class library project at the given filename
-        /// and assembly name
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="assemblyName"></param>
-        /// <returns></returns>
-        public static CsProjFile CreateAtLocation(string fileName, string assemblyName)
-        {
-            return CreateCore(MSBuildProject.Create(assemblyName), fileName);
-        }
-
-        private static CsProjFile CreateCore(MSBuildProject project, string fileName)
-        {
-            var group = project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == PROJECTGUID)) ??
-                        project.PropertyGroups.FirstOrDefault() ?? project.AddNewPropertyGroup(true);
-
-            @group.SetPropertyValue(PROJECTGUID, Guid.NewGuid().ToString().ToUpper(), true);
-
-            var file = new CsProjFile(fileName, project);
-            file.AssemblyName = file.RootNamespace = file.ProjectName;
-            return file;
+            return ProjectCreator.CreateAtSolutionDirectory(assemblyName, directory, ProjectType.CsProj) as CsProjFile;
         }
 
         /// <summary>
@@ -181,6 +157,19 @@ namespace FubuCsProjFile
         {
             var project = MSBuildProject.LoadFrom(filename);
             return new CsProjFile(filename, project);
+        }
+
+        /// <summary>
+        /// Creates a new class library project at the given filename
+        /// and assembly name
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="assemblyName"></param>
+        /// <returns></returns>
+        [Obsolete("Use FubuCsProj.ProjectFiles.ProjectCreator.CreateAtLocation instead")]
+        public static CsProjFile CreateAtLocation(string filename, string assemblyName)
+        {
+            return ProjectCreator.CreateAtLocation(filename, assemblyName, ProjectType.CsProj) as CsProjFile;
         }
 
         public string ProjectName
