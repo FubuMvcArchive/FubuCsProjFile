@@ -1,4 +1,5 @@
-﻿using FubuCsProjFile.ProjectFiles.CsProj;
+﻿using FubuCsProjFile.ProjectFiles;
+using FubuCsProjFile.ProjectFiles.CsProj;
 using FubuTestingSupport;
 using NUnit.Framework;
 
@@ -10,7 +11,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void can_add_a_file_with_build_action_none()
         {
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = ProjectCreator.CreateAtSolutionDirectory("MyProj", "myproj", ProjectType.CsProj);
             var content = new None("packages.config");
 
             project.Add(content);

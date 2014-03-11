@@ -4,18 +4,18 @@ using System.IO;
 using FubuCore;
 using System.Linq;
 using FubuCsProjFile.MSBuild;
+using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.ProjectFiles.CsProj;
 
 namespace FubuCsProjFile
 {
     public class SolutionProject
     {
-        public static SolutionProject CreateNewAt(string solutionDirectory, string projectName)
+        public static SolutionProject CreateNewAt(string solutionDirectory, string projectName, ProjectType type)
         {
-            var csProjFile = CsProjFile.CreateAtSolutionDirectory(projectName, solutionDirectory);
+            var csProjFile = ProjectCreator.CreateAtSolutionDirectory(projectName, solutionDirectory, type);
             return new SolutionProject(csProjFile, solutionDirectory);
         }
-
 
         public static readonly string ProjectLineTemplate = "Project(\"{{{0}}}\") = \"{1}\", \"{2}\", \"{{{3}}}\"";
         private readonly Guid _projectType;
@@ -24,18 +24,23 @@ namespace FubuCsProjFile
         private readonly string _relativePath;
 
         private readonly IList<string> _directives = new List<string>();
-        private readonly Lazy<CsProjFile> _project;
+        private readonly Lazy<IProjectFile> _project;
 
-        public SolutionProject(CsProjFile csProjFile, string solutionDirectory)
+        public SolutionProject(IProjectFile projectFile, string solutionDirectory)
         {
-            _project = new Lazy<CsProjFile>(() => csProjFile);
-            _projectName = csProjFile.ProjectName;
-            _relativePath = csProjFile.FileName.PathRelativeTo(solutionDirectory);
-            _projectType = csProjFile.ProjectTypes().LastOrDefault();
-            _projectGuid = csProjFile.ProjectGuid;
+            _project = new Lazy<IProjectFile>(() => projectFile);
+            _projectName = projectFile.ProjectName;
+            _relativePath = projectFile.FileName.PathRelativeTo(solutionDirectory);
+            _projectType = projectFile.ProjectTypes().LastOrDefault();
+            _projectGuid = projectFile.ProjectGuid;
         }
 
-        public SolutionProject(string text, string solutionDirectory)
+        public SolutionProject(string text, string solutionDirectory) : this(text, solutionDirectory, ProjectFiles.ProjectType.CsProj)
+        {
+            
+        }
+
+        public SolutionProject(string text, string solutionDirectory, ProjectType type)
         {
             var parts = text.ToDelimitedArray('=');
             _projectType = Guid.Parse(parts.First().TextBetweenSquiggles());
@@ -46,7 +51,7 @@ namespace FubuCsProjFile
             _relativePath = secondParts.ElementAt(1).TextBetweenQuotes().Replace("\\", "/"); // Windows is forgiving
 
 
-            _project = new Lazy<CsProjFile>(() => {
+            _project = new Lazy<IProjectFile>(() => {
                 var filename = solutionDirectory.AppendPath(_relativePath);
 
                 if (File.Exists(filename))
@@ -56,8 +61,8 @@ namespace FubuCsProjFile
                     return projFile;
                 }
 
-                var project = CsProjFile.CreateAtLocation(filename, _projectName);
-                project.ProjectGuid = _projectGuid;
+                var project = ProjectCreator.CreateAtLocation(filename, _projectName, type);
+                project.As<IInternalProjectFile>().SetProjectGuid(_projectGuid);
 
                 return project;
             });
@@ -116,7 +121,7 @@ namespace FubuCsProjFile
             get { return _relativePath; }
         }
 
-        public CsProjFile Project
+        public IProjectFile Project
         {
             get { return _project.Value; }
         }

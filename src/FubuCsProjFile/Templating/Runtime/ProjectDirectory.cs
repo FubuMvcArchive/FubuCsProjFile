@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using FubuCore;
-using FubuCsProjFile.ProjectFiles.CsProj;
+using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.Templating.Graph;
 
 namespace FubuCsProjFile.Templating.Runtime
@@ -21,7 +21,7 @@ namespace FubuCsProjFile.Templating.Runtime
             get { return _relativePath; }
         }
 
-        public void Alter(CsProjFile file, ProjectPlan plan)
+        public void Alter(IProjectFile file, ProjectPlan plan)
         {
             TemplateLibrary.FileSystem.CreateDirectory(file.ProjectDirectory.AppendPath(_relativePath));
         }

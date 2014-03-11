@@ -1,8 +1,6 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using FubuCore;
-using FubuCsProjFile.ProjectFiles.CsProj;
-using FubuCsProjFile.Templating;
+using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.Templating.Graph;
 using FubuCsProjFile.Templating.Runtime;
 using FubuTestingSupport;
@@ -13,7 +11,7 @@ namespace FubuCsProjFile.Testing.Templating
     [TestFixture]
     public class ProjectDirectoryTester
     {
-        private CsProjFile csProjFile;
+        private IProjectFile csProjFile;
 
         [SetUp]
         public void SetUp()
@@ -21,9 +19,7 @@ namespace FubuCsProjFile.Testing.Templating
             TemplateLibrary.FileSystem.DeleteDirectory("temp-solution");
             TemplateLibrary.FileSystem.CreateDirectory("temp-solution");
 
-            csProjFile = CsProjFile.CreateAtSolutionDirectory("MyProj", "temp-solution");
-        
-        
+            csProjFile = ProjectCreator.CreateAtSolutionDirectory("MyProj", "temp-solution", ProjectType.CsProj);
         }
 
         [Test]

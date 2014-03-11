@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using FubuCore;
+using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.ProjectFiles.CsProj;
 
 namespace FubuCsProjFile.Templating.Runtime
@@ -54,7 +55,7 @@ namespace FubuCsProjFile.Templating.Runtime
 
 
 
-        public void Alter(CsProjFile file, ProjectPlan plan)
+        public void Alter(IProjectFile file, ProjectPlan plan)
         {
             var includePath = plan.ApplySubstitutions(_relativePath);
             var filename = file.FileName.ParentDirectory().AppendPath(includePath);

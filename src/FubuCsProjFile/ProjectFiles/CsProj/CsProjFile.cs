@@ -14,7 +14,7 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         public static readonly string V45 = "v4.5";
     }
 
-    public class CsProjFile : IProjectFile
+    public class CsProjFile : IInternalProjectFile
     {
         /*
              <RootNamespace>MyProject</RootNamespace>
@@ -49,13 +49,6 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
 
                 return raw.IsEmpty() ? Guid.Empty : Guid.Parse(raw.TrimStart('{').TrimEnd('}'));
 
-            }
-            internal set
-            {
-                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == PROJECT_GUID))
-                            ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
-
-                group.SetPropertyValue(PROJECT_GUID, value.ToString().ToUpper(), true);
             }
         }
 
@@ -135,18 +128,6 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         }
 
         /// <summary>
-        /// Creates a new CsProjFile in a folder relative to the solution folder
-        /// </summary>
-        /// <param name="assemblyName"></param>
-        /// <param name="directory"></param>
-        /// <returns></returns>
-        [Obsolete("Use FubuCsProj.ProjectFiles.ProjectCreator.CreateAtSolutionDirectory instead")]
-        public static CsProjFile CreateAtSolutionDirectory(string assemblyName, string directory)
-        {
-            return ProjectCreator.CreateAtSolutionDirectory(assemblyName, directory, ProjectType.CsProj) as CsProjFile;
-        }
-
-        /// <summary>
         /// Load an existing CsProjFile from the filename given
         /// </summary>
         /// <param name="filename"></param>
@@ -155,19 +136,6 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         {
             var project = MSBuildProject.LoadFrom(filename);
             return new CsProjFile(filename, project);
-        }
-
-        /// <summary>
-        /// Creates a new class library project at the given filename
-        /// and assembly name
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="assemblyName"></param>
-        /// <returns></returns>
-        [Obsolete("Use FubuCsProj.ProjectFiles.ProjectCreator.CreateAtLocation instead")]
-        public static CsProjFile CreateAtLocation(string filename, string assemblyName)
-        {
-            return ProjectCreator.CreateAtLocation(filename, assemblyName, ProjectType.CsProj) as CsProjFile;
         }
 
         public string ProjectName
@@ -285,7 +253,7 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
             }
         }
 
-        public void Remove<T>(T item) where T : ProjectItem, new()
+        public void Remove<T>(T item) where T : ProjectItem
         {
             _projectItemCache.Remove(item.Include);
                 
@@ -294,6 +262,14 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
             {
                 element.Remove();
             }
+        }
+
+        void IInternalProjectFile.SetProjectGuid(Guid newGuid)
+        {
+            var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == PROJECT_GUID))
+                        ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
+
+            group.SetPropertyValue(PROJECT_GUID, newGuid.ToString().ToUpper(), true);
         }
     }
 }

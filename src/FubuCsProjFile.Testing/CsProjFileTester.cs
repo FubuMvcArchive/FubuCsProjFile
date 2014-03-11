@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
 using FubuCsProjFile.ProjectFiles.CsProj;
@@ -35,7 +33,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void creating_a_new_csprojfile_relative_to_a_solution_directory_creates_a_guid()
         {
-            var project = CsProjFile.CreateAtSolutionDirectory("Foo", "myproj");
+            var project = new CsProjCreator().CreateAtSolutionDirectory("Foo", "myproj");
             project.ProjectGuid.ShouldNotEqual(Guid.Empty);
 
         }
@@ -43,7 +41,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void creating_a_new_csprojectfile_create_a_guid()
         {
-            var project = CsProjFile.CreateAtLocation("Foo.AssemblyName.csproj", "Foo.AssemblyName");
+            var project = new CsProjCreator().CreateAtLocation("Foo.AssemblyName.csproj", "Foo.AssemblyName");
             project.ProjectGuid.ShouldNotEqual(Guid.Empty);
         }
 
@@ -70,7 +68,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void creating_a_new_csprojfile_class_library_is_default()
         {
-            var project = CsProjFile.CreateAtSolutionDirectory("Foo", "myproj");
+            var project = new CsProjCreator().CreateAtSolutionDirectory("Foo", "myproj");
             project.ProjectTypes().Single().ShouldEqual(Guid.Parse("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC"));
 
         }
@@ -92,7 +90,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void sets_the_assembly_name_and_root_namespace_on_creation()
         {
-            var project = CsProjFile.CreateAtSolutionDirectory("Goofy", "Directory");
+            var project = new CsProjCreator().CreateAtSolutionDirectory("Goofy", "Directory");
             project.RootNamespace.ShouldEqual("Goofy");
             project.AssemblyName.ShouldEqual("Goofy");
 
@@ -116,7 +114,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void remove_code_file()
         {
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = new CsProjCreator().CreateAtSolutionDirectory("MyProj", "myproj");
             project.Add<CodeFile>("foo.cs");
             project.Add<CodeFile>("bar.cs");
 
@@ -140,7 +138,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void remove_code_file_2()
         {
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = new CsProjCreator().CreateAtSolutionDirectory("MyProj", "myproj");
             project.Add<CodeFile>("foo.cs");
             project.Add<CodeFile>("bar.cs");
 
@@ -168,7 +166,7 @@ namespace FubuCsProjFile.Testing
             fileSystem.WriteStringToFile("myproj".AppendPath("foo.cs"), "using System.Web;");
             fileSystem.WriteStringToFile("myproj".AppendPath("bar.cs"), "using System.Web;");
 
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = new CsProjCreator().CreateAtSolutionDirectory("MyProj", "myproj");
             project.Add<CodeFile>("foo.cs");
             project.Add<CodeFile>("bar.cs");
 
@@ -196,7 +194,7 @@ namespace FubuCsProjFile.Testing
             fileSystem.WriteStringToFile("myproj".AppendPath("foo.cs"), "using System.Web;");
             fileSystem.WriteStringToFile("myproj".AppendPath("bar.cs"), "using System.Web;");
 
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = new CsProjCreator().CreateAtSolutionDirectory("MyProj", "myproj");
             project.Add<CodeFile>("foo.cs");
             project.Add<CodeFile>("bar.cs");
 
@@ -235,7 +233,7 @@ namespace FubuCsProjFile.Testing
             fileSystem.WriteStringToFile("myproj".AppendPath("foo.txt"), "using System.Web;");
             fileSystem.WriteStringToFile("myproj".AppendPath("bar.txt"), "using System.Web;");
 
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = new CsProjCreator().CreateAtSolutionDirectory("MyProj", "myproj");
             project.Add<EmbeddedResource>("foo.txt");
             project.Add<EmbeddedResource>("bar.txt");
 
@@ -427,7 +425,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void can_write_system_assemblies()
         {
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = new CsProjCreator().CreateAtSolutionDirectory("MyProj", "myproj");
             project.Add<AssemblyReference>("System.Configuration");
             project.Add<AssemblyReference>("System.Security");
 
@@ -444,7 +442,7 @@ namespace FubuCsProjFile.Testing
         public void can_write_assembly_reference_with_hint_path()
         {
             var hintPath = @"..\packages\RhinoMocks\lib\net\Rhino.Mocks.dll";
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = new CsProjCreator().CreateAtSolutionDirectory("MyProj", "myproj");
             project.Add(new AssemblyReference("Rhino.Mocks", hintPath));
 
             project.Save();
@@ -464,7 +462,7 @@ namespace FubuCsProjFile.Testing
             var include = @"..\OtherProject\OtherProject.csproj";
 
 
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = new CsProjCreator().CreateAtSolutionDirectory("MyProj", "myproj");
             var reference1 = new ProjectReference(include)
             {
                 ProjectName = "OtherProject",

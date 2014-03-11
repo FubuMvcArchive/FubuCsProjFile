@@ -1,5 +1,5 @@
 ﻿using System;
-using FubuCsProjFile.ProjectFiles.CsProj;
+using FubuCsProjFile.ProjectFiles;
 
 namespace FubuCsProjFile.Templating.Runtime
 {
@@ -13,7 +13,7 @@ namespace FubuCsProjFile.Templating.Runtime
             _assemblyName = assemblyName;
         }
 
-        public void Alter(CsProjFile file, ProjectPlan plan)
+        public void Alter(IProjectFile file, ProjectPlan plan)
         {
             file.Add<AssemblyReference>(_assemblyName);
         }

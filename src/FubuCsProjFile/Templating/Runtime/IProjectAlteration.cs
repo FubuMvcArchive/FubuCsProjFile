@@ -1,9 +1,9 @@
-﻿using FubuCsProjFile.ProjectFiles.CsProj;
+﻿using FubuCsProjFile.ProjectFiles;
 
 namespace FubuCsProjFile.Templating.Runtime
 {
     public interface IProjectAlteration
     {
-        void Alter(CsProjFile file, ProjectPlan plan);
+        void Alter(IProjectFile file, ProjectPlan plan);
     }
 }

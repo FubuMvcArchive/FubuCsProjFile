@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using FubuCore;
+using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.ProjectFiles.CsProj;
 
 namespace FubuCsProjFile.Templating.Runtime
@@ -17,7 +18,7 @@ namespace FubuCsProjFile.Templating.Runtime
             _additions = additions;
         }
 
-        public void Alter(CsProjFile file, ProjectPlan plan)
+        public void Alter(IProjectFile file, ProjectPlan plan)
         {
             var assemblyInfoPath = Path.Combine (AssemblyInfoPath);
             var codeFile = file.Find<CodeFile>(assemblyInfoPath) ?? file.Add<CodeFile>(assemblyInfoPath);

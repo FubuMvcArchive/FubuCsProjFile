@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using FubuCore;
-using FubuCsProjFile.ProjectFiles.CsProj;
+using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.Templating.Planning;
 
 namespace FubuCsProjFile.Templating.Runtime
@@ -36,13 +36,15 @@ namespace FubuCsProjFile.Templating.Runtime
             buildProjectReference(original, testProject);
         }
 
-        private static void copyNugetDeclarations(ProjectPlan originalPlan, ProjectPlan testPlan, CsProjFile original,
-                                                  CsProjFile testProject)
+        private static void copyNugetDeclarations(ProjectPlan originalPlan,
+            ProjectPlan testPlan,
+            IProjectFile original,
+            IProjectFile testProject)
         {
             originalPlan.NugetDeclarations.Each(x => testPlan.NugetDeclarations.Fill(x));
             original.All<AssemblyReference>()
-                    .Where(x => x.HintPath.IsEmpty())
-                    .Each(x => testProject.Add<AssemblyReference>(x.Include));
+                .Where(x => x.HintPath.IsEmpty())
+                .Each(x => testProject.Add<AssemblyReference>(x.Include));
         }
 
         private void findNugetsInOriginalRippleDeclarations(TemplatePlan plan, ProjectPlan testPlan)
@@ -51,7 +53,7 @@ namespace FubuCsProjFile.Templating.Runtime
             plan.FileSystem.ReadTextFile(configFile, line => { if (line.IsNotEmpty()) testPlan.NugetDeclarations.Fill(line); });
         }
 
-        private static void buildProjectReference(CsProjFile original, CsProjFile testProject)
+        private static void buildProjectReference(IProjectFile original, IProjectFile testProject)
         {
             var relativePathToTheOriginal = original.FileName.PathRelativeTo(testProject.FileName);
             if (original.FileName.ParentDirectory().ParentDirectory() ==

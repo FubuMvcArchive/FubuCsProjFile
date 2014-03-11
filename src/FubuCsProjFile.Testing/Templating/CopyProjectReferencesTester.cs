@@ -1,14 +1,11 @@
-﻿using System.Diagnostics;
-using System.IO;
-using FubuCsProjFile.ProjectFiles.CsProj;
-using FubuCsProjFile.Templating;
+﻿using System.IO;
+using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.Templating.Planning;
 using FubuCsProjFile.Templating.Runtime;
 using NUnit.Framework;
 using FubuCore;
 using FubuTestingSupport;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace FubuCsProjFile.Testing.Templating
 {
@@ -16,8 +13,8 @@ namespace FubuCsProjFile.Testing.Templating
     public class CopyProjectReferencesTester
     {
         private TemplatePlan thePlan;
-        private CsProjFile theOriginalProject;
-        private CsProjFile theTestingProject;
+        private IProjectFile theOriginalProject;
+        private IProjectFile theTestingProject;
         private ProjectPlan testingPlan;
 
         [SetUp]

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.ProjectFiles.CsProj;
 using FubuCsProjFile.Templating.Planning;
 using FubuCsProjFile.Templating.Runtime;
@@ -36,7 +37,7 @@ namespace FubuCsProjFile.Testing.Templating
         public void adding_an_assembly_reference()
         {
             // SAMPLE: assembly-reference
-            var project = CsProjFile.CreateAtLocation("MyProject.csproj", "MyProject");
+            var project = ProjectCreator.CreateAtLocation("MyProject.csproj", "MyProject", ProjectType.CsProj);
             project.Add(new AssemblyReference("MyOtherLibrary")
             {
                 HintPath = "../packages/MyOtherLibrary/lib/MyOtherLibrary.dll",
@@ -66,7 +67,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void can_write_and_read_fusion_name()
         {
-            var project = CsProjFile.CreateAtLocation("Foo.csproj", "Foo");
+            var project = ProjectCreator.CreateAtLocation("Foo.csproj", "Foo", ProjectType.CsProj);
             var assemblyReference = new AssemblyReference("Foo")
             {
                 FusionName = "some fusion"
@@ -85,7 +86,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void can_write_and_read_Aliases()
         {
-            var project = CsProjFile.CreateAtLocation("Foo.csproj", "Foo");
+            var project = ProjectCreator.CreateAtLocation("Foo.csproj", "Foo", ProjectType.CsProj);
             var assemblyReference = new AssemblyReference("Foo")
             {
                 Aliases = "some alias"
@@ -104,7 +105,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void can_write_and_read_display_name()
         {
-            var project = CsProjFile.CreateAtLocation("Foo.csproj", "Foo");
+            var project = ProjectCreator.CreateAtLocation("Foo.csproj", "Foo", ProjectType.CsProj);
             var assemblyReference = new AssemblyReference("Foo")
             {
                 DisplayName = "some name"
@@ -123,7 +124,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void can_write_and_read_SpecificVersion_true()
         {
-            var project = CsProjFile.CreateAtLocation("Foo.csproj", "Foo");
+            var project = ProjectCreator.CreateAtLocation("Foo.csproj", "Foo", ProjectType.CsProj);
             var assemblyReference = new AssemblyReference("Foo")
             {
                 SpecificVersion = true
@@ -142,7 +143,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void can_write_and_read_SpecificVersion_false()
         {
-            var project = CsProjFile.CreateAtLocation("Foo.csproj", "Foo");
+            var project = ProjectCreator.CreateAtLocation("Foo.csproj", "Foo", ProjectType.CsProj);
             var assemblyReference = new AssemblyReference("Foo")
             {
                 SpecificVersion = false
@@ -161,7 +162,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void can_write_and_read_SpecificVersion_null()
         {
-            var project = CsProjFile.CreateAtLocation("Foo.csproj", "Foo");
+            var project = ProjectCreator.CreateAtLocation("Foo.csproj", "Foo", ProjectType.CsProj);
             var assemblyReference = new AssemblyReference("Foo")
             {
                 SpecificVersion = null
@@ -181,7 +182,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void can_write_and_read_Private_true()
         {
-            var project = CsProjFile.CreateAtLocation("Foo.csproj", "Foo");
+            var project = ProjectCreator.CreateAtLocation("Foo.csproj", "Foo", ProjectType.CsProj);
             var assemblyReference = new AssemblyReference("Foo")
             {
                 Private = true
@@ -200,7 +201,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void can_write_and_read_Private_false()
         {
-            var project = CsProjFile.CreateAtLocation("Foo.csproj", "Foo");
+            var project = ProjectCreator.CreateAtLocation("Foo.csproj", "Foo", ProjectType.CsProj);
             var assemblyReference = new AssemblyReference("Foo")
             {
                 Private = false
@@ -219,7 +220,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void can_write_and_read_Private_null()
         {
-            var project = CsProjFile.CreateAtLocation("Foo.csproj", "Foo");
+            var project = ProjectCreator.CreateAtLocation("Foo.csproj", "Foo", ProjectType.CsProj);
             var assemblyReference = new AssemblyReference("Foo")
             {
                 Private = null

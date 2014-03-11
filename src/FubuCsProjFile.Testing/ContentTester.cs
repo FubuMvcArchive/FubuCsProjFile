@@ -1,4 +1,5 @@
-﻿using FubuCsProjFile.ProjectFiles.CsProj;
+﻿using FubuCsProjFile.ProjectFiles;
+using FubuCsProjFile.ProjectFiles.CsProj;
 using FubuTestingSupport;
 using NUnit.Framework;
 
@@ -17,7 +18,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void can_add_and_load_never_copy_content()
         {
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = ProjectCreator.CreateAtSolutionDirectory("MyProj", "myproj", ProjectType.CsProj);
             var content = new Content("Something.txt")
             {
                 CopyToOutputDirectory = ContentCopy.Never
@@ -35,7 +36,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void can_add_and_load_always_copy_content()
         {
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = ProjectCreator.CreateAtSolutionDirectory("MyProj", "myproj", ProjectType.CsProj);
             var content = new Content("Something.txt")
             {
                 CopyToOutputDirectory = ContentCopy.Always
@@ -55,7 +56,7 @@ namespace FubuCsProjFile.Testing
         public void can_add_and_load_IfNewer_copy_content()
         {
             // SAMPLE: adding-content-to-csprojfile
-            var project = CsProjFile.CreateAtSolutionDirectory("MyProj", "myproj");
+            var project = ProjectCreator.CreateAtSolutionDirectory("MyProj", "myproj", ProjectType.CsProj);
             var content = new Content("Something.txt")
             {
                 CopyToOutputDirectory = ContentCopy.IfNewer

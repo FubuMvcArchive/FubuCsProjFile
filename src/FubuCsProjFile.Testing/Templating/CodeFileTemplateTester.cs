@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using FubuCore;
-using FubuCsProjFile.ProjectFiles.CsProj;
-using FubuCsProjFile.Templating;
+using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.Templating.Runtime;
 using NUnit.Framework;
 using FubuTestingSupport;
@@ -12,7 +11,7 @@ namespace FubuCsProjFile.Testing.Templating
     [TestFixture]
     public class CodeFileTemplateTester
     {
-        private CsProjFile theProject;
+        private IProjectFile theProject;
         private ProjectPlan thePlan;
 
         [TestFixtureSetUp]
@@ -21,7 +20,7 @@ namespace FubuCsProjFile.Testing.Templating
             new FileSystem().DeleteDirectory("Templated");
             new FileSystem().CreateDirectory("Templated");
 
-            theProject = CsProjFile.CreateAtSolutionDirectory("TemplatedProject", "Templated");
+            theProject = ProjectCreator.CreateAtSolutionDirectory("TemplatedProject", "Templated", ProjectType.CsProj);
             thePlan = new ProjectPlan(theProject.ProjectName);
         }
 

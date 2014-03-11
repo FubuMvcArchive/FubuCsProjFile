@@ -6,6 +6,7 @@ using FubuCore;
 using System.Linq;
 using FubuCore.Util;
 using FubuCsProjFile.MSBuild;
+using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.ProjectFiles.CsProj;
 
 namespace FubuCsProjFile
@@ -261,7 +262,20 @@ namespace FubuCsProjFile
         /// </summary>
         /// <param name="projectName"></param>
         /// <returns></returns>
-        public SolutionProject AddProject( string projectName)
+        public SolutionProject AddProject(string projectName)
+        {
+            return AddProject(projectName, ProjectType.CsProj);
+        }
+
+        /// <summary>
+        /// Attaches an existing project of this name to the solution or 
+        /// creates a new project based on a Class Library and attaches
+        /// to the solution
+        /// </summary>
+        /// <param name="projectName"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public SolutionProject AddProject(string projectName, ProjectType type)
         {
             var existing = FindProject(projectName);
             if (existing != null)
@@ -269,7 +283,7 @@ namespace FubuCsProjFile
                 return existing;
             }
 
-            var reference = SolutionProject.CreateNewAt(ParentDirectory, projectName);
+            var reference = SolutionProject.CreateNewAt(ParentDirectory, projectName, type);
             _projects.Add(reference);
 
             return reference;
@@ -309,7 +323,7 @@ namespace FubuCsProjFile
 
             var project = MSBuildProject.CreateFromFile(projectName, templateFile);
             var csProjFile = new CsProjFile(ParentDirectory.AppendPath(projectName, projectName + ".csproj"), project);
-            csProjFile.ProjectGuid = Guid.NewGuid();
+            csProjFile.As<IInternalProjectFile>().SetProjectGuid(Guid.NewGuid());
 
             var reference = new SolutionProject(csProjFile, ParentDirectory);
             _projects.Add(reference);
