@@ -21,10 +21,10 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
 
         private IProjectFile CreateCore(MSBuildProject project, string fileName)
         {
-            var group = project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == CsProjFile.PROJECTGUID)) ??
+            var group = project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == CsProjFile.PROJECT_GUID)) ??
                         project.PropertyGroups.FirstOrDefault() ?? project.AddNewPropertyGroup(true);
 
-            @group.SetPropertyValue(CsProjFile.PROJECTGUID, Guid.NewGuid().ToString().ToUpper(), true);
+            @group.SetPropertyValue(CsProjFile.PROJECT_GUID, Guid.NewGuid().ToString().ToUpper(), true);
 
             var file = new CsProjFile(fileName, project);
             file.AssemblyName = file.RootNamespace = file.ProjectName;

@@ -20,7 +20,7 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
              <RootNamespace>MyProject</RootNamespace>
     <AssemblyName>MyProject</AssemblyName>
          */
-        public const string PROJECTGUID = "ProjectGuid";
+        public const string PROJECT_GUID = "ProjectGuid";
         public const string ROOT_NAMESPACE = "RootNamespace";
         public const string ASSEMBLY_NAME = "AssemblyName";
 
@@ -43,7 +43,7 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         {
             get
             {
-                var raw = _project.PropertyGroups.Select(x => x.GetPropertyValue(PROJECTGUID))
+                var raw = _project.PropertyGroups.Select(x => x.GetPropertyValue(PROJECT_GUID))
                                   .FirstOrDefault(x => x.IsNotEmpty());
 
                 return raw.IsEmpty() ? Guid.Empty : Guid.Parse(raw.TrimStart('{').TrimEnd('}'));
@@ -51,10 +51,10 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
             }
             internal set
             {
-                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == PROJECTGUID))
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == PROJECT_GUID))
                             ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
 
-                group.SetPropertyValue(PROJECTGUID, value.ToString().ToUpper(), true);
+                group.SetPropertyValue(PROJECT_GUID, value.ToString().ToUpper(), true);
             }
         }
 
