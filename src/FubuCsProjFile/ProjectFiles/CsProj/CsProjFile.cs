@@ -23,6 +23,7 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         public const string PROJECT_GUID = "ProjectGuid";
         public const string ROOT_NAMESPACE = "RootNamespace";
         public const string ASSEMBLY_NAME = "AssemblyName";
+        public const string TARGET_FRAMEWORK_VERSION = "TargetFrameworkVersion";
 
         private readonly string _fileName;
         private readonly MSBuildProject _project;
@@ -198,16 +199,16 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         {
             get
             {
-                return _project.PropertyGroups.Select(x => x.GetPropertyValue("TargetFrameworkVersion"))
+                return _project.PropertyGroups.Select(x => x.GetPropertyValue(TARGET_FRAMEWORK_VERSION))
                                   .FirstOrDefault(x => x.IsNotEmpty());
 
             }
             set
             {
-                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == "TargetFrameworkVersion"))
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == TARGET_FRAMEWORK_VERSION))
                             ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
 
-                group.SetPropertyValue("TargetFrameworkVersion", value, true);
+                group.SetPropertyValue(TARGET_FRAMEWORK_VERSION, value, true);
             }
         }
 
