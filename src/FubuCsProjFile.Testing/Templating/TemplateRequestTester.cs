@@ -40,8 +40,6 @@ namespace FubuCsProjFile.Testing.Templating
             request.AddTestingRequest(new ProjectRequest("foo", "MvcApp", "original"));
 
             request.Validate(theTemplates).Any().ShouldBeFalse();
-
-
         }
 
         [Test]

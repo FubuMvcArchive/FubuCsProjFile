@@ -7,17 +7,20 @@ using System.Text;
 using System.Xml;
 using FubuCore;
 using System.Linq;
+using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.Templating;
 
 namespace FubuCsProjFile.MSBuild
 {
     public class MSBuildProject
     {
-        public static MSBuildProject Create(string assemblyName)
+        public static MSBuildProject Create<TTemplateNamespaceMarker>(string assemblyName)
         {
-            var text = Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof(MSBuildProject),"Project.txt").ReadAllText();
-
-            return create(assemblyName, text);
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof (TTemplateNamespaceMarker), "MSBuildTemplate.txt"))
+            {
+                var text = stream.ReadAllText();
+                return create(assemblyName, text);
+            }
         }
 
         private static MSBuildProject create(string assemblyName, string text)

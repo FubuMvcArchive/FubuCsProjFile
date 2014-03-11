@@ -126,7 +126,7 @@
     <Compile Include="Templating\TextFile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MSBuild\Project.txt" />
+    <EmbeddedResource Include="ProjectFiles\CsProj\MSBuildTemplate.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Solution.txt" />

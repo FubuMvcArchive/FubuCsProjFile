@@ -21,7 +21,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void smoke_test_creating_a_new_MSBuild_project()
         {
-            var project = MSBuildProject.Create("MyFoo");
+            var project = MSBuildProject.Create<CsProjFile>("MyFoo");
             var fileName = "myfoo".AppendPath("MyFoo.csproj");
             project.Save(fileName);
 

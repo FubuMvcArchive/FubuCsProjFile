@@ -10,13 +10,13 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         public IProjectFile CreateAtSolutionDirectory(string assemblyName, string directory)
         {
             var fileName = directory.AppendPath(assemblyName).AppendPath(assemblyName) + ".csproj";
-            var project = MSBuildProject.Create(assemblyName);
+            var project = MSBuildProject.Create<CsProjFile>(assemblyName);
             return CreateCore(project, fileName);
         }
 
         public IProjectFile CreateAtLocation(string filename, string assemblyName)
         {
-            return CreateCore(MSBuildProject.Create(assemblyName), filename);
+            return CreateCore(MSBuildProject.Create<CsProjFile>(assemblyName), filename);
         }
 
         private IProjectFile CreateCore(MSBuildProject project, string fileName)
