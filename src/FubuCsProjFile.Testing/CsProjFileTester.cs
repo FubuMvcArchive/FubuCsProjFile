@@ -31,12 +31,20 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
-        public void creating_a_new_csprojfile_creates_a_guid()
+        public void creating_a_new_csprojfile_relative_to_a_solution_directory_creates_a_guid()
         {
             var project = CsProjFile.CreateAtSolutionDirectory("Foo", "myproj");
             project.ProjectGuid.ShouldNotEqual(Guid.Empty);
             
         }
+
+        [Test]
+        public void creating_a_new_csprojectfile_create_a_guid()
+        {
+            var project = CsProjFile.CreateAtLocation("Foo.AssemblyName.csproj", "Foo.AssemblyName");
+            project.ProjectGuid.ShouldNotEqual(Guid.Empty);
+        }
+
 
         [Test]
         public void read_the_dot_net_version_from_csprojfile()
