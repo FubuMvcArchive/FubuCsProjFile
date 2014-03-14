@@ -166,6 +166,7 @@ namespace FubuCsProjFile
                 else if (text.StartsWith("Project"))
                 {
                     _solutionProject = new SolutionProject(text, _parent._filename.ParentDirectory());
+                    _solutionProject.Solution = _parent;
                     _parent._projects.Add(_solutionProject);
                     _read = readProject;
                 }
