@@ -50,9 +50,11 @@ namespace FubuCsProjFile
 
                 if (File.Exists(filename))
                 {
-                    return CsProjFile.LoadFrom(filename);
+                    var projFile = CsProjFile.LoadFrom(filename);
+                    this.InitializeFromSolution(projFile, this.Solution);
+                    return projFile;
                 }
-                
+
                 var project = CsProjFile.CreateAtLocation(filename, _projectName);
                 project.ProjectGuid = _projectGuid;
 
@@ -60,8 +62,29 @@ namespace FubuCsProjFile
             });
         }
 
+        private void InitializeFromSolution(CsProjFile projFile, Solution solution)
+        {
+            var tfsSourceControl = solution.Sections.FirstOrDefault(section => section.SectionName.Equals("TeamFoundationVersionControl"));
+            if (tfsSourceControl != null)
+            {
+                this.InitializeTfsSourceControlSettings(projFile, solution, tfsSourceControl);
+            }
+        }
 
+        private void InitializeTfsSourceControlSettings(CsProjFile projFile, Solution solution, GlobalSection tfsSourceControl)
+        {
+            var projUnique = tfsSourceControl.Properties.FirstOrDefault(item => item.EndsWith(Path.GetFileName(projFile.FileName)));
+            if (projUnique == null)
+            {
+                return;
+            }
 
+            int index = tfsSourceControl.Properties.IndexOf(projUnique);
+            projFile.SourceControlInformation = new SourceControlInformation(
+                tfsSourceControl.Properties[index].Split('=')[1].Trim(),
+                tfsSourceControl.Properties[index + 1].Split('=')[1].Trim(),
+                tfsSourceControl.Properties[index + 2].Split('=')[1].Trim());            
+        }
 
         public void Write(StringWriter writer)
         {
@@ -96,6 +119,8 @@ namespace FubuCsProjFile
         {
             get { return _project.Value; }
         }
+
+        public Solution Solution { get; set; }
 
         public void ReadLine(string text)
         {

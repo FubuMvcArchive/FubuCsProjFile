@@ -223,6 +223,8 @@ namespace FubuCsProjFile
             }
         }
 
+        public SourceControlInformation SourceControlInformation { get; set; }
+
         public void Save()
         {
             this.Save(_fileName);
