@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuMVC.SlickGrid.Docs", "F
 EndProject
 Global
 	 GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.foo.com/tfs
 		SccLocalPath0 = .
@@ -27,12 +27,15 @@ Global
 		SccProjectUniqueName2 = ..\\FubuMVC.SlickGrid.Testing\\FubuMVC.SlickGrid.Testing.csproj
 		SccProjectName2 = ../FubuMVC.SlickGrid.Testing
 		SccLocalPath2 = ..\\FubuMVC.SlickGrid.Testing
-		SccProjectUniqueName3 = ..\\FubuMVC.SlickGrid.Serenity\\FubuMVC.SlickGrid.Serenity.csproj
-		SccProjectName3 = ../FubuMVC.SlickGrid.Serenity
-		SccLocalPath3 = ..\\FubuMVC.SlickGrid.Serenity
-		SccProjectUniqueName4 = ..\\FubuMVC.SlickGrid.Docs\\FubuMVC.SlickGrid.Docs.csproj
-		SccProjectName4 = ../FubuMVC.SlickGrid.Docs
-		SccLocalPath4 = ..\\FubuMVC.SlickGrid.Docs
+		SccProjectUniqueName3 = ..\\SlickGridHarness\\SlickGridHarness.csproj
+		SccProjectName3 = ../SlickGridHarness
+		SccLocalPath3 = ..\\SlickGridHarness
+		SccProjectUniqueName4 = ..\\FubuMVC.SlickGrid.Serenity\\FubuMVC.SlickGrid.Serenity.csproj
+		SccProjectName4 = ../FubuMVC.SlickGrid.Serenity
+		SccLocalPath4 = ..\\FubuMVC.SlickGrid.Serenity
+		SccProjectUniqueName5 = ..\\FubuMVC.SlickGrid.Docs\\FubuMVC.SlickGrid.Docs.csproj
+		SccProjectName5 = ../FubuMVC.SlickGrid.Docs
+		SccLocalPath5 = ..\\FubuMVC.SlickGrid.Docs
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
