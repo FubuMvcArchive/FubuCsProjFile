@@ -21,11 +21,12 @@ namespace FubuCsProjFile.Testing
 
 
             fileSystem = new FileSystem();
-            
+
             fileSystem.Copy("FubuMVC.SlickGrid.Docs.csproj.fake", "FubuMVC.SlickGrid.Docs.csproj");
             fileSystem.Copy("SlickGridHarness.csproj.fake", "SlickGridHarness.csproj");
-            
-            
+            fileSystem.Copy("SlickGridHarness.csproj.fake", "SlickGridHarness/SlickGridHarness.csproj");
+
+
             fileSystem.DeleteDirectory("myproj");
             fileSystem.CreateDirectory("myproj");
         }
@@ -35,7 +36,7 @@ namespace FubuCsProjFile.Testing
         {
             var project = CsProjFile.CreateAtSolutionDirectory("Foo", "myproj");
             project.ProjectGuid.ShouldNotEqual(Guid.Empty);
-            
+
         }
 
         [Test]
@@ -214,9 +215,9 @@ namespace FubuCsProjFile.Testing
         {
             // SAMPLE: loading-existing-file
             var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
-            
+
             // Add new references, code items, etc.
-            
+
             project.Save();
             // ENDSAMPLE
 
@@ -273,12 +274,12 @@ namespace FubuCsProjFile.Testing
         public void can_read_source_control_information()
         {
             var solution = Solution.LoadFrom("FubuMVC.SlickGridTFS.sln");
-            var project = solution.Projects.First(item => item.ProjectName == "FubuMVC.SlickGrid").Project;
+            var project = solution.Projects.First(item => item.ProjectName == "SlickGridHarness").Project;
 
             project.SourceControlInformation.ShouldNotBeNull();
-            project.SourceControlInformation.ProjectUniqueName.ShouldEqual(@"..\\FubuMVC.SlickGrid\\FubuMVC.SlickGrid.csproj");
-            project.SourceControlInformation.ProjectName.ShouldEqual(@"../FubuMVC.SlickGrid");
-            project.SourceControlInformation.ProjectLocalPath.ShouldEqual(@"..\\FubuMVC.SlickGrid");
+            project.SourceControlInformation.ProjectUniqueName.ShouldEqual(@"..\\SlickGridHarness\\SlickGridHarness.csproj");
+            project.SourceControlInformation.ProjectName.ShouldEqual(@"../SlickGridHarness");
+            project.SourceControlInformation.ProjectLocalPath.ShouldEqual(@"..\\SlickGridHarness");
         }
 
 
@@ -301,7 +302,7 @@ namespace FubuCsProjFile.Testing
             contentFile.CopyToOutputDirectory.ShouldEqual(ContentCopy.Never);
 
             // modify
-            contentFile.Include = @"content\scripts\json3.js";            
+            contentFile.Include = @"content\scripts\json3.js";
             project.Save("MyProj.csproj");
 
             project = CsProjFile.LoadFrom("MyProj.csproj");
@@ -382,7 +383,7 @@ namespace FubuCsProjFile.Testing
                     origItem.Include.ShouldEqual(newItem.Include);
                 }
             }
-            
+
         }
 
         [Test]
@@ -394,7 +395,7 @@ namespace FubuCsProjFile.Testing
             contentFile.CopyToOutputDirectory.ShouldEqual(ContentCopy.Never);
 
             // modify
-            contentFile.CopyToOutputDirectory = ContentCopy.Always;            
+            contentFile.CopyToOutputDirectory = ContentCopy.Always;
             project.Save("MyProj.csproj");
 
             project = CsProjFile.LoadFrom("MyProj.csproj");
@@ -412,8 +413,8 @@ namespace FubuCsProjFile.Testing
 
             // modify
             var newProjectGuid = Guid.NewGuid();
-            projectReference.ProjectName = "Bob";            
-            projectReference.ProjectGuid= newProjectGuid;            
+            projectReference.ProjectName = "Bob";
+            projectReference.ProjectGuid = newProjectGuid;
             project.Save("MyProj.csproj");
 
             project = CsProjFile.LoadFrom("MyProj.csproj");
@@ -450,7 +451,7 @@ namespace FubuCsProjFile.Testing
 
             var project2 = CsProjFile.LoadFrom(project.FileName);
 
-            
+
 
             project2.Find<AssemblyReference>("Rhino.Mocks")
                     .HintPath.ShouldEqual(hintPath);
