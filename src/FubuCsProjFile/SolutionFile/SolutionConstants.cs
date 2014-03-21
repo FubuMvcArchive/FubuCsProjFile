@@ -7,5 +7,8 @@
         public const string EndGlobalSection = "EndGlobalSection";
         public const string ProjectConfigurationPlatforms = "ProjectConfigurationPlatforms";
         public const string SolutionConfigurationPlatforms = "SolutionConfigurationPlatforms";
+
+        public const string Project = "Project";
+        public const string EndProject = "EndProject";
     }
 }

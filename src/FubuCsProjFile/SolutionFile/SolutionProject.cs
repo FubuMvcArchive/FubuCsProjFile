@@ -29,7 +29,7 @@ namespace FubuCsProjFile.SolutionFile
 
             ProjectDataForSolutionFile(writer);
 
-            writer.WriteLine("EndProject");
+            writer.WriteLine(SolutionConstants.EndProject);
         }
 
         protected virtual void ProjectDataForSolutionFile(StringWriter writer)

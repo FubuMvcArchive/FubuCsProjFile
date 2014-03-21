@@ -17,7 +17,7 @@ namespace FubuCsProjFile.SolutionFile
 
         public bool Matches(string line)
         {
-            return line.StartsWith("Project");
+            return line.StartsWith(SolutionConstants.Project);
         }
 
         public void Read(IEnumerator<string> lines, ISolution solution)
@@ -36,7 +36,7 @@ namespace FubuCsProjFile.SolutionFile
 
             var projectReader = factory.Build(projectType, projectGuid, projectName, relativePath, solution);
 
-            while (lines.MoveNext() && !lines.Current.StartsWith("EndProject"))
+            while (lines.MoveNext() && !lines.Current.StartsWith(SolutionConstants.EndProject))
             {
                 projectReader.Read(lines.Current);
             }
