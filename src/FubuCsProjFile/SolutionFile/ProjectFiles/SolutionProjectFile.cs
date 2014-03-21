@@ -9,18 +9,15 @@ namespace FubuCsProjFile.SolutionFile.ProjectFiles
         private readonly Guid _projectTypeFromSolutionFile;
         private readonly Lazy<IProjectFile> _projectFile;
 
-        public SolutionProjectFile(
-            Guid projectType,
-            Guid projectGuid,
-            string projectName,
-            string relativePath,
-            ISolution solution)
+        public SolutionProjectFile(Guid projectType, Guid projectGuid, string projectName, string relativePath, ISolution solution)
+            : this(projectType, projectGuid, projectName, relativePath, () =>
+                ProjectLoader.LoadOrCreateIfNotFound(projectGuid, projectName, relativePath, solution)) { }
+
+        public SolutionProjectFile(Guid projectType, Guid projectGuid, string projectName, string relativePath, Func<IProjectFile> projectFactory)
             : base(projectGuid, projectName, relativePath)
         {
             _projectTypeFromSolutionFile = projectType;
-
-            _projectFile = new Lazy<IProjectFile>(() =>
-                ProjectLoader.LoadOrCreateIfNotFound(projectGuid, projectName, relativePath, solution));
+            _projectFile = new Lazy<IProjectFile>(projectFactory);
         }
 
         public SolutionProjectFile(IProjectFile project, string solutionDirectory)
