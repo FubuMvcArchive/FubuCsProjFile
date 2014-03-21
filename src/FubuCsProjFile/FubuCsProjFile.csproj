@@ -67,8 +67,8 @@
     <Compile Include="ProjectReference.cs" />
     <Compile Include="SolutionFile\GlobalReader.cs" />
     <Compile Include="SolutionFile\ISolutionSectionReader.cs" />
+    <Compile Include="SolutionFile\NoOpSolutionProjectReader.cs" />
     <Compile Include="SolutionFile\ProjectFiles\SolutionProjectFile.cs" />
-    <Compile Include="SolutionFile\ProjectFiles\SolutionProjectFileReader.cs" />
     <Compile Include="SolutionFile\ProjectFiles\SolutionProjectFileReaderFactory.cs" />
     <Compile Include="SolutionFile\Solution.cs" />
     <Compile Include="SolutionFile\SolutionBuilder.cs" />

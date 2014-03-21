@@ -11,7 +11,10 @@ namespace FubuCsProjFile.SolutionFile.ProjectFiles
 
         public ISolutionProjectReader Build(Guid projectType, Guid projectGuid, string projectName, string relativePath, ISolution solution)
         {
-            return new SolutionProjectFileReader(projectType, projectGuid, projectName, relativePath, solution);
+            var project = new SolutionProjectFile(projectType, projectGuid, projectName, relativePath, solution);
+            solution.Projects.Add(project);
+
+            return new NoOpSolutionProjectReader();
         }
     }
 }
