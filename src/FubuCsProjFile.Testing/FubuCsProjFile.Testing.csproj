@@ -68,7 +68,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyReferenceTester.cs" />
-    <Compile Include="BuildConfigurationTester.cs" />
+    <Compile Include="SolutionFile\BuildConfigurationTester.cs" />
     <Compile Include="ContentTester.cs" />
     <Compile Include="creating_a_new_solution_with_projects.cs" />
     <Compile Include="ProjectFiles\CsProj\CsProjFileTester.cs" />
