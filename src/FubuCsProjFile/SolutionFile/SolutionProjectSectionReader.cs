@@ -12,7 +12,7 @@ namespace FubuCsProjFile.SolutionFile
         private static readonly IList<ISolutionProjectSectionReaderFactory> Factories = new ISolutionProjectSectionReaderFactory[]
         {
             new SolutionFolderSectionReaderFactory(),
-            new SolutionProjectFileReaderFactory(new FileSystem()) 
+            new SolutionProjectFileReaderFactory() 
         };
 
         public bool Matches(string line)

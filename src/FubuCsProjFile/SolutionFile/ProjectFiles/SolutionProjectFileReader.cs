@@ -1,5 +1,4 @@
 ﻿using System;
-using FubuCore;
 
 namespace FubuCsProjFile.SolutionFile.ProjectFiles
 {
@@ -7,9 +6,9 @@ namespace FubuCsProjFile.SolutionFile.ProjectFiles
     {
         private SolutionProjectFile _project;
 
-        public SolutionProjectFileReader(Guid projectType, Guid projectGuid, string projectName, string relativePath, ISolution solution, IFileSystem fileSystem)
+        public SolutionProjectFileReader(Guid projectType, Guid projectGuid, string projectName, string relativePath, ISolution solution)
         {
-            _project = new SolutionProjectFile(projectType, projectGuid, projectName, relativePath, solution, fileSystem);
+            _project = new SolutionProjectFile(projectType, projectGuid, projectName, relativePath, solution);
             solution.Projects.Add(_project);
         }
 
