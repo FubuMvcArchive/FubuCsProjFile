@@ -82,6 +82,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolutionFile\ProjectFile\SolutionProjectFileReaderFactoryTester.cs" />
     <Compile Include="SolutionFile\ProjectFile\SolutionProjectFileTester.cs" />
+    <Compile Include="SolutionFile\SolutionItems\SolutionFolderSectionReaderFactoryTester.cs" />
     <Compile Include="SolutionFile\SolutionItems\SolutionFolderSectionReaderTester.cs" />
     <Compile Include="SolutionFile\SolutionItems\SolutionFolderTester.cs" />
     <Compile Include="SolutionTester.cs" />
