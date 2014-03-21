@@ -80,6 +80,7 @@
     <Compile Include="NoneTester.cs" />
     <Compile Include="ProjectReferenceTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SolutionFile\GlobalReaderTester.cs" />
     <Compile Include="SolutionFile\ProjectFile\SolutionProjectFileReaderFactoryTester.cs" />
     <Compile Include="SolutionFile\ProjectFile\SolutionProjectFileTester.cs" />
     <Compile Include="SolutionFile\SolutionItems\SolutionFolderSectionReaderFactoryTester.cs" />

@@ -7,22 +7,22 @@ namespace FubuCsProjFile.SolutionFile
     {
         public bool Matches(string line)
         {
-            return line.Trim() == "Global";
+            return line.Trim() == SolutionConstants.Global;
         }
 
         public void Read(IEnumerator<string> lines, ISolution solution)
         {
-            while (lines.MoveNext() && lines.Current.Trim() != "EndGlobal")
+            while (lines.MoveNext() && lines.Current.Trim() != SolutionConstants.EndGlobal)
             {
-                if (!lines.Current.Trim().StartsWith("GlobalSection"))
+                if (!lines.Current.Trim().StartsWith(SolutionConstants.GlobalSection))
                 {
-                    throw new NotImplementedException("Currently only built to handle GlobalSection blocks within the Global section");
+                    throw new NotSupportedException("Currently only built to handle GlobalSection blocks within the Global section");
                 }
 
                 var section = new GlobalSection(lines.Current.Trim());
                 solution.Sections.Add(section);
 
-                while (lines.MoveNext() && !lines.Current.Trim().StartsWith("EndGlobalSection"))
+                while (lines.MoveNext() && !lines.Current.Trim().StartsWith(SolutionConstants.EndGlobalSection))
                 {
                     section.Read(lines.Current);
                 }
