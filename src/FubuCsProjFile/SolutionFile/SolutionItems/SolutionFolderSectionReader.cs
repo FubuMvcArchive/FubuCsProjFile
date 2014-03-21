@@ -1,15 +1,12 @@
-﻿using System;
-
-namespace FubuCsProjFile.SolutionFile.SolutionItems
+﻿namespace FubuCsProjFile.SolutionFile.SolutionItems
 {
     public class SolutionFolderSectionReader : ISolutionProjectReader
     {
         private readonly SolutionFolder _folder;
 
-        public SolutionFolderSectionReader(Guid projectGuid, string projectName, string relativePath, ISolution solution)
+        public SolutionFolderSectionReader(SolutionFolder folder)
         {
-            _folder = new SolutionFolder(projectGuid, projectName, relativePath);
-            solution.Projects.Add(_folder);
+            _folder = folder;
         }
 
         public void Read(string line)
