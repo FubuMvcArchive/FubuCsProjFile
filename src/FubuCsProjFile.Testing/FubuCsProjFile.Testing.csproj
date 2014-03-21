@@ -74,7 +74,7 @@
     <Compile Include="ProjectFiles\CsProj\CsProjFileTester.cs" />
     <Compile Include="DataMother.cs" />
     <Compile Include="FrameworkNameDetectorTests.cs" />
-    <Compile Include="GlobalSectionTester.cs" />
+    <Compile Include="SolutionFile\GlobalSectionTester.cs" />
     <Compile Include="IntegrationTester.cs" />
     <Compile Include="MSBuildProjectTester.cs" />
     <Compile Include="NoneTester.cs" />
