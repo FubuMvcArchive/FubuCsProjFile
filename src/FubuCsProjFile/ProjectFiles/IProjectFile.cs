@@ -5,6 +5,7 @@ namespace FubuCsProjFile.ProjectFiles
 {
     public interface IProjectFile
     {
+        Guid Type { get; }
         string ProjectName { get; }
         string FileName { get; }
         Guid ProjectGuid { get; }

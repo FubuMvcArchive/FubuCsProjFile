@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using FubuCsProjFile.SolutionFile;
 using FubuCsProjFile.Templating;
 using FubuCsProjFile.Templating.Planning;
 using FubuCsProjFile.Templating.Runtime;
@@ -25,14 +26,14 @@ namespace FubuCsProjFile.Testing.Templating
         
             File.Exists(file).ShouldBeTrue();
 
-            var solution = Solution.LoadFrom(file);
+            var solution = SolutionReader.LoadFrom(file);
             solution.ShouldNotBeNull(); // really just a smoke test that we can parse it back out
         }
 
         [Test]
         public void default_is_vs2012()
         {
-            new CreateSolution("foo").Version.ShouldEqual(Solution.VS2012);
+            new CreateSolution("foo").Version.ShouldEqual(SolutionFileVersioning.VS2012);
         }
     }
 }

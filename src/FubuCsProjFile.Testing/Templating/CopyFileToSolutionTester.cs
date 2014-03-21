@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using FubuCore;
+using FubuCsProjFile.SolutionFile;
 using FubuCsProjFile.Templating;
 using FubuCsProjFile.Templating.Planning;
 using FubuCsProjFile.Templating.Runtime;
@@ -29,7 +30,7 @@ namespace FubuCsProjFile.Testing.Templating
         public void copy_a_file_applies_substitutions()
         {
             var context = TemplatePlan.CreateClean("copying");
-            context.Solution = Solution.CreateNew("copying".AppendPath("src"), "FooSolution");
+            context.Solution = SolutionBuilder.CreateNew("copying".AppendPath("src"), "FooSolution");
 
             var file = "foo.txt";
             new FileSystem().WriteStringToFile(file, "*%SOLUTION_NAME%*");

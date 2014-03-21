@@ -132,11 +132,14 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
+        [Obsolete("Use FubuCsProjFile.ProjectFiles.ProjectLoader.Load instead")]
         public static CsProjFile LoadFrom(string filename)
         {
             var project = MSBuildProject.LoadFrom(filename);
             return new CsProjFile(filename, project);
         }
+
+        public Guid Type { get { return ClassLibraryType; } }
 
         public string ProjectName
         {

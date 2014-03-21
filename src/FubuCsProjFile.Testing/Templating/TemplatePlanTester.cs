@@ -1,4 +1,5 @@
-﻿using FubuCsProjFile.Templating;
+﻿using FubuCsProjFile.SolutionFile;
+using FubuCsProjFile.Templating;
 using FubuCsProjFile.Templating.Graph;
 using FubuCsProjFile.Templating.Planning;
 using FubuCsProjFile.Templating.Runtime;
@@ -49,7 +50,7 @@ namespace FubuCsProjFile.Testing.Templating
         public void substitutes_the_solution_name()
         {
             var plan = new TemplatePlan("root");
-            plan.Solution = Solution.CreateNew("root", "MySolution");
+            plan.Solution = SolutionBuilder.CreateNew("root", "MySolution");
 
             plan.ApplySubstitutions("*%SOLUTION_NAME%*")
                 .ShouldEqual("*MySolution*");
@@ -60,7 +61,7 @@ namespace FubuCsProjFile.Testing.Templating
         public void substitutes_the_solution_path()
         {
             var plan = new TemplatePlan("root");
-            plan.Solution = Solution.CreateNew("root".AppendPath("src"), "MySolution");
+            plan.Solution = SolutionBuilder.CreateNew("root".AppendPath("src"), "MySolution");
 
             plan.ApplySubstitutions("*%SOLUTION_PATH%*")
                 .ShouldEqual("*src/MySolution.sln*");

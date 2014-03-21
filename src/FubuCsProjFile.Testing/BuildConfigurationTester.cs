@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FubuCsProjFile.SolutionFile;
+using NUnit.Framework;
 using FubuTestingSupport;
 
 namespace FubuCsProjFile.Testing

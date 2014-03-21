@@ -8,10 +8,12 @@ using FubuCore.Util;
 using FubuCsProjFile.MSBuild;
 using FubuCsProjFile.ProjectFiles;
 using FubuCsProjFile.ProjectFiles.CsProj;
+using FubuCsProjFile.SolutionFile;
 
 namespace FubuCsProjFile
 {
-    public class Solution
+    [MarkedForTermination]
+    public class Solution : ISolution
     {
         private const string Global = "Global";
         private const string EndGlobal = "EndGlobal";
@@ -19,9 +21,9 @@ namespace FubuCsProjFile
         private const string SolutionConfigurationPlatforms = "SolutionConfigurationPlatforms";
         private const string ProjectConfigurationPlatforms = "ProjectConfigurationPlatforms";
 
-        public static readonly string VS2010 = "VS2010";
-        public static readonly string VS2012 = "VS2012";
-        public static readonly string VS2013 = "VS2013";
+        public const string VS2010 = "VS2010";
+        public const string VS2012 = "VS2012";
+        public const string VS2013 = "VS2013";
 
         private static readonly Cache<string, string[]> _versionLines = new Cache<string, string[]>();
 
@@ -33,7 +35,7 @@ namespace FubuCsProjFile
         }
 
         private readonly string _filename;
-        private readonly IList<SolutionProject> _projects = new List<SolutionProject>(); 
+        private readonly IList<ISolutionProject> _projects = new List<ISolutionProject>(); 
 
         /// <summary>
         /// Creates a new empty Solution file with the supplied name that
@@ -64,7 +66,7 @@ namespace FubuCsProjFile
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static Solution LoadFrom(string filename)
+        public static ISolution LoadFrom(string filename)
         {
             var text = new FileSystem().ReadStringFromFile(filename);
             return new Solution(filename, text);
@@ -217,7 +219,7 @@ namespace FubuCsProjFile
 
             _versionLines[Version ?? VS2012].Each(x => writer.WriteLine(x));
 
-            _projects.Each(x => x.Write(writer));
+            _projects.Each(x => x.ForSolutionFile(writer));
 
             writer.WriteLine(Global);
 
@@ -228,7 +230,7 @@ namespace FubuCsProjFile
 
             new FileSystem().WriteStringToFile(filename, writer.ToString().TrimEnd());
 
-            _projects.Each(x => x.Project.Save());
+            _projects.OfType<ISolutionProjectFile>().Each(x => x.Save());
         }
 
         private void calculateProjectConfigurationPlatforms()
@@ -243,14 +245,12 @@ namespace FubuCsProjFile
             section.Properties.Clear();
             var configurations = Configurations().ToArray();
 
-            _projects.Where(x => x.ProjectName != "Solution Items").Each(proj => {
+            _projects.OfType<ISolutionProjectFile>().Each(proj => {
                 configurations.Each(config => config.WriteProjectConfiguration(proj, section));
             });
-
-
         }
 
-        public IEnumerable<SolutionProject> Projects
+        public IList<ISolutionProject> Projects
         {
             get { return _projects; }
         }
@@ -262,7 +262,7 @@ namespace FubuCsProjFile
         /// </summary>
         /// <param name="projectName"></param>
         /// <returns></returns>
-        public SolutionProject AddProject(string projectName)
+        public ISolutionProjectFile AddProject(string projectName)
         {
             return AddProject(projectName, ProjectType.CsProj);
         }
@@ -275,7 +275,7 @@ namespace FubuCsProjFile
         /// <param name="projectName"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public SolutionProject AddProject(string projectName, ProjectType type)
+        public ISolutionProjectFile AddProject(string projectName, ProjectType type)
         {
             var existing = FindProject(projectName);
             if (existing != null)
@@ -293,17 +293,17 @@ namespace FubuCsProjFile
         /// Adds an existing project
         /// </summary>
         /// <param name="project"></param>
-        public void AddProject(CsProjFile project)
+        public ISolutionProjectFile AddProject(IProjectFile project)
         {
             var existing = FindProject(project.ProjectName);
             if (existing != null)
             {
-                return;
+                return existing;
             }
             
             var reference = new SolutionProject(project, this.ParentDirectory);
             this._projects.Add(reference);
-
+            return reference;
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace FubuCsProjFile
         /// <param name="projectName"></param>
         /// <param name="templateFile"></param>
         /// <returns></returns>
-        public SolutionProject AddProjectFromTemplate(string projectName, string templateFile)
+        public ISolutionProjectFile AddProjectFromTemplate(string projectName, string templateFile)
         {
             var existing = FindProject(projectName);
             if (existing != null)
@@ -346,9 +346,9 @@ namespace FubuCsProjFile
         /// </summary>
         /// <param name="projectName"></param>
         /// <returns></returns>
-        public SolutionProject FindProject(string projectName)
+        public ISolutionProjectFile FindProject(string projectName)
         {
-            return _projects.FirstOrDefault(x => x.ProjectName == projectName);
+            return _projects.OfType<ISolutionProjectFile>().FirstOrDefault(x => x.ProjectName == projectName);
         }
     }
 }

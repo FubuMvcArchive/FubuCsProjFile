@@ -1,4 +1,4 @@
-﻿using FubuCsProjFile.Templating;
+﻿using FubuCsProjFile.SolutionFile;
 using FubuCsProjFile.Templating.Planning;
 using FubuCsProjFile.Templating.Runtime;
 using FubuTestingSupport;
@@ -13,7 +13,7 @@ namespace FubuCsProjFile.Testing.Templating
         public void reads_existing_solution_and_places_on_the_plan()
         {
             var plan = TemplatePlan.CreateClean("create-solution");
-            var original = Solution.CreateNew("create-solution", "MySln");
+            var original = SolutionBuilder.CreateNew("create-solution", "MySln");
             original.Save();
 
             var step = new ReadSolution(original.Filename);
@@ -24,7 +24,5 @@ namespace FubuCsProjFile.Testing.Templating
             plan.Solution.Filename.ShouldEqual(original.Filename);
             plan.Solution.Name.ShouldEqual("MySln");
         }
-
-
     }
 }

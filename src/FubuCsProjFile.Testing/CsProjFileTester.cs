@@ -2,6 +2,7 @@
 using FubuCore;
 using FubuCsProjFile.MSBuild;
 using FubuCsProjFile.ProjectFiles.CsProj;
+using FubuCsProjFile.SolutionFile;
 using NUnit.Framework;
 using System.Linq;
 using FubuTestingSupport;
@@ -272,8 +273,8 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void can_read_source_control_information()
         {
-            var solution = Solution.LoadFrom("FubuMVC.SlickGridTFS.sln");
-            var project = solution.Projects.First(item => item.ProjectName == "SlickGridHarness").Project;
+            var solution = SolutionReader.LoadFrom("FubuMVC.SlickGridTFS.sln");
+            var project = solution.Projects.OfType<ISolutionProjectFile>().First(item => item.ProjectName == "SlickGridHarness").Project;
 
             project.SourceControlInformation.ShouldNotBeNull();
             project.SourceControlInformation.ProjectUniqueName.ShouldEqual(@"..\\SlickGridHarness\\SlickGridHarness.csproj");

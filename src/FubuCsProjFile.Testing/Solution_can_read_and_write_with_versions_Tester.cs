@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using FubuCore;
+﻿using FubuCore;
+using FubuCsProjFile.SolutionFile;
 using FubuTestingSupport;
 using NUnit.Framework;
 
@@ -13,11 +13,12 @@ namespace FubuCsProjFile.Testing
         {
             new FileSystem().DeleteDirectory("VS2010");
 
-            var solution = Solution.CreateNew("VS2010", "VS2010");
+            var solution = SolutionBuilder.CreateNew("VS2010", "VS2010");
+            solution.Version = SolutionFileVersioning.VS2010;
             solution.Save();
 
-            var solution2 = Solution.LoadFrom(solution.Filename);
-            solution2.Version.ShouldEqual(Solution.VS2010);
+            var solution2 = SolutionReader.LoadFrom(solution.Filename);
+            solution2.Version.ShouldEqual(SolutionFileVersioning.VS2010);
 
             //Process.Start(solution.Filename.ToFullPath());
         }
@@ -27,12 +28,12 @@ namespace FubuCsProjFile.Testing
         {
             new FileSystem().DeleteDirectory("VS2012");
 
-            var solution = Solution.CreateNew("VS2012", "VS2012");
-            solution.Version = Solution.VS2012;
+            var solution = SolutionBuilder.CreateNew("VS2012", "VS2012");
+            solution.Version = SolutionFileVersioning.VS2012;
             solution.Save();
 
-            var solution2 = Solution.LoadFrom(solution.Filename);
-            solution2.Version.ShouldEqual(Solution.VS2012);
+            var solution2 = SolutionReader.LoadFrom(solution.Filename);
+            solution2.Version.ShouldEqual(SolutionFileVersioning.VS2012);
 
             //Process.Start(solution.Filename.ToFullPath());
         }
@@ -42,12 +43,12 @@ namespace FubuCsProjFile.Testing
         {
             new FileSystem().DeleteDirectory("VS2013");
 
-            var solution = Solution.CreateNew("VS2013", "VS2013");
-            solution.Version = Solution.VS2013;
+            var solution = SolutionBuilder.CreateNew("VS2013", "VS2013");
+            solution.Version = SolutionFileVersioning.VS2013;
             solution.Save();
 
-            var solution2 = Solution.LoadFrom(solution.Filename);
-            solution2.Version.ShouldEqual(Solution.VS2013);
+            var solution2 = SolutionReader.LoadFrom(solution.Filename);
+            solution2.Version.ShouldEqual(SolutionFileVersioning.VS2013);
 
             //Process.Start(solution.Filename.ToFullPath());
         }
@@ -56,10 +57,10 @@ namespace FubuCsProjFile.Testing
         public void setting_the_version()
         {
             // SAMPLE: setting-version
-            var solution = Solution.CreateNew("MySolution", "MySolution");
-            solution.Version = Solution.VS2010;
-            solution.Version = Solution.VS2012;
-            solution.Version = Solution.VS2013;
+            var solution = SolutionBuilder.CreateNew("MySolution", "MySolution");
+            solution.Version = SolutionFileVersioning.VS2010;
+            solution.Version = SolutionFileVersioning.VS2012;
+            solution.Version = SolutionFileVersioning.VS2013;
             // ENDSAMPLE
         }
     }

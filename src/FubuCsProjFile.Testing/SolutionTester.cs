@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using FubuCore;
 using FubuCsProjFile.ProjectFiles.CsProj;
+using FubuCsProjFile.SolutionFile;
 using NUnit.Framework;
 using FubuTestingSupport;
 using System.Collections.Generic;
@@ -16,29 +17,26 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void default_version_is_VS2010_for_now()
         {
-            Solution.CreateNew("foo", "Foo")
+            SolutionBuilder.CreateNew("foo", "Foo")
                 .Version.ShouldEqual(Solution.VS2010);
         }
 
         [Test]
         public void create_new_and_read_build_configurations()
         {
-            var solution = Solution.CreateNew(".", "foo");
+            var solution = SolutionBuilder.CreateNew(".", "foo");
             solution.Configurations().ShouldHaveTheSameElementsAs(
                 new BuildConfiguration("Debug|Any CPU = Debug|Any CPU"),
                 new BuildConfiguration("Debug|x86 = Debug|x86"),
                 new BuildConfiguration("Release|Any CPU = Release|Any CPU"),
                 new BuildConfiguration("Release|x86 = Release|x86")
-                
-                
-                
-                );
+            );
         }
 
         [Test]
         public void create_new_and_read_other_globals()
         {
-            var solution = Solution.CreateNew(".", "foo");
+            var solution = SolutionBuilder.CreateNew(".", "foo");
             solution.FindSection("SolutionProperties").Properties
                 .ShouldHaveTheSameElementsAs("HideSolutionNode = FALSE");
         }
@@ -46,7 +44,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void write_a_solution()
         {
-            var solution = Solution.CreateNew(".".ToFullPath(), "foo");
+            var solution = SolutionBuilder.CreateNew(".".ToFullPath(), "foo");
             solution.Save();
 
             var original =
@@ -70,7 +68,7 @@ namespace FubuCsProjFile.Testing
         public void read_a_solution_with_projects()
         {
             
-            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
+            var solution = SolutionReader.LoadFrom("FubuMVC.SlickGrid.sln");
             solution.Projects.Select(x => x.ProjectName)
                 .ShouldHaveTheSameElementsAs("Solution Items", "FubuMVC.SlickGrid", "FubuMVC.SlickGrid.Testing", "SlickGridHarness", "FubuMVC.SlickGrid.Serenity", "FubuMVC.SlickGrid.Docs");
         }
@@ -79,7 +77,7 @@ namespace FubuCsProjFile.Testing
         public void read_and_write_a_solution_with_projects()
         {
             // SAMPLE: Loading-and-Saving
-            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
+            var solution = SolutionReader.LoadFrom("FubuMVC.SlickGrid.sln");
             solution.Save("fake.sln");
             // ENDSAMPLE
 
@@ -97,7 +95,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void adding_a_project_is_idempotent()
         {
-            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
+            var solution = SolutionReader.LoadFrom("FubuMVC.SlickGrid.sln");
             var projectName = solution.Projects.Last().ProjectName;
 
             var initialCount = solution.Projects.Count();
@@ -115,7 +113,7 @@ namespace FubuCsProjFile.Testing
         public void add_a_project_from_template()
         {
             // SAMPLE: create-project-by-template
-            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
+            var solution = SolutionReader.LoadFrom("FubuMVC.SlickGrid.sln");
             var reference = solution.AddProjectFromTemplate("MyNewProject", Path.Combine("..", "..", "Project.txt"));
             // ENDSAMPLE
 
@@ -132,7 +130,7 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void add_an_existing_project_to_a_new_solution()
         {
-            var solution = Solution.CreateNew(@"solutions\sillydir", "newsolution");
+            var solution = SolutionBuilder.CreateNew(@"solutions\sillydir", "newsolution");
             File.Copy("FubuMVC.SlickGrid.Docs.csproj.fake", "FubuMVC.SlickGrid.Docs.csproj", true);
 
             solution.AddProject(CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj"));
@@ -143,8 +141,8 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void trying_to_add_a_project_from_template_that_already_exists_should_throw()
         {
-            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
-            var projectName = solution.Projects.First().ProjectName;
+            var solution = SolutionReader.LoadFrom("FubuMVC.SlickGrid.sln");
+            var projectName = solution.Projects.OfType<ISolutionProjectFile>().First().ProjectName;
 
             Exception<ArgumentOutOfRangeException>.ShouldBeThrownBy(() => {
                 solution.AddProjectFromTemplate(projectName, Path.Combine("..", "..", "Project.txt"));

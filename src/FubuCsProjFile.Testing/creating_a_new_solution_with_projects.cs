@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using FubuCore;
-using FubuCsProjFile.Templating;
+using FubuCsProjFile.SolutionFile;
 using FubuCsProjFile.Templating.Runtime;
 using FubuTestingSupport;
 using NUnit.Framework;
@@ -26,7 +25,7 @@ namespace FubuCsProjFile.Testing
         public void adding_projects()
         {
             // SAMPLE: adding-project
-            var solution = Solution.CreateNew("TestSolution", "TestSolution");
+            var solution = SolutionBuilder.CreateNew("TestSolution", "TestSolution");
             var reference = solution.AddProject("TestProject");
             // ENDSAMPLE
         }
@@ -37,7 +36,7 @@ namespace FubuCsProjFile.Testing
             // Yeah, this is a big bang test.  Just go with it.
 
             // SAMPLE: create-new-solution
-            var solution = Solution.CreateNew("TestSolution", "TestSolution");
+            var solution = SolutionBuilder.CreateNew("TestSolution", "TestSolution");
             // ENDSAMPLE
 
             var reference = solution.AddProject("TestProject");
@@ -56,7 +55,7 @@ namespace FubuCsProjFile.Testing
             File.Exists("TestSolution".AppendPath("TestSolution.sln")).ShouldBeTrue();
             File.Exists("TestSolution".AppendPath("TestProject", "TestProject.csproj")).ShouldBeTrue();
 
-            var solution2 = Solution.LoadFrom("TestSolution".AppendPath("TestSolution.sln"));
+            var solution2 = SolutionReader.LoadFrom("TestSolution".AppendPath("TestSolution.sln"));
             var reference2 = solution2.FindProject("TestProject");
 
             reference2.ShouldNotBeNull();
@@ -74,7 +73,7 @@ namespace FubuCsProjFile.Testing
         {
             // Yeah, this is a big bang test.  Just go with it.
 
-            var solution = Solution.CreateNew("TestSolution", "Lib1.TestSolution");
+            var solution = SolutionBuilder.CreateNew("TestSolution", "Lib1.TestSolution");
 
             var reference = solution.AddProject("TestProject");
             reference.ProjectGuid.ShouldNotEqual(Guid.Empty);
@@ -91,7 +90,7 @@ namespace FubuCsProjFile.Testing
             File.Exists("TestSolution".AppendPath("Lib1.TestSolution.sln")).ShouldBeTrue();
             File.Exists("TestSolution".AppendPath("TestProject", "TestProject.csproj")).ShouldBeTrue();
 
-            var solution2 = Solution.LoadFrom("TestSolution".AppendPath("Lib1.TestSolution.sln"));
+            var solution2 = SolutionReader.LoadFrom("TestSolution".AppendPath("Lib1.TestSolution.sln"));
             var reference2 = solution2.FindProject("TestProject");
 
             reference2.ShouldNotBeNull();

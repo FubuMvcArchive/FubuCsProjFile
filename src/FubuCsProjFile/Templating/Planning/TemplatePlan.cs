@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FubuCore;
+using FubuCsProjFile.SolutionFile;
 using FubuCsProjFile.Templating.Graph;
 using FubuCsProjFile.Templating.Runtime;
 
@@ -25,7 +26,7 @@ namespace FubuCsProjFile.Templating.Planning
         private readonly IList<ITemplateStep> _steps = new List<ITemplateStep>();
         private readonly Substitutions _substitutions = new Substitutions();
         private ProjectPlan _currentProject;
-        private Solution _solution;
+        private ISolution _solution;
 
 
         public TemplatePlan(string rootDirectory)
@@ -58,7 +59,7 @@ namespace FubuCsProjFile.Templating.Planning
             get { return Root.AppendPath(SourceName); }
         }
 
-        public Solution Solution
+        public ISolution Solution
         {
             get { return _solution; }
             set

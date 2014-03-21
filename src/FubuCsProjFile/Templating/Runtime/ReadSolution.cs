@@ -1,3 +1,4 @@
+using FubuCsProjFile.SolutionFile;
 using FubuCsProjFile.Templating.Planning;
 
 namespace FubuCsProjFile.Templating.Runtime
@@ -13,7 +14,7 @@ namespace FubuCsProjFile.Templating.Runtime
 
         public void Alter(TemplatePlan plan)
         {
-            var solution = Solution.LoadFrom(_solutionFile);
+            var solution = SolutionReader.LoadFrom(_solutionFile);
             plan.Solution = solution;
         }
 

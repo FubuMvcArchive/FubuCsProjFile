@@ -1,4 +1,5 @@
-﻿using FubuCsProjFile.Templating;
+﻿using FubuCsProjFile.SolutionFile;
+using FubuCsProjFile.Templating;
 using FubuCsProjFile.Templating.Graph;
 using FubuCsProjFile.Templating.Planning;
 using FubuCsProjFile.Templating.Runtime;
@@ -63,7 +64,7 @@ namespace FubuCsProjFile.Testing.Templating
             {
                 SolutionName = "MySolution",
                 RootDirectory = "root",
-                Version = Solution.VS2010
+                Version = SolutionFileVersioning.VS2010
             };
 
             var plan = new TemplatePlanBuilder(new TemplateLibrary("."))
@@ -77,7 +78,7 @@ namespace FubuCsProjFile.Testing.Templating
         [Test]
         public void build_with_existing_solution_should_just_read_the_current_one()
         {
-            var original = Solution.CreateNew("root".AppendPath("src"), "MySolution");
+            var original = SolutionBuilder.CreateNew("root".AppendPath("src"), "MySolution");
             original.Save();
 
             var request = new TemplateRequest

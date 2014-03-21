@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using FubuCore;
 using System.Linq;
-using FubuCsProjFile.MSBuild;
 using FubuCsProjFile.ProjectFiles;
-using FubuCsProjFile.ProjectFiles.CsProj;
+using FubuCsProjFile.SolutionFile;
 
 namespace FubuCsProjFile
 {
-    public class SolutionProject
+    [MarkedForTermination]
+    public class SolutionProject : ISolutionProjectFile
     {
-        public static SolutionProject CreateNewAt(string solutionDirectory, string projectName, ProjectType type)
+        public static ISolutionProjectFile CreateNewAt(string solutionDirectory, string projectName, ProjectType type)
         {
             var csProjFile = ProjectCreator.CreateAtSolutionDirectory(projectName, solutionDirectory, type);
             return new SolutionProject(csProjFile, solutionDirectory);
@@ -37,10 +37,15 @@ namespace FubuCsProjFile
 
         public SolutionProject(string text, string solutionDirectory) : this(text, solutionDirectory, ProjectFiles.ProjectType.CsProj)
         {
-            
+
         }
 
-        public SolutionProject(string text, string solutionDirectory, ProjectType type)
+        public SolutionProject(string text, string solutionDirectory, ProjectType type) : this(text, solutionDirectory, type, new FileSystem())
+        {
+
+        }
+
+        public SolutionProject(string text, string solutionDirectory, ProjectType type, IFileSystem fileSystem)
         {
             var parts = text.ToDelimitedArray('=');
             _projectType = Guid.Parse(parts.First().TextBetweenSquiggles());
@@ -50,14 +55,13 @@ namespace FubuCsProjFile
             _projectName = secondParts.First().TextBetweenQuotes();
             _relativePath = secondParts.ElementAt(1).TextBetweenQuotes().Replace("\\", "/"); // Windows is forgiving
 
-
             _project = new Lazy<IProjectFile>(() => {
                 var filename = solutionDirectory.AppendPath(_relativePath);
 
-                if (File.Exists(filename))
+                if (fileSystem.FileExists(filename))
                 {
-                    var projFile = CsProjFile.LoadFrom(filename);
-                    this.InitializeFromSolution(projFile, this.Solution);
+                    var projFile = ProjectLoader.Load(filename);
+                    InitializeFromSolution(projFile, this.Solution);
                     return projFile;
                 }
 
@@ -68,7 +72,7 @@ namespace FubuCsProjFile
             });
         }
 
-        private void InitializeFromSolution(CsProjFile projFile, Solution solution)
+        private void InitializeFromSolution(IProjectFile projFile, Solution solution)
         {
             var tfsSourceControl = solution.Sections.FirstOrDefault(section => section.SectionName.Equals("TeamFoundationVersionControl"));
             if (tfsSourceControl != null)
@@ -77,7 +81,7 @@ namespace FubuCsProjFile
             }
         }
 
-        private void InitializeTfsSourceControlSettings(CsProjFile projFile, Solution solution, GlobalSection tfsSourceControl)
+        private void InitializeTfsSourceControlSettings(IProjectFile projFile, Solution solution, GlobalSection tfsSourceControl)
         {
             var projUnique = tfsSourceControl.Properties.FirstOrDefault(item => item.EndsWith(Path.GetFileName(projFile.FileName)));
             if (projUnique == null)
@@ -101,6 +105,8 @@ namespace FubuCsProjFile
             writer.WriteLine("EndProject");
         }
 
+        public Guid Type { get; private set; }
+
         public Guid ProjectGuid
         {
             get { return _projectGuid; }
@@ -121,9 +127,24 @@ namespace FubuCsProjFile
             get { return _relativePath; }
         }
 
+        public void ForSolutionFile(StringWriter writer)
+        {
+            Write(writer);
+        }
+
         public IProjectFile Project
         {
             get { return _project.Value; }
+        }
+
+        public void Save()
+        {
+            if (!_project.IsValueCreated)
+            {
+                return;
+            }
+
+            _project.Value.Save();
         }
 
         public Solution Solution { get; set; }

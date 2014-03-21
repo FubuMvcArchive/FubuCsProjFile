@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using FubuCsProjFile.SolutionFile;
 using FubuCsProjFile.Templating;
 using FubuCsProjFile.Templating.Planning;
 using FubuCsProjFile.Templating.Runtime;
@@ -105,7 +106,7 @@ end
         [Test]
         public void does_some_substitution()
         {
-            plan.Solution = Solution.CreateNew("rake".AppendPath("src"), "MySolution");
+            plan.Solution = SolutionBuilder.CreateNew("rake".AppendPath("src"), "MySolution");
 
             text = "# %SOLUTION_NAME%";
 
