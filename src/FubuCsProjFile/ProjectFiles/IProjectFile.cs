@@ -16,6 +16,7 @@ namespace FubuCsProjFile.ProjectFiles
         SourceControlInformation SourceControlInformation { get; set; }
         IEnumerable<Guid> ProjectTypes();
         void Save();
+        void Save(string filename);
         T Find<T>(string arg) where T : ProjectItem, new();
         T Add<T>(string arg) where T : ProjectItem, new();
         void Add<T>(T arg) where T : ProjectItem;
@@ -23,10 +24,5 @@ namespace FubuCsProjFile.ProjectFiles
         IEnumerable<T> All<T>() where T : ProjectItem, new();
         void Remove<T>(string arg) where T : ProjectItem, new();
         void Remove<T>(T arg) where T : ProjectItem;
-    }
-
-    internal interface IInternalProjectFile : IProjectFile
-    {
-        void SetProjectGuid(Guid projectGuid);
     }
 }

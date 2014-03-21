@@ -1,8 +1,10 @@
-﻿namespace FubuCsProjFile.ProjectFiles
+﻿using FubuCsProjFile.MSBuild;
+
+namespace FubuCsProjFile.ProjectFiles
 {
     public interface IPojectCreatorForType
     {
-        IProjectFile CreateAtSolutionDirectory(string assemblyName, string directory);
-        IProjectFile CreateAtLocation(string filename, string assemblyName);
+        IProjectFile Create(MSBuildProject project, string filename);
+        MSBuildProject CreateMSBuildProject(string assemblyName);
     }
 }

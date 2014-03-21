@@ -14,17 +14,8 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         public static readonly string V45 = "v4.5";
     }
 
-    public class CsProjFile : IInternalProjectFile
+    public class CsProjFile : IProjectFile
     {
-        /*
-             <RootNamespace>MyProject</RootNamespace>
-    <AssemblyName>MyProject</AssemblyName>
-         */
-        public const string PROJECT_GUID = "ProjectGuid";
-        public const string ROOT_NAMESPACE = "RootNamespace";
-        public const string ASSEMBLY_NAME = "AssemblyName";
-        public const string TARGET_FRAMEWORK_VERSION = "TargetFrameworkVersion";
-
         private readonly string _fileName;
         private readonly MSBuildProject _project;
         private readonly Dictionary<string, ProjectItem> _projectItemCache = new Dictionary<string, ProjectItem>();
@@ -44,7 +35,7 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         {
             get
             {
-                var raw = _project.PropertyGroups.Select(x => x.GetPropertyValue(PROJECT_GUID))
+                var raw = _project.PropertyGroups.Select(x => x.GetPropertyValue(ProjectFileConstants.PROJECT_GUID))
                                   .FirstOrDefault(x => x.IsNotEmpty());
 
                 return raw.IsEmpty() ? Guid.Empty : Guid.Parse(raw.TrimStart('{').TrimEnd('}'));
@@ -56,16 +47,16 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         {
             get
             {
-                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ASSEMBLY_NAME))
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ProjectFileConstants.ASSEMBLY_NAME))
                             ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
 
-                return group.GetPropertyValue(ASSEMBLY_NAME);
+                return group.GetPropertyValue(ProjectFileConstants.ASSEMBLY_NAME);
             }
             set
             {
-                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ASSEMBLY_NAME))
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ProjectFileConstants.ASSEMBLY_NAME))
                             ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
-                group.SetPropertyValue(ASSEMBLY_NAME, value, true);
+                group.SetPropertyValue(ProjectFileConstants.ASSEMBLY_NAME, value, true);
             }
         }
 
@@ -73,16 +64,16 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         {
             get
             {
-                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ROOT_NAMESPACE))
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ProjectFileConstants.ROOT_NAMESPACE))
                             ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
 
-                return group.GetPropertyValue(ROOT_NAMESPACE);
+                return group.GetPropertyValue(ProjectFileConstants.ROOT_NAMESPACE);
             }
             set
             {
-                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ROOT_NAMESPACE))
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ProjectFileConstants.ROOT_NAMESPACE))
                             ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
-                group.SetPropertyValue(ROOT_NAMESPACE, value, true);
+                group.SetPropertyValue(ProjectFileConstants.ROOT_NAMESPACE, value, true);
             }
         }
 
@@ -170,16 +161,16 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         {
             get
             {
-                return _project.PropertyGroups.Select(x => x.GetPropertyValue(TARGET_FRAMEWORK_VERSION))
+                return _project.PropertyGroups.Select(x => x.GetPropertyValue(ProjectFileConstants.TARGET_FRAMEWORK_VERSION))
                                   .FirstOrDefault(x => x.IsNotEmpty());
 
             }
             set
             {
-                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == TARGET_FRAMEWORK_VERSION))
+                var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == ProjectFileConstants.TARGET_FRAMEWORK_VERSION))
                             ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
 
-                group.SetPropertyValue(TARGET_FRAMEWORK_VERSION, value, true);
+                group.SetPropertyValue(ProjectFileConstants.TARGET_FRAMEWORK_VERSION, value, true);
             }
         }
 
@@ -203,7 +194,7 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
         public IEnumerable<Guid> ProjectTypes()
         {
             var raws =
-                _project.PropertyGroups.Select(x => x.GetPropertyValue("ProjectTypeGuids")).Where(x => x.IsNotEmpty());
+                _project.PropertyGroups.Select(x => x.GetPropertyValue(ProjectFileConstants.PROJECT_TYPE_GUIDS)).Where(x => x.IsNotEmpty());
 
             if (raws.Any())
             {
@@ -265,14 +256,6 @@ namespace FubuCsProjFile.ProjectFiles.CsProj
             {
                 element.Remove();
             }
-        }
-
-        void IInternalProjectFile.SetProjectGuid(Guid newGuid)
-        {
-            var group = _project.PropertyGroups.FirstOrDefault(x => x.Properties.Any(p => p.Name == PROJECT_GUID))
-                        ?? _project.PropertyGroups.FirstOrDefault() ?? _project.AddNewPropertyGroup(true);
-
-            group.SetPropertyValue(PROJECT_GUID, newGuid.ToString().ToUpper(), true);
         }
     }
 }

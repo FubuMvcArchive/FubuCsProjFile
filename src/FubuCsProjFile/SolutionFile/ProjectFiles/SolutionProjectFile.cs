@@ -26,8 +26,7 @@ namespace FubuCsProjFile.SolutionFile.ProjectFiles
                     return projFile;
                 }
 
-                var project = ProjectCreator.CreateAtLocation(filename, projectName);
-                project.As<IInternalProjectFile>().SetProjectGuid(projectGuid);
+                var project = ProjectCreator.CreateAtLocation(filename, projectName, projectGuid);
 
                 return project;
             });

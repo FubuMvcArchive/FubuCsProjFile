@@ -47,6 +47,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyReference.cs" />
+    <Compile Include="ProjectFiles\ProjectFileConstants.cs" />
     <Compile Include="SolutionFile\BuildConfiguration.cs" />
     <Compile Include="CodeFile.cs" />
     <Compile Include="Content.cs" />

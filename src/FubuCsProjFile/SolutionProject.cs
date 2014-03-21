@@ -13,8 +13,9 @@ namespace FubuCsProjFile
     {
         public static ISolutionProjectFile CreateNewAt(string solutionDirectory, string projectName, ProjectType type)
         {
-            var csProjFile = ProjectCreator.CreateAtSolutionDirectory(projectName, solutionDirectory, type);
-            return new SolutionProject(csProjFile, solutionDirectory);
+            throw new NotImplementedException();
+//            var csProjFile = ProjectCreator.CreateAtSolutionDirectory(projectName, solutionDirectory, type);
+//            return new SolutionProject(csProjFile, solutionDirectory);
         }
 
         public static readonly string ProjectLineTemplate = "Project(\"{{{0}}}\") = \"{1}\", \"{2}\", \"{{{3}}}\"";
@@ -65,8 +66,7 @@ namespace FubuCsProjFile
                     return projFile;
                 }
 
-                var project = ProjectCreator.CreateAtLocation(filename, _projectName, type);
-                project.As<IInternalProjectFile>().SetProjectGuid(_projectGuid);
+                var project = ProjectCreator.CreateAtLocation(filename, _projectName, type, _projectGuid);
 
                 return project;
             });

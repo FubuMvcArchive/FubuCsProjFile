@@ -77,7 +77,7 @@ namespace FubuCsProjFile.SolutionFile
 //            var reference = SolutionProject.CreateNewAt(ParentDirectory, projectName, type);
 //            var csProjFile = ProjectCreator.CreateAtSolutionDirectory(projectName, solutionDirectory, type);
 //            return new SolutionProject(csProjFile, solutionDirectory);
-            var projectFile = ProjectCreator.CreateAtSolutionDirectory(projectName, ParentDirectory, type);
+            var projectFile = ProjectCreator.CreateAtSolutionDirectory(projectName, ParentDirectory, type, Guid.NewGuid());
             var solutionProjectFile = new SolutionProjectFile(projectFile, ParentDirectory);
             Projects.Add(solutionProjectFile);
 
@@ -98,7 +98,13 @@ namespace FubuCsProjFile.SolutionFile
         }
 
         // TODO: FSharp Support - This is strongly tied to csproj files
+        [MarkedForTermination]
         public ISolutionProjectFile AddProjectFromTemplate(string projectName, string projectTemplateFile)
+        {
+            return AddProjectFromTemplate(projectName, projectTemplateFile, ProjectType.CsProj);
+        }
+
+        public ISolutionProjectFile AddProjectFromTemplate(string projectName, string projectTemplateFile, ProjectType type)
         {
             var existing = FindProject(projectName);
             if (existing != null)
@@ -106,11 +112,12 @@ namespace FubuCsProjFile.SolutionFile
                 throw new ArgumentOutOfRangeException("projectName", "Project with this name ({0}) already exists in the solution".ToFormat(projectName));
             }
 
-            var project = MSBuildProject.CreateFromFile(projectName, projectTemplateFile);
-            var csProjFile = new CsProjFile(ParentDirectory.AppendPath(projectName, projectName + ".csproj"), project);
-            csProjFile.As<IInternalProjectFile>().SetProjectGuid(Guid.NewGuid());
+            var filename = ParentDirectory.AppendPath(projectName, projectName + "." + type.ToString().ToLower());
 
-            var reference = new SolutionProjectFile(csProjFile, ParentDirectory);
+            var msBuildProject = MSBuildProject.CreateFromFile(projectName, projectTemplateFile);
+            var project = ProjectCreator.Create(msBuildProject, filename, Guid.NewGuid(), type);
+
+            var reference = new SolutionProjectFile(project, ParentDirectory);
             Projects.Add(reference);
 
             return reference;

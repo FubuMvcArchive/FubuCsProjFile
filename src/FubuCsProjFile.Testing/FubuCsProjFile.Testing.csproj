@@ -71,7 +71,7 @@
     <Compile Include="BuildConfigurationTester.cs" />
     <Compile Include="ContentTester.cs" />
     <Compile Include="creating_a_new_solution_with_projects.cs" />
-    <Compile Include="CsProjFileTester.cs" />
+    <Compile Include="ProjectFiles\CsProj\CsProjFileTester.cs" />
     <Compile Include="DataMother.cs" />
     <Compile Include="FrameworkNameDetectorTests.cs" />
     <Compile Include="GlobalSectionTester.cs" />
