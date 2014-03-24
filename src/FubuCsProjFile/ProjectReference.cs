@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
 
@@ -14,6 +15,14 @@ namespace FubuCsProjFile
         public ProjectReference(string include)
             : base("ProjectReference", include)
         {
+        }
+
+        public ProjectReference(CsProjFile targetProject, CsProjFile reference) : base("ProjectReference")
+        {
+            this.Include = Path.Combine(reference.ProjectDirectory.PathRelativeTo(targetProject.ProjectDirectory),
+                Path.GetFileName(reference.FileName));
+            this.ProjectGuid = reference.ProjectGuid;
+            this.ProjectName = reference.ProjectName;
         }
 
         public Guid ProjectGuid { get; set; }

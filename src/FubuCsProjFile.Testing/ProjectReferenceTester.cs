@@ -9,13 +9,19 @@ namespace FubuCsProjFile.Testing
     public class reading_a_project_reference_from_text
     {
         private SolutionProject theSolutionProject;
-
+        
         [SetUp]
         public void SetUp()
         {
-            new FileSystem().CreateDirectory("Solution1");
-            new FileSystem().CleanDirectory("Solution1");
+            var fileSystem = new FileSystem();
+            fileSystem.CreateDirectory("Solution1");
+            fileSystem.CleanDirectory("Solution1");
 
+            fileSystem.CreateDirectory(@"Solution1\docs");
+            fileSystem.CreateDirectory(@"Solution1\harness");
+            fileSystem.Copy("SlickGridHarness.csproj.fake", @"Solution1\harness\SlickGridHarness.csproj");
+            fileSystem.Copy("FubuMVC.SlickGrid.Docs.csproj.fake", @"Solution1\docs\FubuMVC.SlickGrid.Docs.csproj");
+            
             theSolutionProject = new SolutionProject("Project(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"FubuMVC.SlickGrid\", \"FubuMVC.SlickGrid\\FubuMVC.SlickGrid.csproj\", \"{A67A0CE1-E4C2-45FC-9019-829D434B2CC4}\"", "Solution1");
         }
 
@@ -51,6 +57,18 @@ namespace FubuCsProjFile.Testing
         public void the_relative_path()
         {
             theSolutionProject.RelativePath.ShouldEqual("FubuMVC.SlickGrid/FubuMVC.SlickGrid.csproj");
+        }
+
+        [Test]
+        public void creating_a_project_references_from_a_project_copies_attributes()
+        {
+            var sourceProject = new CsProjFile(@"Solution1\harness\SlickGridHarness.csproj");
+            var targetProject = new CsProjFile(@"Solution1\docs\FubuMVC.SlickGrid.Docs.csproj");
+            var projectReference = new ProjectReference(targetProject, sourceProject);
+
+            projectReference.Include.ShouldEqual(@"..\harness\SlickGridHarness.csproj");
+            projectReference.ProjectGuid.ShouldEqual(sourceProject.ProjectGuid);
+            projectReference.ProjectName.ShouldEqual(sourceProject.ProjectName);
         }
     }
 }
