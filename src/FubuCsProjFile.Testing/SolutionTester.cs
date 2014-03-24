@@ -58,11 +58,24 @@ namespace FubuCsProjFile.Testing
 
 
 
-            var newContent = new FileSystem().ReadStringFromFile("foo.sln").SplitOnNewLine();
+            var newContent = new FileSystem().ReadStringFromFile("foo.sln").Trim().SplitOnNewLine();
 
             // skipping 2 is to ignore the version content
             newContent.Skip(2).ShouldHaveTheSameElementsAs(original);
 
+        }
+
+        /// <summary>
+        /// Visual studio produces solution files with an empty last line.
+        /// To minimize version control changes, lets mimic this behaviour.
+        /// </summary>
+        [Test]
+        public void write_a_solution_should_end_in_blank_line()
+        {
+            var solution = Solution.CreateNew(".".ToFullPath(), "foo");
+            solution.Save();
+
+            new FileSystem().ReadStringFromFile("foo.sln").ShouldEndWith(Environment.NewLine);
         }
 
         [Test]
@@ -83,7 +96,7 @@ namespace FubuCsProjFile.Testing
             // ENDSAMPLE
 
             var original =
-                new FileSystem().ReadStringFromFile("FubuMVC.SlickGrid.sln").Trim().SplitOnNewLine()
+                new FileSystem().ReadStringFromFile("FubuMVC.SlickGrid.sln").SplitOnNewLine()
                 .Select(x => x.Replace('\\', '/'));
 
             var newContent = new FileSystem().ReadStringFromFile("fake.sln").SplitOnNewLine().Select(x => x.Replace('\\', '/'));

@@ -23,6 +23,7 @@ namespace FubuCsProjFile
         private readonly string _relativePath;
 
         private readonly IList<string> _directives = new List<string>();
+        private readonly IList<ProjectSection> _projectSections = new List<ProjectSection>(); 
         private readonly Lazy<CsProjFile> _project;
 
         public SolutionProject(CsProjFile csProjFile, string solutionDirectory)
@@ -91,6 +92,7 @@ namespace FubuCsProjFile
             writer.WriteLine(ProjectLineTemplate, _projectType.ToString().ToUpper(), _projectName, _relativePath.Replace('/', Path.DirectorySeparatorChar), _projectGuid.ToString().ToUpper());
 
             _directives.Each(x => writer.WriteLine(x));
+            _projectSections.Each(x => x.Write(writer));
 
             writer.WriteLine("EndProject");
         }
@@ -122,12 +124,59 @@ namespace FubuCsProjFile
 
         public Solution Solution { get; set; }
 
+        public IList<ProjectSection> ProjectSections
+        {
+            get { return _projectSections; }
+        }
+
+        public ProjectDependenciesSection ProjectDependenciesSection
+        {
+            get
+            {
+                return this.ProjectSections.OfType<ProjectDependenciesSection>().FirstOrDefault();
+            }
+        }
+
         public void ReadLine(string text)
         {
             _directives.Add(text);
         }
 
+        public void AddProjectDependency(Guid projectGuid)
+        {
+            if (this.ProjectDependenciesSection == null)
+            {
+                this.ProjectSections.Add(new ProjectDependenciesSection());
+            }
 
+// ReSharper disable once PossibleNullReferenceException, won't be null here, added above
+            this.ProjectDependenciesSection.Add(projectGuid);
+        }
+
+        public void RemoveProjectDependency(Guid guid)
+        {
+            if (this.ProjectDependenciesSection == null)
+            {
+                return;
+            }
+
+            this.ProjectDependenciesSection.Remove(guid);
+            if (this.ProjectDependenciesSection.Dependencies.Count == 0)
+            {
+                this.ProjectSections.Remove(this.ProjectDependenciesSection);
+            }
+        }
+
+        public void RemoveAllProjectDependencies()
+        {
+            if (this.ProjectDependenciesSection == null)
+            {
+                return;
+            }
+
+            this.ProjectDependenciesSection.Clear();
+            this.ProjectSections.Remove(this.ProjectDependenciesSection);
+        }
     }
 
     public static class CsProjFileExtensions
