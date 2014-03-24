@@ -262,9 +262,9 @@ namespace FubuCsProjFile
         /// </summary>
         /// <param name="projectName"></param>
         /// <returns></returns>
-        public ISolutionProjectFile AddProject(string projectName)
+        public ISolutionProjectFile GetOrAddProject(string projectName)
         {
-            return AddProject(projectName, ProjectType.CsProj);
+            return GetOrAddProject(projectName, ProjectType.CsProj);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace FubuCsProjFile
         /// <param name="projectName"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public ISolutionProjectFile AddProject(string projectName, ProjectType type)
+        public ISolutionProjectFile GetOrAddProject(string projectName, ProjectType type)
         {
             var existing = FindProject(projectName);
             if (existing != null)

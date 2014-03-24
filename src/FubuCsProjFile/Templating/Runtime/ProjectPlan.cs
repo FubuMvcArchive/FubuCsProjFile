@@ -60,7 +60,7 @@ namespace FubuCsProjFile.Templating.Runtime
                 if (ProjectTemplateFile.IsEmpty())
                 {
                     plan.Logger.Trace("Creating project {0} from the default template", _projectName);
-                    reference = plan.Solution.AddProject(_projectName);
+                    reference = plan.Solution.GetOrAddProject(_projectName);
                 }
                 else
                 {

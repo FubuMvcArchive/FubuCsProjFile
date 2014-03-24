@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using FubuCsProjFile.ProjectFiles;
 
 namespace FubuCsProjFile.SolutionFile
 {
@@ -11,11 +10,5 @@ namespace FubuCsProjFile.SolutionFile
         string ProjectName { get; }
         string RelativePath { get; }
         void ForSolutionFile(StringWriter writer);
-    }
-
-    public interface ISolutionProjectFile : ISolutionProject
-    {
-        IProjectFile Project { get; } 
-        void Save();
     }
 }

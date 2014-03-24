@@ -26,7 +26,7 @@ namespace FubuCsProjFile.Testing
         {
             // SAMPLE: adding-project
             var solution = SolutionBuilder.CreateNew("TestSolution", "TestSolution");
-            var reference = solution.AddProject("TestProject");
+            var reference = solution.GetOrAddProject("TestProject");
             // ENDSAMPLE
         }
 
@@ -39,7 +39,7 @@ namespace FubuCsProjFile.Testing
             var solution = SolutionBuilder.CreateNew("TestSolution", "TestSolution");
             // ENDSAMPLE
 
-            var reference = solution.AddProject("TestProject");
+            var reference = solution.GetOrAddProject("TestProject");
             reference.ProjectGuid.ShouldNotEqual(Guid.Empty);
             reference.ProjectName.ShouldEqual("TestProject");
             reference.RelativePath.ShouldEqual("TestProject".AppendPath("TestProject.csproj"));
@@ -75,7 +75,7 @@ namespace FubuCsProjFile.Testing
 
             var solution = SolutionBuilder.CreateNew("TestSolution", "Lib1.TestSolution");
 
-            var reference = solution.AddProject("TestProject");
+            var reference = solution.GetOrAddProject("TestProject");
             reference.ProjectGuid.ShouldNotEqual(Guid.Empty);
             reference.ProjectName.ShouldEqual("TestProject");
             reference.RelativePath.ShouldEqual("TestProject".AppendPath("TestProject.csproj"));

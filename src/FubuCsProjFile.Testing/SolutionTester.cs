@@ -100,10 +100,10 @@ namespace FubuCsProjFile.Testing
 
             var initialCount = solution.Projects.Count();
 
-            solution.AddProject(projectName);
-            solution.AddProject(projectName);
-            solution.AddProject(projectName);
-            solution.AddProject(projectName);
+            solution.GetOrAddProject(projectName);
+            solution.GetOrAddProject(projectName);
+            solution.GetOrAddProject(projectName);
+            solution.GetOrAddProject(projectName);
 
             solution.Projects.Count().ShouldEqual(initialCount);
 

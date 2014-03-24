@@ -2,35 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
 using FubuCsProjFile.ProjectFiles;
-using FubuCsProjFile.ProjectFiles.CsProj;
 using FubuCsProjFile.SolutionFile.ProjectFiles;
 
 namespace FubuCsProjFile.SolutionFile
 {
-    public interface ISolution
-    {
-        IList<ISolutionProject> Projects { get; }
-        string Filename { get; }
-        string ParentDirectory { get; }
-        IList<GlobalSection> Sections { get; }
-        string Version { get; set; }
-        string Name { get; }
-        ISolutionProjectFile FindProject(string projectName);
-        // TODO: right now is defaulting to CsProj project type, should we mark this for termination or is that a good default?
-        ISolutionProjectFile AddProject(string projectName);
-        ISolutionProjectFile AddProject(string projectName, ProjectType type);
-        ISolutionProjectFile AddProject(IProjectFile project);
-        ISolutionProjectFile AddProjectFromTemplate(string projectName, string projectTemplateFile);
-        void Save();
-        void Save(string path);
-        IEnumerable<BuildConfiguration> Configurations();
-        GlobalSection FindSection(string name);
-    }
-
     public class Solution : ISolution
     {
         public IList<ISolutionProject> Projects { get; private set; }
@@ -61,12 +39,12 @@ namespace FubuCsProjFile.SolutionFile
             return Projects.OfType<ISolutionProjectFile>().FirstOrDefault(x => x.ProjectName == projectName);
         }
 
-        public ISolutionProjectFile AddProject(string projectName)
+        public ISolutionProjectFile GetOrAddProject(string projectName)
         {
-            return AddProject(projectName, ProjectType.CsProj);
+            return GetOrAddProject(projectName, ProjectType.CsProj);
         }
 
-        public ISolutionProjectFile AddProject(string projectName, ProjectType type)
+        public ISolutionProjectFile GetOrAddProject(string projectName, ProjectType type)
         {
             var existing = FindProject(projectName);
             if (existing != null)
@@ -74,9 +52,6 @@ namespace FubuCsProjFile.SolutionFile
                 return existing;
             }
 
-//            var reference = SolutionProject.CreateNewAt(ParentDirectory, projectName, type);
-//            var csProjFile = ProjectCreator.CreateAtSolutionDirectory(projectName, solutionDirectory, type);
-//            return new SolutionProject(csProjFile, solutionDirectory);
             var projectFile = ProjectCreator.CreateAtSolutionDirectory(projectName, ParentDirectory, type, Guid.NewGuid());
             var solutionProjectFile = new SolutionProjectFile(projectFile, ParentDirectory);
             Projects.Add(solutionProjectFile);
@@ -89,7 +64,7 @@ namespace FubuCsProjFile.SolutionFile
             var existing = FindProject(project.ProjectName);
             if (existing != null)
             {
-                return existing;
+                throw new ArgumentException("Project {0} already exists in the solution".ToFormat(project.ProjectName), "project");
             }
             
             var reference = new SolutionProjectFile(project, ParentDirectory);
