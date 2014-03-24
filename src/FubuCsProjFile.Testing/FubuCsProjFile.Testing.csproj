@@ -80,6 +80,7 @@
     <Compile Include="NoneTester.cs" />
     <Compile Include="ProjectReferenceTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SolutionProjectTester.cs" />
     <Compile Include="SolutionTester.cs" />
     <Compile Include="Solution_can_read_and_write_with_versions_Tester.cs" />
     <Compile Include="StringExtensionsTester.cs" />

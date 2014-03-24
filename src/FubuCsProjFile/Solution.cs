@@ -14,6 +14,7 @@ namespace FubuCsProjFile
         private const string Global = "Global";
         private const string EndGlobal = "EndGlobal";
         public const string EndGlobalSection = "EndGlobalSection";
+        public const string EndProjectSection = "EndProjectSection";
         private const string SolutionConfigurationPlatforms = "SolutionConfigurationPlatforms";
         private const string ProjectConfigurationPlatforms = "ProjectConfigurationPlatforms";
 
@@ -113,6 +114,7 @@ namespace FubuCsProjFile
             private readonly Solution _parent;
             private Action<string> _read;
             private GlobalSection _section;
+            private ProjectSection _projectSection;
             private SolutionProject _solutionProject;
 
             public SolutionReader(Solution parent)
@@ -132,6 +134,16 @@ namespace FubuCsProjFile
                     _read = readSection;
                 }
             }
+            private void lookForProjectSection(string text)
+            {
+                text = text.Trim();
+                if (text.Trim().StartsWith("ProjectSection"))
+                {
+                    _projectSection = text.Trim().StartsWith("ProjectSection(ProjectDependencies)") ? new ProjectDependenciesSection(text) : new ProjectSection(text);
+                    _solutionProject.ProjectSections.Add(_projectSection);
+                    _read = readProjectSection;
+                }
+            }
 
             private void readSection(string text)
             {
@@ -145,15 +157,34 @@ namespace FubuCsProjFile
                 }
             }
 
+            private void readProjectSection(string text)
+            {
+                if (text.Trim() == EndProjectSection)
+                {
+                    _read = readProject;
+                }
+                else
+                {
+                    _projectSection.Read(text);
+                }
+            }
+
             private void readProject(string text)
             {
-                if (text.StartsWith("EndProject"))
+                if (text.Trim().StartsWith("EndProject"))
                 {
                     _read = normalRead;
                 }
                 else
                 {
-                    _solutionProject.ReadLine(text);
+                    if (text.Trim().StartsWith("ProjectSection"))
+                    {
+                        lookForProjectSection(text);
+                    }
+                    else
+                    {
+                        _solutionProject.ReadLine(text);
+                    }
                 }
             }
 
@@ -162,6 +193,10 @@ namespace FubuCsProjFile
                 if (text.StartsWith(Global))
                 {
                     _read = lookForGlobalSection;
+                }
+                else if (text.StartsWith("ProjectSection"))
+                {
+                    _read = lookForProjectSection;
                 }
                 else if (text.StartsWith("Project"))
                 {
@@ -223,8 +258,7 @@ namespace FubuCsProjFile
 
             writer.WriteLine(EndGlobal);
 
-
-            new FileSystem().WriteStringToFile(filename, writer.ToString().TrimEnd());
+            new FileSystem().WriteStringToFile(filename, writer.ToString());
 
             _projects.Each(x => x.Project.Save());
         }
