@@ -131,6 +131,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="FubuMVC.SlickGridTFS.Aux.sln">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="FubuMVC.SlickGridTFS.sln">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

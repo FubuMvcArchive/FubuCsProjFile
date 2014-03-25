@@ -80,11 +80,14 @@ namespace FubuCsProjFile
                 return;
             }
 
-            int index = tfsSourceControl.Properties.IndexOf(projUnique);
+            int index =
+                Convert.ToInt32(projUnique.Substring("SccProjectUniqueName".Length,
+                    projUnique.IndexOf('=') - "SccProjectUniqueName".Length).Trim());
+
             projFile.SourceControlInformation = new SourceControlInformation(
-                tfsSourceControl.Properties[index].Split('=')[1].Trim(),
-                tfsSourceControl.Properties[index + 1].Split('=')[1].Trim(),
-                tfsSourceControl.Properties[index + 2].Split('=')[1].Trim());            
+                tfsSourceControl.Properties.First(item => item.StartsWith("SccProjectUniqueName" + index)).Split('=')[1].Trim(),
+                tfsSourceControl.Properties.First(item => item.StartsWith("SccProjectName" + index)).Split('=')[1].Trim(),
+                tfsSourceControl.Properties.First(item => item.StartsWith("SccLocalPath" + index)).Split('=')[1].Trim());            
         }
 
         public void Write(StringWriter writer)
