@@ -282,6 +282,18 @@ namespace FubuCsProjFile.Testing
             project.SourceControlInformation.ProjectLocalPath.ShouldEqual(@"..\\SlickGridHarness");
         }
 
+        [Test]
+        public void can_read_source_control_information_when_aux_path_is_specified()
+        {
+            var solution = Solution.LoadFrom("FubuMVC.SlickGridTFS.Aux.sln");
+            var project = solution.Projects.First(item => item.ProjectName == "FubuMVC.SlickGrid").Project;
+
+            project.SourceControlInformation.ShouldNotBeNull();
+            project.SourceControlInformation.ProjectUniqueName.ShouldEqual(@"..\\FubuMVC.SlickGrid\\FubuMVC.SlickGrid.csproj");
+            project.SourceControlInformation.ProjectName.ShouldEqual(@"../FubuMVC.SlickGrid");
+            project.SourceControlInformation.ProjectLocalPath.ShouldEqual(@"..\\FubuMVC.SlickGrid");
+        }
+
 
         [Test]
         public void can_read_reference_with_hint_path()
