@@ -45,6 +45,12 @@ namespace FubuCsProjFile
             }
         }
 
+        public bool Empty
+        {
+            get { return Properties == null || Properties.Count == 0; }
+            
+        }
+
         public void Read(string text)
         {
             _properties.Add(text.Trim());

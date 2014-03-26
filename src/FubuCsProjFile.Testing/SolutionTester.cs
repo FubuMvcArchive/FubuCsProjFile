@@ -42,29 +42,6 @@ namespace FubuCsProjFile.Testing
                 .ShouldHaveTheSameElementsAs("HideSolutionNode = FALSE");
         }
 
-        [Test]
-        public void write_a_solution()
-        {
-            var solution = Solution.CreateNew(".".ToFullPath(), "foo");
-            solution.Save();
-
-            var original =
-                new FileSystem().ReadStringFromFile(
-                    ".".ToFullPath()
-                       .ParentDirectory()
-                       .ParentDirectory()
-                       .ParentDirectory()
-                       .AppendPath("FubuCsProjFile", "Solution.txt")).SplitOnNewLine();
-
-
-
-            var newContent = new FileSystem().ReadStringFromFile("foo.sln").Trim().SplitOnNewLine();
-
-            // skipping 2 is to ignore the version content
-            newContent.Skip(2).ShouldHaveTheSameElementsAs(original);
-
-        }
-
         /// <summary>
         /// Visual studio produces solution files with an empty last line.
         /// To minimize version control changes, lets mimic this behaviour.
@@ -77,6 +54,22 @@ namespace FubuCsProjFile.Testing
 
             new FileSystem().ReadStringFromFile("foo.sln").ShouldEndWith(Environment.NewLine);
         }
+        
+        /// <summary>
+        /// 2013 introduces to new lines after the #Visual Studio 2013 line
+        /// VisualStudioVersion = 12.0.21005.1
+        /// MinimumVisualStudioVersion = 10.0.40219.1
+        /// </summary>
+        [Test]
+        public void write_a_2013_solution_should_preserve_new_version_meta_data()
+        {
+            var solution = Solution.LoadFrom("BlankSolution.2013.sln");
+            solution.Version.ShouldEqual("VS2013");
+
+            solution.Save("BlankSolution.2013.saved.sln");
+
+            File.ReadAllLines("BlankSolution.2013.saved.sln").ShouldEqual(File.ReadAllLines("BlankSolution.2013.sln"));
+        }
 
         [Test]
         public void read_a_solution_with_projects()
@@ -85,6 +78,27 @@ namespace FubuCsProjFile.Testing
             var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
             solution.Projects.Select(x => x.ProjectName)
                 .ShouldHaveTheSameElementsAs("Solution Items", "FubuMVC.SlickGrid", "FubuMVC.SlickGrid.Testing", "SlickGridHarness", "FubuMVC.SlickGrid.Serenity", "FubuMVC.SlickGrid.Docs");
+        }
+
+        [Test]
+        public void read_a_solution_correctly_reports_2010_version()
+        {
+            var solution = Solution.LoadFrom("BlankSolution.2010.sln");
+            solution.Version.ShouldEqual("VS2010");
+        }
+
+        [Test]
+        public void read_a_solution_correctly_reports_2012_version()
+        {
+            var solution = Solution.LoadFrom("BlankSolution.2012.sln");
+            solution.Version.ShouldEqual("VS2012");
+        }
+
+        [Test]
+        public void read_a_solution_correctly_reports_2013_version()
+        {
+            var solution = Solution.LoadFrom("BlankSolution.2013.sln");
+            solution.Version.ShouldEqual("VS2013");
         }
 
         [Test]
