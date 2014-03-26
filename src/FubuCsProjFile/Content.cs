@@ -1,9 +1,12 @@
-﻿using FubuCsProjFile.MSBuild;
+﻿using FubuCore;
+using FubuCsProjFile.MSBuild;
 
 namespace FubuCsProjFile
 {
     public class Content : ProjectItem
     {
+        private const string LinkAtt = "Link";
+
         public static readonly string CopyToOutputDirectoryAtt = "CopyToOutputDirectory";
 
         public Content() : base("Content")
@@ -22,6 +25,8 @@ namespace FubuCsProjFile
         }
 
         public ContentCopy CopyToOutputDirectory { get; set; }
+
+        public string Link { get; set; }
 
         internal override MSBuildItem Configure(MSBuildItemGroup @group)
         {
@@ -54,6 +59,8 @@ namespace FubuCsProjFile
                     CopyToOutputDirectory = ContentCopy.IfNewer;
                     break;
             }
+
+            Link = item.HasMetadata(LinkAtt) ? item.GetMetadata(LinkAtt) : null;
         }
 
         internal override void Save()
@@ -73,6 +80,11 @@ namespace FubuCsProjFile
                 case ContentCopy.IfNewer:
                     this.BuildItem.SetMetadata(CopyToOutputDirectoryAtt, "PreserveNewest");
                     break;
+            }
+
+            if (Link.IsNotEmpty())
+            {
+                this.BuildItem.SetMetadata(LinkAtt, Link);
             }
         }
     }

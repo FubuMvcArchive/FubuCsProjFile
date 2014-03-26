@@ -1,4 +1,5 @@
-﻿using FubuTestingSupport;
+﻿using System.IO;
+using FubuTestingSupport;
 using NUnit.Framework;
 
 namespace FubuCsProjFile.Testing
@@ -68,6 +69,25 @@ namespace FubuCsProjFile.Testing
             var project2 = CsProjFile.LoadFrom(project.FileName);
             project2.Find<Content>("Something.txt")
                 .CopyToOutputDirectory.ShouldEqual(ContentCopy.IfNewer);
+        }
+
+        [Test]
+        public void read_link_element_value()
+        {
+            var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj.fake");
+            project.Find<Content>(@"..\..\..\Config\App.config").Link.ShouldEqual("App.config");
+        }
+
+        [Test]
+        public void write_link_element_value()
+        {
+            File.Copy("FubuMVC.SlickGrid.Docs.csproj.fake", "FubuMVC.SlickGrid.Docs.csproj", true);
+            var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
+            project.Find<Content>(@"..\..\..\Config\App.config").Link = "App.exe.config";
+            project.Save();
+
+            project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
+            project.Find<Content>(@"..\..\..\Config\App.config").Link.ShouldEqual("App.exe.config");
         }
     }
 }
