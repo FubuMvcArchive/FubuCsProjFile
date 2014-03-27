@@ -162,5 +162,19 @@ namespace FubuCsProjFile.Testing
                 solution.AddProjectFromTemplate(projectName, Path.Combine("..", "..", "Project.txt"));
             });
         }
+
+        [Test]
+        public void remove_an_existing_project_from_a_solution()
+        {
+            File.Copy("FubuMVC.SlickGrid.sln", "FubuMVC.SlickGrid.Temp.sln", true);
+            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.Temp.sln");
+            int originalProjectcount = solution.Projects.Count();
+
+            solution.RemoveProject(solution.Projects.First().Project);
+            solution.Save();
+
+            solution = Solution.LoadFrom("FubuMVC.SlickGrid.Temp.sln");
+            solution.Projects.Count().ShouldEqual(originalProjectcount - 1);
+        }
     }
 }
