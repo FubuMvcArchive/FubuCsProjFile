@@ -285,6 +285,8 @@ namespace FubuCsProjFile.Testing
         [Test]
         public void can_read_source_control_information_when_aux_path_is_specified()
         {
+            fileSystem.Copy("FubuMVC.SlickGrid.Docs.csproj.fake", @"FubuMVC.SlickGrid\FubuMVC.SlickGrid.csproj");
+            
             var solution = Solution.LoadFrom("FubuMVC.SlickGridTFS.Aux.sln");
             var project = solution.Projects.First(item => item.ProjectName == "FubuMVC.SlickGrid").Project;
 
