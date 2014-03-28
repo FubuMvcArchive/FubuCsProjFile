@@ -350,6 +350,17 @@ namespace FubuCsProjFile
             return reference;
         }
 
+        public void RemoveProject(CsProjFile project)
+        {
+            var existing = FindProject(project.ProjectName);
+            if (existing == null)
+            {
+                return;
+            }
+
+            _projects.Remove(existing);
+        }
+
         public string ParentDirectory
         {
             get { return _filename.ParentDirectory(); }
