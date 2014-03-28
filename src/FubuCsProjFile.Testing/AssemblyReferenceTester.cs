@@ -35,10 +35,24 @@ namespace FubuCsProjFile.Testing
         }
 
         [Test]
-        public void can_retrieve_the_assembly_name()
+        public void can_retrieve_the_assembly_name_when_hint_path_is_is_specified()
         {
             var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
             project.All<AssemblyReference>().Any(assembly => assembly.AssemblyName.Equals("nunit.framework.dll")).ShouldBeTrue();
+        }
+
+        [Test]
+        public void can_retrieve_the_assembly_name()
+        {
+            var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
+            project.All<AssemblyReference>().Any(assembly => assembly.AssemblyName.Equals("System.Data.DataSetExtensions.dll")).ShouldBeTrue();
+        }
+
+        [Test]
+        public void can_retrieve_the_assembly_name_when_include_contains_version_info()
+        {
+            var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
+            project.All<AssemblyReference>().Any(assembly => assembly.AssemblyName.Equals("Rhino.Mocks.dll")).ShouldBeTrue();
         }
     }
 }
