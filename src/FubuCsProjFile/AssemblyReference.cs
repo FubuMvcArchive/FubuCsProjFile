@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml;
 using FubuCsProjFile.MSBuild;
 using FubuCore;
@@ -33,7 +34,12 @@ namespace FubuCsProjFile
         {
             get
             {
-                return Path.GetFileName(this.HintPath) ?? string.Empty;
+                if (!string.IsNullOrEmpty(this.HintPath))
+                {
+                    return Path.GetFileName(this.HintPath) ?? string.Empty;
+                }
+
+                return string.Format("{0}.dll", this.Include.Split(',')[0]);
             }
         }
 
