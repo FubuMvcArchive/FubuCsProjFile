@@ -227,6 +227,25 @@ namespace FubuCsProjFile
 
         public SourceControlInformation SourceControlInformation { get; set; }
 
+        private AssemblyInfo assemblyInfo;
+        public AssemblyInfo AssemblyInfo
+        {
+            get
+            {
+                if (assemblyInfo == null)
+                {
+                    var codeFile = this.All<CodeFile>().FirstOrDefault(item => item.Include.EndsWith("AssemblyInfo.cs"));
+                    if (codeFile != null)
+                    {
+                        assemblyInfo = new AssemblyInfo(codeFile, this);
+                        this._projectItemCache.Add("AssemblyInfo+" + codeFile.Include, assemblyInfo);
+                    }
+                }
+
+                return assemblyInfo;
+            } 
+        }
+
         public void Save()
         {
             this.Save(_fileName);

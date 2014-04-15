@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using FubuCore;
 
 namespace FubuCsProjFile
@@ -39,6 +40,26 @@ namespace FubuCsProjFile
             }
 
             return true;
+        }
+
+        public static string ExtractVersion(this string source)
+        {
+            var result = new StringBuilder();
+
+            for (int i = 0; i < source.Length; i++)
+            {
+                var value = source[i];
+
+                if ((!Char.IsDigit(value) && value != '.') && result.Length > 0)
+                    break;
+
+                if (Char.IsDigit(value) || (value == '.' && result.Length > 0))
+                {
+                    result.Append(value);
+                }
+            }
+
+            return result.ToString();
         }
     }
 }
