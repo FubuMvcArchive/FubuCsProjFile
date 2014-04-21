@@ -66,7 +66,7 @@ namespace FubuCsProjFile
         {
             for (int i = 0; i < lines.Length; i++)
             {
-                if (lines[i].IndexOf(property, StringComparison.InvariantCultureIgnoreCase) > -1)
+                if (Match(property,lines[i]))
                 {
                     lines[i] = UpdateValueBetweenQuotes(lines[i], value);
                     break;
@@ -76,11 +76,21 @@ namespace FubuCsProjFile
 
         private void Parse(string property, Action<string> action, string[] lines)
         {
-            var rawValue = lines.FirstOrDefault(line => line.ToLower().Contains(property.ToLower()));
+            var rawValue = lines.FirstOrDefault(line => Match(property, line));
             if (!string.IsNullOrWhiteSpace(rawValue))
             {
                 action.Invoke(rawValue);                
             }
+        }
+
+        private static bool Match(string property, string line)
+        {
+            if (line.Trim().StartsWith("//"))
+            {
+                return false;
+            }
+
+            return line.IndexOf(property, StringComparison.InvariantCultureIgnoreCase) > -1;
         }
 
         private string GetValueBetweenQuotes(string value)
