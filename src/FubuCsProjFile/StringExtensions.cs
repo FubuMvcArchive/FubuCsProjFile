@@ -59,7 +59,7 @@ namespace FubuCsProjFile
                 }
             }
 
-            return result.ToString();
+            return result.ToString().TrimEnd('.');
         }
     }
 }
