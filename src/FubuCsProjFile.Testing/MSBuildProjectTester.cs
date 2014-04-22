@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
 using NUnit.Framework;
@@ -15,6 +16,7 @@ namespace FubuCsProjFile.Testing
             var fileSystem = new FileSystem();
             fileSystem.DeleteDirectory("myfoo");
             fileSystem.CreateDirectory("myfoo");
+            fileSystem.Copy("SlickGridHarness.csproj.fake", "SlickGridHarness.csproj");
         }
 
         [Test]
@@ -43,7 +45,6 @@ namespace FubuCsProjFile.Testing
         public void saving_an_unmodified_project_with_minimize_changes_settings_does_not_update_original_project_file()
         {
             const string fileName = "SlickGridHarness.csproj";
-            File.Copy("SlickGridHarness.csproj.fake", "SlickGridHarness.csproj", true);
             MSBuildProject.LoadFrom(fileName).Save(fileName);
 
             var lastWriteTime = File.GetLastWriteTimeUtc(fileName);
@@ -59,7 +60,6 @@ namespace FubuCsProjFile.Testing
         public void can_retrieve_an_import_by_name_as_an_xml_element()
         {
             const string fileName = "SlickGridHarness.csproj";
-            File.Copy("SlickGridHarness.csproj.fake", "SlickGridHarness.csproj", true);
             var buildProject = MSBuildProject.LoadFrom(fileName);
 
             buildProject.FindImport(x => x.Project.Contains("Microsoft.CSharp.targets"))
@@ -72,12 +72,29 @@ namespace FubuCsProjFile.Testing
         public void can_add_an_item_group_after_a_specfic_item()
         {
             const string fileName = "SlickGridHarness.csproj";
-            File.Copy("SlickGridHarness.csproj.fake", "SlickGridHarness.csproj", true);
             var buildProject = MSBuildProject.LoadFrom(fileName);
 
             var csharpTarget = buildProject.FindImport(x => x.Project.Contains("Microsoft.CSharp.targets"));
 
             var propGroup = buildProject.AddNewPropertyGroup(insertAfter: csharpTarget).ShouldNotBeNull();
+        }
+
+        [Test]
+        public void can_read_tools_version()
+        {
+            var project = MSBuildProject.LoadFrom("SlickGridHarness.csproj");
+            project.ToolsVersion.ToString().ShouldEqual("4.0");
+        }
+
+        [Test]
+        public void can_write_tools_version()
+        {
+            var project = MSBuildProject.LoadFrom("SlickGridHarness.csproj");
+            project.ToolsVersion = new Version(12, 0);
+            project.Save("SlickGridHarness.csproj");
+
+            project = MSBuildProject.LoadFrom("SlickGridHarness.csproj");
+            project.ToolsVersion.ToString().ShouldEqual("12.0");
         }
     }
 }
