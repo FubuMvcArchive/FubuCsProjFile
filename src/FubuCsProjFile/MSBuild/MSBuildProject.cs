@@ -84,13 +84,13 @@ namespace FubuCsProjFile.MSBuild
             set { doc.DocumentElement.SetAttribute("DefaultTargets", value); }
         }
 
-        public string ToolsVersion
+        public Version ToolsVersion
         {
-            get { return doc.DocumentElement.GetAttribute("ToolsVersion"); }
+            get { return new Version(doc.DocumentElement.GetAttribute("ToolsVersion")); }
             set
             {
-                if (!string.IsNullOrEmpty(value))
-                    doc.DocumentElement.SetAttribute("ToolsVersion", value);
+                if (value != null)
+                    doc.DocumentElement.SetAttribute("ToolsVersion", value.ToString());
                 else
                     doc.DocumentElement.RemoveAttribute("ToolsVersion");
             }
