@@ -78,6 +78,7 @@
     <Compile Include="Sln.cs" />
     <Compile Include="Solution.cs" />
     <Compile Include="SolutionLoading.cs" />
+    <Compile Include="TargetFrameworkVersion.cs" />
     <Compile Include="Templating\Graph\ProjectCategory.cs" />
     <Compile Include="Templating\Graph\TemplateGraph.cs" />
     <Compile Include="Templating\Graph\Option.cs" />
