@@ -499,7 +499,22 @@ namespace FubuCsProjFile.Testing
             reference2.ProjectGuid.ShouldEqual(reference1.ProjectGuid);
         }
 
+        /// <summary>
+        /// See issue https://github.com/DarthFubuMVC/FubuCsProjFile/issues/111
+        /// </summary>
+        [Test]
+        public void removing_last_item_from_item_group_also_removes_item_group_element_from_project()
+        {
+            var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+            var lastItemInGroup = project.Find<Content>("ripple.dependencies.config");
 
+            project.Remove(lastItemInGroup);
+            project.Save();
+
+            fileSystem.ReadStringFromFile("SlickGridHarness.csproj").ShouldNotContain(
+@"  <ItemGroup>
+  </ItemGroup>");
+        }
 
     }
 }

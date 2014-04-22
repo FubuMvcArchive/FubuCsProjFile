@@ -78,7 +78,18 @@ namespace FubuCsProjFile.MSBuild
 
         public void Remove()
         {
-            if (Element.ParentNode != null) Element.ParentNode.RemoveChild(Element);
+            if (Element.ParentNode != null)
+            {
+                if (Element.ParentNode.ChildNodes.Count == 1 &&
+                    Element.ParentNode.ParentNode != null) // last element in node
+                {
+                    Element.ParentNode.ParentNode.RemoveChild(Element.ParentNode);
+                }
+                else
+                {
+                    Element.ParentNode.RemoveChild(Element);    
+                }                
+            }            
         }
     }
 }
