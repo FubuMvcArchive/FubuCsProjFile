@@ -88,6 +88,7 @@
     <Compile Include="SolutionTester.cs" />
     <Compile Include="Solution_can_read_and_write_with_versions_Tester.cs" />
     <Compile Include="StringExtensionsTester.cs" />
+    <Compile Include="TargetFrameworkVersionTester.cs" />
     <Compile Include="Templating\AssemblyInfoAlterationTester.cs" />
     <Compile Include="Templating\AssemblyReferenceTester.cs" />
     <Compile Include="Templating\CodeFileTemplateTester.cs" />

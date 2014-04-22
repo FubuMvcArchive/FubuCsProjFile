@@ -521,7 +521,7 @@ namespace FubuCsProjFile.Testing
         public void can_read_target_framework()
         {
             var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
-            project.TargetFrameworkVersion.ShouldEqual("v4.0");
+            project.TargetFrameworkVersion.ToString().ShouldEqual("v4.0");
         }
 
         [Test]
@@ -532,7 +532,7 @@ namespace FubuCsProjFile.Testing
             project.Save();
 
             project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
-            project.TargetFrameworkVersion.ShouldEqual("v4.5");
+            project.TargetFrameworkVersion.ToString().ShouldEqual("v4.5");
         }
 
         [Test]

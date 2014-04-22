@@ -246,7 +246,7 @@ namespace FubuCsProjFile
             } 
         }
 
-        public string TargetFrameworkVersion
+        public TargetFrameworkVersion TargetFrameworkVersion
         {
             get
             {
@@ -257,6 +257,8 @@ namespace FubuCsProjFile
                 this.BuildProject.GetGlobalPropertyGroup().SetPropertyValue("TargetFrameworkVersion", value, false);
             }
         }
+
+
         public string Platform
         {
             get
