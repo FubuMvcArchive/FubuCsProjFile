@@ -35,7 +35,7 @@ namespace FubuCsProjFile
                 this.UpdateLine(Lines, "AssemblyCopyright", this.AssemblyCopyright);
                 
                 Array.ForEach(this.Lines, s => result.AppendLine(s));
-                this._fileSystem.WriteStringToFile(this.FullPath, result.ToString());
+                this._fileSystem.WriteStringToFile(this.FullPath, result.ToString().TrimEnd(Environment.NewLine.ToCharArray()));
             }
         }
 

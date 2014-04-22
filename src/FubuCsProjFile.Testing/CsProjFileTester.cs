@@ -516,5 +516,41 @@ namespace FubuCsProjFile.Testing
   </ItemGroup>");
         }
 
+
+        [Test]
+        public void can_read_target_framework()
+        {
+            var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+            project.TargetFrameworkVersion.ShouldEqual("v4.0");
+        }
+
+        [Test]
+        public void can_write_target_framework()
+        {
+            var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+            project.TargetFrameworkVersion = "v4.5";
+            project.Save();
+
+            project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+            project.TargetFrameworkVersion.ShouldEqual("v4.5");
+        }
+
+        [Test]
+        public void can_read_platform()
+        {
+            var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+            project.Platform.ShouldEqual("AnyCPU");
+        }
+
+        [Test]
+        public void can_write_platform()
+        {
+            var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+            project.Platform = "x86";
+            project.Save();
+
+            project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+            project.Platform.ShouldEqual("x86");
+        }
     }
 }

@@ -246,6 +246,29 @@ namespace FubuCsProjFile
             } 
         }
 
+        public string TargetFrameworkVersion
+        {
+            get
+            {
+                return this.BuildProject.GetGlobalPropertyGroup().GetPropertyValue("TargetFrameworkVersion");
+            }
+            set
+            {
+                this.BuildProject.GetGlobalPropertyGroup().SetPropertyValue("TargetFrameworkVersion", value, false);
+            }
+        }
+        public string Platform
+        {
+            get
+            {
+                return this.BuildProject.GetGlobalPropertyGroup().GetPropertyValue("Platform");
+            }
+            set
+            {
+                this.BuildProject.GetGlobalPropertyGroup().SetPropertyValue("Platform", value, false);
+            }
+        }
+
         public void Save()
         {
             this.Save(_fileName);
@@ -297,7 +320,7 @@ namespace FubuCsProjFile
         public string PathTo(CodeFile codeFile)
         {
             var path = codeFile.Include;
-            if (Platform.IsUnix ()) {
+            if (FubuCore.Platform.IsUnix ()) {
                 path = path.Replace ('\\', Path.DirectorySeparatorChar);
             }
             return _fileName.ParentDirectory().AppendPath(path);
