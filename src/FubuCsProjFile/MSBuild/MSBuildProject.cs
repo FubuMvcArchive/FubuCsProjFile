@@ -15,7 +15,7 @@ namespace FubuCsProjFile.MSBuild
     {
         public static MSBuildProject Create(string assemblyName)
         {
-            var text = Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof(MSBuildProject),"Project.txt").ReadAllText();
+            var text = Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof(MSBuildProject), "Project.txt").ReadAllText();
 
             return create(assemblyName, text);
         }
@@ -221,8 +221,8 @@ namespace FubuCsProjFile.MSBuild
                 ItemGroups.Each(group =>
                 {
                     XmlElement[] elements = null;
-                    elements =  @group.Items.Select(x => x.Element).OrderBy(x => x.GetAttribute("Include")).ToArray();
-                             
+                    elements = @group.Items.Select(x => x.Element).OrderBy(x => x.GetAttribute("Include")).ToArray();
+
                     group.Element.RemoveAll();
 
                     elements.Each(x => group.Element.AppendChild(x));
@@ -239,7 +239,7 @@ namespace FubuCsProjFile.MSBuild
             if (endsWithEmptyLine && !content.EndsWith(newLine))
                 content += newLine;
 
-            var shouldSave =  !this.Settings.OnlySaveIfChanged ||
+            var shouldSave = !this.Settings.OnlySaveIfChanged ||
                              (File.Exists(fileName) && !File.ReadAllText(fileName).Equals(content));
 
             if (shouldSave)
@@ -280,7 +280,35 @@ namespace FubuCsProjFile.MSBuild
             }
             return res.GroupCount > 0 ? res : null;
         }
-        
+
+        /// <summary>
+        /// Gets the first debug property group matching the supplied <paramref name="platform"/>.
+        /// </summary>
+        /// <param name="platform">defaults to the global default platform value</param>
+        public MSBuildPropertyGroup GetDebugPropertyGroup(string platform = null)
+        {
+            if (platform == null)
+            {
+                platform = this.GetGlobalPropertyGroup().GetPropertyValue("Platform");
+            }
+
+            return this.PropertyGroups.First(item => item.Condition.Contains(string.Format("{0}|{1}", "Debug", platform), StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        /// <summary>
+        /// Gets the first release property group matching the supplied <paramref name="platform"/>.
+        /// </summary>
+        /// <param name="platform">defaults to the global default platform value</param>
+        public MSBuildPropertyGroup GetReleasePropertyGroup(string platform = null)
+        {
+            if (platform == null)
+            {
+                platform = this.GetGlobalPropertyGroup().GetPropertyValue("Platform");
+            }
+
+            return this.PropertyGroups.First(item => item.Condition.Contains(string.Format("{0}|{1}", "Release", platform), StringComparison.InvariantCultureIgnoreCase));
+        }
+
         public MSBuildPropertyGroup AddNewPropertyGroup(bool insertAtEnd)
         {
             XmlElement elem = doc.CreateElement(null, "PropertyGroup", Schema);
@@ -413,7 +441,7 @@ namespace FubuCsProjFile.MSBuild
                 XmlElement;
             if (elem != null)
             {
-                var parent = (XmlElement) elem.ParentNode;
+                var parent = (XmlElement)elem.ParentNode;
                 parent.RemoveChild(elem);
                 if (!parent.HasChildNodes)
                     parent.ParentNode.RemoveChild(parent);
@@ -423,7 +451,7 @@ namespace FubuCsProjFile.MSBuild
         public void RemoveItem(MSBuildItem item)
         {
             elemCache.Remove(item.Element);
-            var parent = (XmlElement) item.Element.ParentNode;
+            var parent = (XmlElement)item.Element.ParentNode;
             item.Element.ParentNode.RemoveChild(item.Element);
             if (parent.ChildNodes.Count == 0)
             {
@@ -437,7 +465,7 @@ namespace FubuCsProjFile.MSBuild
         {
             MSBuildObject ob;
             if (elemCache.TryGetValue(elem, out ob))
-                return (MSBuildItem) ob;
+                return (MSBuildItem)ob;
             var it = new MSBuildItem(elem);
             elemCache[elem] = it;
             return it;
@@ -447,7 +475,7 @@ namespace FubuCsProjFile.MSBuild
         {
             MSBuildObject ob;
             if (elemCache.TryGetValue(elem, out ob))
-                return (MSBuildPropertyGroup) ob;
+                return (MSBuildPropertyGroup)ob;
             var it = new MSBuildPropertyGroup(this, elem);
             elemCache[elem] = it;
             return it;
@@ -457,7 +485,7 @@ namespace FubuCsProjFile.MSBuild
         {
             MSBuildObject ob;
             if (elemCache.TryGetValue(elem, out ob))
-                return (MSBuildItemGroup) ob;
+                return (MSBuildItemGroup)ob;
             var it = new MSBuildItemGroup(this, elem);
             elemCache[elem] = it;
             return it;
@@ -503,6 +531,6 @@ namespace FubuCsProjFile.MSBuild
             project.Load(fileName);
 
             return project;
-        }       
+        }
     }
 }
