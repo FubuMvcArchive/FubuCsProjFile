@@ -61,5 +61,28 @@ namespace FubuCsProjFile
 
             return result.ToString().TrimEnd('.');
         }
+
+        public static bool Contains(this string source, string value, StringComparison comparison)
+        {
+            switch (comparison)
+            {
+            case StringComparison.CurrentCultureIgnoreCase:
+            case StringComparison.InvariantCultureIgnoreCase:
+            case StringComparison.OrdinalIgnoreCase:
+                if (source == null)
+                {
+                    return false;
+                }
+
+                if (value == null)
+                {
+                    return false;
+                }
+
+                return source.ToLower().Contains(value.ToLower());
+            default:
+                return source.Contains(value);
+            }
+        }
     }
 }

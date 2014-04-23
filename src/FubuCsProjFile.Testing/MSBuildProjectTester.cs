@@ -96,5 +96,25 @@ namespace FubuCsProjFile.Testing
             project = MSBuildProject.LoadFrom("SlickGridHarness.csproj");
             project.ToolsVersion.ToString().ShouldEqual("12.0");
         }
+
+        [Test]
+        public void can_read_debug_property_group()
+        {
+            var project = MSBuildProject.LoadFrom("SlickGridHarness.csproj");
+            var group = project.GetDebugPropertyGroup();
+
+            group.GetPropertyValue("DefineConstants").ShouldEqual("DEBUG;TRACE");
+
+        }
+
+        [Test]
+        public void can_read_release_property_group()
+        {
+            var project = MSBuildProject.LoadFrom("SlickGridHarness.csproj");
+            var group = project.GetReleasePropertyGroup();
+
+            group.GetPropertyValue("DefineConstants").ShouldEqual("TRACE");
+
+        }
     }
 }
