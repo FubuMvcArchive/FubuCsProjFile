@@ -77,7 +77,14 @@ namespace FubuCsProjFile.Testing
             
             var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
             solution.Projects.Select(x => x.ProjectName)
-                .ShouldHaveTheSameElementsAs("Solution Items", "FubuMVC.SlickGrid", "FubuMVC.SlickGrid.Testing", "SlickGridHarness", "FubuMVC.SlickGrid.Serenity", "FubuMVC.SlickGrid.Docs");
+                .ShouldHaveTheSameElementsAs("FubuMVC.SlickGrid", "FubuMVC.SlickGrid.Testing", "SlickGridHarness", "FubuMVC.SlickGrid.Serenity", "FubuMVC.SlickGrid.Docs");
+        }
+
+        [Test]
+        public void read_a_solution_with_folders_correct_project_count()
+        {
+            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
+            solution.Projects.Select(item => item.Project).Count().ShouldEqual(5);
         }
 
         [Test]
