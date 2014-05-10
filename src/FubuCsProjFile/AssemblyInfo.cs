@@ -50,7 +50,7 @@ namespace FubuCsProjFile
         {
             if (this._fileSystem.FileExists(this.FullPath))
             {
-                this.Lines = this._fileSystem.ReadStringFromFile(this.FullPath).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                this.Lines = this._fileSystem.ReadStringFromFile(this.FullPath).SplitOnNewLine();
                 this.Parse("AssemblyVersion", value => this.AssemblyVersion = new Version(value.ExtractVersion()), Lines);
                 this.Parse("AssemblyFileVersion", value => this.AssemblyFileVersion = new Version(value.ExtractVersion()), Lines);
                 this.Parse("AssemblyTitle", value => this.AssemblyTitle = GetValueBetweenQuotes(value), Lines);

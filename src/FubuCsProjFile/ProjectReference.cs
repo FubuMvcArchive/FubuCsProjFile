@@ -63,7 +63,7 @@ namespace FubuCsProjFile
 
         private void UpdateMetadata()
         {
-            this.BuildItem.SetMetadata("Project", "{{{0}}}".ToFormat(ProjectGuid));
+            this.BuildItem.SetMetadata("Project", "{{{0}}}".ToFormat(ProjectGuid).ToUpper());
             if (ProjectName != null)
             {
                 this.BuildItem.SetMetadata("Name", ProjectName);
