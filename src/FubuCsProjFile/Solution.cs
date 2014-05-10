@@ -19,6 +19,7 @@ namespace FubuCsProjFile
         private const string ProjectConfigurationPlatforms = "ProjectConfigurationPlatforms";
 
         public static readonly Guid SolutionFolderId = new Guid("2150E333-8FDC-42A3-9474-1A3956D46DE8");
+        
         public static readonly string VS2010 = "VS2010";
         public static readonly string VS2012 = "VS2012";
         public static readonly string VS2013 = "VS2013";
@@ -200,7 +201,7 @@ namespace FubuCsProjFile
                 {
                     _read = lookForProjectSection;
                 }
-                else if (text.StartsWith("Project") && !text.Contains(Solution.SolutionFolderId.ToString("B"),StringComparison.CurrentCultureIgnoreCase))
+                else if (IncludeAsProject(text))
                 {
                     _solutionProject = new SolutionProject(text, _parent._filename.ParentDirectory());
                     _solutionProject.Solution = _parent;
@@ -221,6 +222,17 @@ namespace FubuCsProjFile
                         }
                     }
                 }
+            }
+
+            private static HashSet<string> ignoredLibraryTypes = new HashSet<string>
+            {
+                SolutionFolderId.ToString("B"),
+                CsProjFile.VisualStudioSetupLibraryType.ToString("B"),
+                CsProjFile.WebSiteLibraryType.ToString("B")
+            }; 
+            public static bool IncludeAsProject(string text)
+            {
+                return text.StartsWith("Project") && !ignoredLibraryTypes.Any(item => text.Contains(item, StringComparison.InvariantCultureIgnoreCase));                    
             }
 
             public void Read(string text)

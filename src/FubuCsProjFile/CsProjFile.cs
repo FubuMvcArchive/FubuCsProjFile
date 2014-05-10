@@ -30,7 +30,8 @@ namespace FubuCsProjFile
         private readonly MSBuildProject _project;
         private readonly Dictionary<string, ProjectItem> _projectItemCache = new Dictionary<string, ProjectItem>();
         public static readonly Guid ClassLibraryType = Guid.Parse("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC");
-
+        public static readonly Guid WebSiteLibraryType = new Guid("E24C65DC-7377-472B-9ABA-BC803B73C61A");
+        public static readonly Guid VisualStudioSetupLibraryType = new Guid("54435603-DBB4-11D2-8724-00A0C9A8B90C");
         public CsProjFile(string fileName) : this(fileName, MSBuildProject.LoadFrom(fileName))
         {
         }
