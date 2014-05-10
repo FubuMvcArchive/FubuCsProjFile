@@ -197,5 +197,37 @@ namespace FubuCsProjFile.Testing
             solution = Solution.LoadFrom("FubuMVC.SlickGrid.Temp.sln");
             solution.Projects.Count().ShouldEqual(originalProjectcount - 1);
         }
+
+        [Test]
+        public void ShouldNotIncludeFoldersAsProjects()
+        {
+            Solution.SolutionReader
+                .IncludeAsProject(@"Project(""{2150E333-8FDC-42A3-9474-1A3956D46DE8}"") = ""Solution Items"", ""Solution Items"", ""{24D46599-0083-4DFF-A42C-415A56BBFE2B}""")
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void ShouldNotIncludeVisualStudioSetupProjects()
+        {
+            Solution.SolutionReader
+                .IncludeAsProject(@"Project(""{54435603-DBB4-11D2-8724-00A0C9A8B90C}"") = ""FooSetup"", ""..\FooSetup.vdproj"", ""{336EAEF9-2092-4AB4-88D5-DFF339F4D670}""")
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void ShouldNotIncludeWebSiteProjects()
+        {
+            Solution.SolutionReader
+                .IncludeAsProject(@"Project(""{E24C65DC-7377-472B-9ABA-BC803B73C61A}"") = ""FooWeb"", ""..\FooWeb"", ""{236EAEF9-2092-4AB4-88D5-DFF339F4D670}""")
+                .ShouldBeFalse();
+        }
+
+        [Test]
+        public void ShouldIncludeLibraryProjects()
+        {
+            Solution.SolutionReader
+                .IncludeAsProject(@"Project(""{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"") = ""Foo"", ""..\Foo.csproj"", ""{326EAEF9-2092-4AB4-88D5-DFF339F4D670}""")
+                .ShouldBeTrue();
+        }
     }
 }
