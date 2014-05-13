@@ -70,5 +70,19 @@ namespace FubuCsProjFile.Testing
             solutionProject.RemoveProjectDependency(new Guid("A67A0CE1-E4C2-45FC-9019-829D434B2CC4"));
             solutionProject.ProjectDependenciesSection.ShouldEqual(null);
         }
+
+        [Test]
+        public void to_string_should_provide_useful_information_including_project_guid()
+        {
+            var solutionProject = Solution.LoadFrom("FubuMVC.SlickGrid.sln").Projects.First(item => item.ProjectName.Equals("FubuMVC.SlickGrid.Testing"));
+            solutionProject.ToString().ShouldContain(solutionProject.ProjectGuid.ToString("B").ToUpper());            
+        }
+
+        [Test]
+        public void to_string_should_provide_useful_information_including_project_name()
+        {
+            var solutionProject = Solution.LoadFrom("FubuMVC.SlickGrid.sln").Projects.First(item => item.ProjectName.Equals("FubuMVC.SlickGrid.Testing"));            
+            solutionProject.ToString().ShouldContain(solutionProject.ProjectName);            
+        }
     }
 }

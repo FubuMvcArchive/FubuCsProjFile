@@ -229,5 +229,12 @@ namespace FubuCsProjFile.Testing
                 .IncludeAsProject(@"Project(""{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"") = ""Foo"", ""..\Foo.csproj"", ""{326EAEF9-2092-4AB4-88D5-DFF339F4D670}""")
                 .ShouldBeTrue();
         }
+
+        [Test]
+        public void to_string_should_provide_useful_information_inculdes_solutioname()
+        {
+            var solution = Solution.LoadFrom("BlankSolution.2013.sln");
+            solution.ToString().ShouldContain(solution.Filename);
+        }
     }
 }

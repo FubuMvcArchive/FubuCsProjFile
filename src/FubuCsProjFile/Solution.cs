@@ -411,5 +411,10 @@ namespace FubuCsProjFile
         {
             return _projects.FirstOrDefault(x => x.ProjectName == projectName);
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}", this.Filename);
+        }
     }
 }
