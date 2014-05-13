@@ -180,6 +180,11 @@ namespace FubuCsProjFile
             this.ProjectDependenciesSection.Clear();
             this.ProjectSections.Remove(this.ProjectDependenciesSection);
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} : {1}", this.ProjectName, this.ProjectGuid.ToString("B").ToUpper());
+        }
     }
 
     public static class CsProjFileExtensions

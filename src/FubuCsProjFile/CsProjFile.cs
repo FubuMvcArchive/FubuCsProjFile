@@ -353,6 +353,11 @@ namespace FubuCsProjFile
                 element.Remove();
             }
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}", this.FileName);
+        }
     }
 }
 

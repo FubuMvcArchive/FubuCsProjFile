@@ -552,5 +552,12 @@ namespace FubuCsProjFile.Testing
             project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
             project.Platform.ShouldEqual("x86");
         }
+
+        [Test]
+        public void to_string_should_provide_useful_information_includes_project_file_name()
+        {
+            var project = CsProjFile.LoadFrom("SlickGridHarness.csproj");
+            project.ToString().ShouldContain(project.FileName);
+        }
     }
 }
