@@ -325,7 +325,20 @@ namespace FubuCsProjFile
         /// </summary>
         /// <param name="projectName"></param>
         /// <returns></returns>
-        public SolutionProject AddProject( string projectName)
+        public SolutionProject AddProject(string projectName)
+        {
+            return AddProject(ParentDirectory, projectName);
+        }
+
+        /// <summary>
+        /// Attaches an existing project of this name to the solution or 
+        /// creates a new project based on a Class Library and attaches
+        /// to the solution
+        /// </summary>
+        /// <param name="solutionFolder"></param>
+        /// <param name="projectName"></param>
+        /// <returns></returns>
+        public SolutionProject AddProject(string solutionFolder, string projectName)
         {
             var existing = FindProject(projectName);
             if (existing != null)
@@ -345,15 +358,24 @@ namespace FubuCsProjFile
         /// <param name="project"></param>
         public void AddProject(CsProjFile project)
         {
+            AddProject(ParentDirectory, project);
+        }
+
+        /// <summary>
+        /// Adds an existing project to the given <paramref name="solutionDirectory"/>.
+        /// </summary>
+        /// <param name="solutionDirectory"></param>
+        /// <param name="project"></param>
+        public void AddProject(string solutionDirectory, CsProjFile project)
+        {
             var existing = FindProject(project.ProjectName);
             if (existing != null)
             {
                 return;
             }
             
-            var reference = new SolutionProject(project, this.ParentDirectory);
+            var reference = new SolutionProject(project, solutionDirectory);
             this._projects.Add(reference);
-
         }
 
         /// <summary>
