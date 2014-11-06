@@ -251,16 +251,18 @@ namespace FubuCsProjFile
         /// <summary>
         /// Save the solution to the known file location
         /// </summary>
-        public void Save()
+        /// <param name="saveProjects">Whether the solution should call Save on all of its child projects, too.</param>
+        public void Save(bool saveProjects = true)
         {
-            Save(_filename);
+            Save(_filename, saveProjects);
         }
 
         /// <summary>
         /// Save the solution to a different file
         /// </summary>
         /// <param name="filename"></param>
-        public void Save(string filename)
+        /// <param name="saveProjects">Whether the solution should call Save on all of its child projects, too.</param>
+        public void Save(string filename, bool saveProjects = true)
         {
             calculateProjectConfigurationPlatforms();
 
@@ -279,7 +281,10 @@ namespace FubuCsProjFile
 
             new FileSystem().WriteStringToFile(filename, writer.ToString());
 
-            _projects.Each(x => x.Project.Save());
+            if (saveProjects)
+            {
+                _projects.Each(x => x.Project.Save());
+            }
         }
 
         private void EnsureHeaders()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FubuCore;
 using FubuTestingSupport;
 using NUnit.Framework;
 
@@ -25,6 +26,20 @@ namespace FubuCsProjFile.Testing
             solution.Save();
 
             File.ReadAllText("FubuMVC.SlickGrid.Copy.sln").ShouldEqual(File.ReadAllText("FubuMVC.SlickGrid.sln"));
+        }
+
+        [Test]
+        public void telling_solution_not_to_save_projects_should_not_save_projects()
+        {
+            var fileSystem = new FileSystem();
+            var fullPathToHarnessProject = fileSystem.GetFullPath(@"SlickGridHarness\SlickGridHarness.csproj");
+
+            var originalWriteTimestamp = new FileInfo(fullPathToHarnessProject).LastWriteTime;
+
+            var solution = Solution.LoadFrom("FubuMVC.SlickGrid.sln");
+            solution.Save(saveProjects: false);
+
+            new FileInfo(fullPathToHarnessProject).LastWriteTime.ShouldEqual(originalWriteTimestamp);
         }
 
         [Test]
