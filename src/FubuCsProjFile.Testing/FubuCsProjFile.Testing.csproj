@@ -67,6 +67,9 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <None Include="AssemblyInfoWithMissingFileVersionAttribute.cs.fake">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="AssemblyInfo.cs.fake">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

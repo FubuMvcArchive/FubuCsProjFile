@@ -24,9 +24,17 @@ namespace FubuCsProjFile
             if (this._fileSystem.FileExists(this.FullPath))
             {
                 var result = new StringBuilder();
-                
-                this.UpdateLine(Lines, "AssemblyVersion", this.AssemblyVersion.ToString());
-                this.UpdateLine(Lines, "AssemblyFileVersion", this.AssemblyFileVersion.ToString());
+
+                if (this.AssemblyVersion != null)
+                {
+                    this.UpdateLine(Lines, "AssemblyVersion", this.AssemblyVersion.ToString());
+                }
+
+                if (this.AssemblyFileVersion != null)
+                {
+                    this.UpdateLine(Lines, "AssemblyFileVersion", this.AssemblyFileVersion.ToString());
+                }
+
                 this.UpdateLine(Lines, "AssemblyTitle", this.AssemblyTitle);
                 this.UpdateLine(Lines, "AssemblyDescription", this.AssemblyDescription);
                 this.UpdateLine(Lines, "AssemblyConfiguration", this.AssemblyConfiguration);

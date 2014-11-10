@@ -64,5 +64,35 @@ namespace FubuCsProjFile.Testing
             Assert.That(assemblyInfo.AssemblyProduct, Is.EqualTo("New AssemblyProduct"));
             Assert.That(assemblyInfo.AssemblyCopyright, Is.EqualTo("New AssemblyCopyright"));
         }
+
+        [Test]
+        public void CanWriteEvenWhenFileVersionNotSpecified()
+        {
+            _fileSystem.Copy("AssemblyInfoWithMissingFileVersionAttribute.cs.fake", @"AssemblyInfoTester\Properties\AssemblyInfo.cs", CopyBehavior.overwrite);
+            _project = CsProjFile.LoadFrom(@"AssemblyInfoTester\SlickGridHarness.csproj");
+
+            var assemblyInfo = _project.AssemblyInfo;
+            assemblyInfo.AssemblyVersion = new Version(2, 0, 0, 0);
+            assemblyInfo.AssemblyTitle = "New AssemblyTitle";
+            assemblyInfo.AssemblyDescription = "New AssemblyDescription";
+            assemblyInfo.AssemblyConfiguration = "New AssemblyConfiguration";
+            assemblyInfo.AssemblyCompany = "New AssemblyCompany";
+            assemblyInfo.AssemblyProduct = "New AssemblyProduct";
+            assemblyInfo.AssemblyCopyright = "New AssemblyCopyright";
+
+            _project.Save();
+
+            _project = CsProjFile.LoadFrom(@"AssemblyInfoTester\SlickGridHarness.csproj");
+            assemblyInfo = _project.AssemblyInfo;
+
+            Assert.That(assemblyInfo.AssemblyVersion, Is.EqualTo(new Version(2, 0, 0, 0)));
+            Assert.That(assemblyInfo.AssemblyFileVersion, Is.Null);
+            Assert.That(assemblyInfo.AssemblyTitle, Is.EqualTo("New AssemblyTitle"));
+            Assert.That(assemblyInfo.AssemblyDescription, Is.EqualTo("New AssemblyDescription"));
+            Assert.That(assemblyInfo.AssemblyConfiguration, Is.EqualTo("New AssemblyConfiguration"));
+            Assert.That(assemblyInfo.AssemblyCompany, Is.EqualTo("New AssemblyCompany"));
+            Assert.That(assemblyInfo.AssemblyProduct, Is.EqualTo("New AssemblyProduct"));
+            Assert.That(assemblyInfo.AssemblyCopyright, Is.EqualTo("New AssemblyCopyright"));
+        }
     }
 }
