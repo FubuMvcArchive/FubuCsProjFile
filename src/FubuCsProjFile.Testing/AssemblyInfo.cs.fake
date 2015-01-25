@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Fubu")]
 [assembly: AssemblyProduct("FubuCsProjFile.Testing Product")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyInformationalVersionAttribute("Release AnyCPU / f45ee8c")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

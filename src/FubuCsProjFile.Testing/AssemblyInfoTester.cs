@@ -35,6 +35,7 @@ namespace FubuCsProjFile.Testing
             Assert.That(assemblyInfo.AssemblyCompany, Is.EqualTo("Fubu"));
             Assert.That(assemblyInfo.AssemblyProduct, Is.EqualTo("FubuCsProjFile.Testing Product"));
             Assert.That(assemblyInfo.AssemblyCopyright, Is.EqualTo("Copyright ©  2014"));
+            Assert.That(assemblyInfo.AssemblyInformationalVersion, Is.EqualTo("Release AnyCPU / f45ee8c"));
         }
 
         [Test]
@@ -49,6 +50,7 @@ namespace FubuCsProjFile.Testing
             assemblyInfo.AssemblyCompany = "New AssemblyCompany";
             assemblyInfo.AssemblyProduct = "New AssemblyProduct";
             assemblyInfo.AssemblyCopyright = "New AssemblyCopyright";
+            assemblyInfo.AssemblyInformationalVersion = "New AssemblyInformationalVersion";
 
             _project.Save();
 
@@ -63,6 +65,7 @@ namespace FubuCsProjFile.Testing
             Assert.That(assemblyInfo.AssemblyCompany, Is.EqualTo("New AssemblyCompany"));
             Assert.That(assemblyInfo.AssemblyProduct, Is.EqualTo("New AssemblyProduct"));
             Assert.That(assemblyInfo.AssemblyCopyright, Is.EqualTo("New AssemblyCopyright"));
+            Assert.That(assemblyInfo.AssemblyInformationalVersion, Is.EqualTo("New AssemblyInformationalVersion"));
         }
 
         [Test]

@@ -1,10 +1,17 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuCsProjFile", "FubuCsProjFile\FubuCsProjFile.csproj", "{5630FC3F-8C3E-4EAD-B960-B38FE3D87463}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuCsProjFile.Testing", "FubuCsProjFile.Testing\FubuCsProjFile.Testing.csproj", "{38736114-0F05-4C8B-8183-E047654F44EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuCsProjFile.Docs", "FubuCsProjFile.Docs\FubuCsProjFile.Docs.csproj", "{952779C3-C86A-4CCB-8E6F-7AD53C40F406}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EC38A020-A3F9-499D-94D2-28D87DDF3E68}"
+	ProjectSection(SolutionItems) = preProject
+		..\VERSION.txt = ..\VERSION.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

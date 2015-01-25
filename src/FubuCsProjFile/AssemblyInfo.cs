@@ -41,6 +41,7 @@ namespace FubuCsProjFile
                 this.UpdateLine(Lines, "AssemblyCompany", this.AssemblyCompany);
                 this.UpdateLine(Lines, "AssemblyProduct", this.AssemblyProduct);
                 this.UpdateLine(Lines, "AssemblyCopyright", this.AssemblyCopyright);
+                this.UpdateLine(Lines, "AssemblyInformationalVersion", this.AssemblyInformationalVersion);
                 
                 Array.ForEach(this.Lines, s => result.AppendLine(s));
                 this._fileSystem.WriteStringToFile(this.FullPath, result.ToString().TrimEnd(Environment.NewLine.ToCharArray()));
@@ -67,6 +68,7 @@ namespace FubuCsProjFile
                 this.Parse("AssemblyCompany", value => this.AssemblyCompany = GetValueBetweenQuotes(value), Lines);
                 this.Parse("AssemblyProduct", value => this.AssemblyProduct = GetValueBetweenQuotes(value), Lines);
                 this.Parse("AssemblyCopyright", value => this.AssemblyCopyright = GetValueBetweenQuotes(value), Lines);
+                this.Parse("AssemblyInformationalVersion", value => this.AssemblyInformationalVersion = GetValueBetweenQuotes(value), Lines);
             }
         }
 
@@ -132,5 +134,7 @@ namespace FubuCsProjFile
         public string AssemblyProduct { get; set; }
 
         public string AssemblyCopyright { get; set; }
+
+        public string AssemblyInformationalVersion { get; set; }
     }
 }
