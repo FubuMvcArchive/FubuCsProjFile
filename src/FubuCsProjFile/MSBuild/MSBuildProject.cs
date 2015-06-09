@@ -150,6 +150,15 @@ namespace FubuCsProjFile.MSBuild
 
         public MSBuildProjectSettings Settings { get; set; }
 
+        public IEnumerable<MSBuildTarget> Targets
+        {
+            get
+            {
+                foreach (XmlElement elem in doc.DocumentElement.SelectNodes("tns:Target", XmlNamespaceManager))
+                    yield return GetTarget(elem);
+            }
+        }
+
         public void Load(string file)
         {
             using (FileStream fs = File.OpenRead(file))
@@ -497,6 +506,16 @@ namespace FubuCsProjFile.MSBuild
             if (elemCache.TryGetValue(elem, out ob))
                 return (MSBuildImport)ob;
             var it = new MSBuildImport(elem);
+            elemCache[elem] = it;
+            return it;
+        }
+
+        private MSBuildTarget GetTarget(XmlElement elem)
+        {
+            MSBuildObject ob;
+            if (elemCache.TryGetValue(elem, out ob))
+                return (MSBuildTarget)ob;
+            var it = new MSBuildTarget(elem);
             elemCache[elem] = it;
             return it;
         }

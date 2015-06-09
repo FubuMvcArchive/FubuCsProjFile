@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using FubuCore;
 using FubuCsProjFile.MSBuild;
 using NUnit.Framework;
@@ -115,6 +116,15 @@ namespace FubuCsProjFile.Testing
 
             group.GetPropertyValue("DefineConstants").ShouldEqual("TRACE");
 
+        }
+
+        [Test]
+        public void can_read_targets()
+        {
+            var project = MSBuildProject.LoadFrom("SlickGridHarness.csproj");
+            var target = project.Targets.FirstOrDefault(x => x.Name == "BeforeBuild");
+
+            Assert.That(target, Is.Not.Null);
         }
     }
 }

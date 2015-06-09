@@ -38,6 +38,25 @@ namespace FubuCsProjFile.Testing
             Assert.That(assemblyInfo.AssemblyInformationalVersion, Is.EqualTo("Release AnyCPU / f45ee8c"));
         }
 
+
+        [Test]
+        public void CanReadAttributes_when_some_attributes_are_missing()
+        {
+            _fileSystem.Copy("AssemblyInfoWithMissingFileVersionAttribute.cs.fake", @"AssemblyInfoTester\Properties\AssemblyInfo.cs", CopyBehavior.overwrite);
+            _project = CsProjFile.LoadFrom(@"AssemblyInfoTester\SlickGridHarness.csproj");
+            var assemblyInfo = _project.AssemblyInfo;
+
+
+            Assert.That(assemblyInfo.AssemblyVersion, Is.EqualTo(new Version(1, 0, 0, 0)));
+            Assert.That(assemblyInfo.AssemblyTitle, Is.EqualTo("FubuCsProjFile.Testing"));
+            Assert.That(assemblyInfo.AssemblyDescription, Is.EqualTo("FubuCsProjFile.Testing Is Amazing"));
+            Assert.That(assemblyInfo.AssemblyConfiguration, Is.EqualTo("Debug build on machine build02"));
+            Assert.That(assemblyInfo.AssemblyCompany, Is.EqualTo("Fubu"));
+            Assert.That(assemblyInfo.AssemblyProduct, Is.EqualTo("FubuCsProjFile.Testing Product"));
+            Assert.That(assemblyInfo.AssemblyCopyright, Is.EqualTo("Copyright ©  2014"));
+            Assert.That(assemblyInfo.AssemblyInformationalVersion, Is.Null);
+        }
+
         [Test]
         public void CanWriteAllAtrributes()
         {
