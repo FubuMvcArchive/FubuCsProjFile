@@ -20,6 +20,7 @@ namespace FubuCsProjFile.Testing
             fileSystem.Copy("FubuMVC.SlickGrid.Docs.csproj.fake", "FubuMVC.SlickGrid.Docs.csproj");
             fileSystem.Copy("SlickGridHarness.csproj.fake", "SlickGridHarness.csproj");
         }
+
         [Test]
         public void specific_version_should_serialize_using_boolean_string_that_matches_visual_studio_behaviour()
         {
@@ -54,5 +55,18 @@ namespace FubuCsProjFile.Testing
             var project = CsProjFile.LoadFrom("FubuMVC.SlickGrid.Docs.csproj");
             project.All<AssemblyReference>().Any(assembly => assembly.AssemblyName.Equals("Newtonsoft.Json.dll")).ShouldBeTrue();
         }
-    }
+
+        [Test]
+        public void private_should_serialize_using_boolean_string_that_matches_visual_studio_behaviour()
+        {
+            var reference = new AssemblyReference("log4net");
+            var element = new XmlDocument().CreateElement("Reference");
+            reference.Configure(new MSBuildItemGroup(new MSBuildProject(), element));
+
+            reference.Private = false;
+            reference.Save();
+
+            element.GetElementsByTagName("Private")[0].InnerText.ShouldEqual("False"); // and not "false"
+        }
+	}
 }

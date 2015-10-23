@@ -107,7 +107,7 @@ namespace FubuCsProjFile
 
             if (Private.HasValue)
             {
-                this.BuildItem.SetMetadata("Private", Private.Value.ToString().ToLower());
+                this.BuildItem.SetMetadata("Private", Private.Value.ToString());
             }
         }
     }
